@@ -1,0 +1,54 @@
+$button_color: false !default;
+$button_color_hover : false !default;
+$button_bg_color : false !default;
+$button_bg_color_hover : false !default;
+$button_width : false !default;
+$button_max_width : false !default;
+$button_padding_top : false !default;
+$button_padding_right : false !default;
+$button_padding_bottom : false !default;
+$button_padding_left : false !default;
+$button_align : false !default;
+
+@if $button_align {
+	.fl-module-content {
+		text-align: $button_align;
+	}
+}
+
+.gform_footer .gform_button {
+	@if $button_color {
+		color : $button_color;
+	}
+	@if $button_bg_color {
+		background-color : $button_bg_color;
+	}
+	@if $button_width != 'custom' {
+		width: $button_width;
+	}
+	@if $button_max_width == 'custom' {
+		width: auto;
+		max-width: $button_max_width;
+	}
+	@if $button_padding_top {
+		padding-top: $button_padding_top;
+	}
+	@if $button_padding_right {
+		padding-right: $button_padding_right;
+	}
+	@if $button_padding_bottom {
+		padding-bottom: $button_padding_bottom;
+	}
+	@if $button_padding_left {
+		padding-left: $button_padding_left;
+	}
+	&:hover,
+	&:focus {
+		@if $button_color_hover {
+			color : $button_color_hover;
+		}
+		@if $button_bg_color_hover {
+			background-color : $button_bg_color_hover;
+		}
+	}
+}

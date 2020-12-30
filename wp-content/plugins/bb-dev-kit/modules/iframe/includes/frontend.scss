@@ -1,0 +1,7 @@
+$width: false !default;
+$height : false !default;
+
+iframe {
+	width: $width;
+	height: $height;
+}

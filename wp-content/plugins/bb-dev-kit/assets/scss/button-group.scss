@@ -1,0 +1,28 @@
+$button_padding_left : false !default;
+$alignment : false !default;
+$stacking : false !default;
+
+.bbdk-button-group {
+	@if $stacking == 'flex' {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+	@else {
+		.button-container {
+			display: $stacking;
+		}
+	}
+	@if $alignment == 'center' {
+		justify-content: center;
+		.button-container {
+			text-align: center;
+		}
+	}
+	@if $alignment == 'right' {
+		justify-content: flex-end;
+		.button-container {
+			text-align: right;
+		}
+	}
+}

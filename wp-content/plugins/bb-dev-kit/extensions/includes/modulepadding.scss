@@ -1,0 +1,19 @@
+$module_padding_top : false !default;
+$module_padding_right : false !default;
+$module_padding_bottom : false !default;
+$module_padding_left : false !default;
+
+.fl-module-content {
+	@if $module_padding_top {
+		padding-top: $module_padding_top;
+	}
+	@if $module_padding_right {
+		padding-right: $module_padding_right;
+	}
+	@if $module_padding_bottom {
+		padding-bottom: $module_padding_bottom;
+	}
+	@if $module_padding_left {
+		padding-left: $module_padding_left;
+	}
+}

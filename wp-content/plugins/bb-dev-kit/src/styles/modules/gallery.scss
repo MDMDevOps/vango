@@ -1,0 +1,23 @@
+.bbdk-gallery {
+	&.default-gallery {
+		.gallery {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+		}
+	}
+	&.slider-gallery {
+		.gallery {
+			padding-left: 25px;
+			padding-right: 25px;
+			.gallery-item {
+				margin-bottom: 0;
+			}
+		}
+	}
+	&.masonry-gallery {
+		.gallery-item {
+			margin-bottom: 0;
+		}
+	}
+}

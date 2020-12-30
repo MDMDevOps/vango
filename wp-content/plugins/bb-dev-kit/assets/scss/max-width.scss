@@ -1,0 +1,9 @@
+$max_width: false !default;
+$node_alignment : false !default;
+
+@if $max_width {
+	max-width: $max_width;
+}
+@if $node_alignment {
+	margin: $node_alignment;
+}

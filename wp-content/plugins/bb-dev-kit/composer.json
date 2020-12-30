@@ -1,0 +1,12 @@
+{
+	"require": {
+		"padaliyajay/php-autoprefixer": "^1.2",
+		"scssphp/scssphp": "^1.2",
+		"wa72/htmlpagedom": "^2.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"wpcl\\bbdk\\" : ""
+		}
+	}
+}

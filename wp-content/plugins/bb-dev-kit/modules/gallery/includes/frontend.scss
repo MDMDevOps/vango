@@ -1,0 +1,7 @@
+$gallery_columns : false !default;
+
+@if $gallery_columns {
+	.gallery-item {
+		width: percentage( 1 / $gallery_columns );
+	}
+}

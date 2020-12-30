@@ -1,0 +1,70 @@
+$color: false !default;
+$color_hover : false !default;
+$bg_color : false !default;
+$bg_color_hover : false !default;
+$border_color : false !default;
+$border_color_hover : false !default;
+$border_width : false !default;
+$border_radius : false !default;
+$button_width : false !default;
+$button_max_width : false !default;
+$button_padding_top : false !default;
+$button_padding_right : false !default;
+$button_padding_bottom : false !default;
+$button_padding_left : false !default;
+$button_align : false !default;
+
+@if $button_align {
+	.fl-module-content {
+		text-align: $button_align;
+	}
+}
+
+.bbdk-button {
+	@if $color {
+		color : $color;
+	}
+	@if $bg_color {
+		background-color : $bg_color;
+	}
+	@if $border_width {
+		border-style: solid;
+		border-width: $border_width;
+	}
+	@if $border_color {
+		border-color: $border_color;
+	}
+	@if $border_radius {
+		border-radius: $border_radius;
+	}
+	@if $button_width {
+		width: $button_width;
+	}
+	@if $button_max_width {
+		max-width: $button_max_width;
+	}
+	@if $button_padding_top {
+		padding-top: $button_padding_top;
+	}
+	@if $button_padding_right {
+		padding-right: $button_padding_right;
+	}
+	@if $button_padding_bottom {
+		padding-bottom: $button_padding_bottom;
+	}
+	@if $button_padding_left {
+		padding-left: $button_padding_left;
+	}
+	&:hover,
+	&:focus {
+		@if $color_hover {
+			color : $color_hover;
+		}
+		@if $bg_color_hover {
+			background-color : $bg_color_hover;
+		}
+		@if $border_color_hover {
+			border-color: $border_color_hover;
+		}
+	}
+}

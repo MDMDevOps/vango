@@ -1,0 +1,1 @@
+<?php echo do_shortcode( "[gravityform {$settings->shortcode_atts}]" ); ?>

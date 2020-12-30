@@ -1,0 +1,1 @@
+<iframe src="<?php echo $settings->src; ?>" frameborder="<?php echo $settings->frameborder; ?>" scrolling="<?php echo $settings->scrolling; ?>"></iframe>

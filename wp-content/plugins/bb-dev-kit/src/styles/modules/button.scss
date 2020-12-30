@@ -1,0 +1,32 @@
+.fl-module-DKButton {
+	// .button-icon
+	.bbdk-button {
+		display: inline-block;
+		&.button-icon {
+			.bbdk-button-text {
+				margin-right: 1em;
+			}
+			&.icon-before {
+				.bbdk-button-text {
+					margin-right: 0;
+					margin-left: 1em;
+					order: 2;
+				}
+				.bbdk-button-icon-container {
+					order: 1;
+				}
+			}
+		}
+	}
+	.bbdk-button-icon-container {
+		span, span:before {
+			transition: inherit !important;
+		}
+	}
+	.bbdk-button-inner {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+}

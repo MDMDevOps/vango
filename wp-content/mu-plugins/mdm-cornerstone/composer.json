@@ -1,0 +1,27 @@
+{
+	"minimum-stability": "dev",
+	"prefer-stable": true,
+	"autoload": {
+		"psr-4": {
+			"mdm\\cornerstone\\" : "includes",
+			"mdm\\cornerstone\\posttypes\\" : "posttypes",
+			"mdm\\cornerstone\\taxonomies\\" : "taxonomies",
+			"mdm\\cornerstone\\widgets\\" : "widgets",
+			"mdm\\cornerstone\\flbuilder\\" : "flbuilder"
+		}
+	},
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "https://pivvenit.github.io/acf-composer-bridge/composer/v3/library/"
+		}
+	],
+	"require": {
+		"aristath/kirki": "^3.1",
+		"advanced-custom-fields/advanced-custom-fields-pro": "^5.8"
+	},
+	"scripts": {
+		"post-install-cmd": "npm install",
+		"post-update-cmd": "npm install"
+	}
+}

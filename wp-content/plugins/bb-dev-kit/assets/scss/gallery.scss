@@ -1,0 +1,9 @@
+$gallery_columns: false !default;
+
+@if $gallery_columns {
+	.bbdk-gallery.default-gallery  {
+		.gallery-item {
+			width: (100/$gallery_columns)*1%;
+		}
+	}
+}
