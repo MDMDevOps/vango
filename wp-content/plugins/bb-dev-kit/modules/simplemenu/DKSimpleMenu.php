@@ -66,7 +66,7 @@ class DKSimpleMenu extends Module {
 	public static function register() {
 		\FLBuilder::register_module( __CLASS__, [
 			'general' => [
-				'title' => __( 'iframe', 'bb_dev_kit' ),
+				'title' => __( 'Menu', 'bb_dev_kit' ),
 				'sections' => [
 					'general'=> [
 						'title' => '',
@@ -109,8 +109,7 @@ class DKSimpleMenu extends Module {
 							'linkpadding' => [
 								'type' => 'dimension',
 								'label' => __('Menu Item Padding', 'bb_dev_kit'),
-								'units' => [ 'px', 'em', 'rem'],
-								'default_unit' => 'px',
+								'description' => 'px',
 								'responsive' => true,
 								'slider' => [
 									'min' => 0,

@@ -26,8 +26,8 @@ a.bbdk-button {
 	@if $button_width != 'custom' {
 		width: $button_width;
 	}
-	@if $button_max_width == 'custom' {
-		width: auto;
+	@if $button_width == 'custom' {
+		width: 100%;
 		max-width: $button_max_width;
 	}
 	@if $button_padding_top {

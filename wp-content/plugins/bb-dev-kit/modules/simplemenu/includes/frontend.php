@@ -8,9 +8,13 @@
 
 				<a href="<?php echo $link->link; ?>">
 
+					<?php if( !empty( $link->icon ) && $settings->iconalign !== 'right' ) : ?>
+						<span class="menu-item-icon <?php echo $link->icon; ?>"></span>
+					<?php endif; ?>
+
 					<span class="menu-item-content"><?php echo $link->text; ?></span>
 
-					<?php if( !empty( $link->icon ) ) : ?>
+					<?php if( !empty( $link->icon ) && $settings->iconalign === 'right' ) : ?>
 						<span class="menu-item-icon <?php echo $link->icon; ?>"></span>
 					<?php endif; ?>
 

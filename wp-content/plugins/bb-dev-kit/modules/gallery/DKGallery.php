@@ -151,10 +151,10 @@ class DKGallery extends Module {
 		/**
 		 * Finally, add the slider and masonry gallery type
 		 */
-		$types = array_merge( $types, array(
-			'slider' => __( 'Slider', 'bb_dev_kit' ),
-			'masonry' => __( 'Masonry', 'bb_dev_kit' ),
-		) );
+		// $types = array_merge( $types, array(
+		// 	'slider' => __( 'Slider', 'bb_dev_kit' ),
+		// 	'masonry' => __( 'Masonry', 'bb_dev_kit' ),
+		// ) );
 
 		return $types;
 	}

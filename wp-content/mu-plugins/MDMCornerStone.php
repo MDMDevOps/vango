@@ -118,6 +118,13 @@ if( !class_exists( 'MDMCornerStone' ) ) {
 			$post_types = $this->getClasses( 'posttypes' );
 
 			foreach( $post_types as $post_type_name ) {
+				/**
+				 * Don't register sample
+				 */
+				if ( $post_type_name === 'Sample' ) {
+					continue;
+				}
+
 
 				$post_type = __NAMESPACE__ . '\\posttypes\\' . $post_type_name;
 
@@ -135,6 +142,13 @@ if( !class_exists( 'MDMCornerStone' ) ) {
 			$taxonomies = $this->getClasses( 'taxonomies' );
 
 			foreach( $taxonomies as $taxonomy_name ) {
+				/**
+				 * Don't register sample
+				 */
+				if ( $taxonomy_name === 'Sample' ) {
+					continue;
+				}
+
 
 				$taxonomy =  __NAMESPACE__ . '\\taxonomies\\' . $taxonomy_name;
 
@@ -151,6 +165,12 @@ if( !class_exists( 'MDMCornerStone' ) ) {
 			$widgets = $this->getClasses( 'widgets' );
 
 			foreach( $widgets as $widget_name ) {
+				/**
+				 * Don't register sample
+				 */
+				if ( $widget_name === 'Sample' ) {
+					continue;
+				}
 
 				$widget = __NAMESPACE__ . '\\widgets\\' . $widget_name;
 

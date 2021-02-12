@@ -95,6 +95,7 @@ class Module extends \FLBuilderModule {
 		 * Convert settings to scss variables
 		 */
 		$args['vars'] = $css->extractFields( $args );
+		// var_dump($args['vars']);
 		/**
 		 * Render css from scss
 		 */

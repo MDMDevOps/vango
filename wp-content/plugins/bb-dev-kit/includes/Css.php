@@ -312,7 +312,7 @@ class Css extends Framework {
 
 	public function getScssVars( $path ) {
 
-		if( !file_exists( $path ) ) {
+		if ( !file_exists( $path ) ) {
 			return [];
 		}
 
@@ -323,7 +323,13 @@ class Css extends Framework {
 		$vars = [];
 
 		foreach( $matches[1] as $var ) {
-			$vars[trim( str_replace( ['_top', '_right', '_bottom', '_left'], '', $var ) )] = 'false';
+			$vars[trim( $var )] = 'false';
+			/**
+			 * Maybe trim for diminsion fields
+			 */
+			if ( strpos( $var, '_top' ) || strpos( $var, '_right' ) || strpos( $var, '_left' ) || strpos( $var, '_bottom' ) ) {
+				$vars[str_ireplace( [ '_top', '_right', '_bottom', '_left' ], '', trim( $var ) )] = 'false';
+			}
 		}
 
 		return $vars;

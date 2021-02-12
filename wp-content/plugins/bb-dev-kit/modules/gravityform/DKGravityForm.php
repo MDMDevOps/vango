@@ -244,8 +244,8 @@ class DKGravityForm extends Module {
 									'custom' => __( 'Custom', 'bb_dev_kit' ),
 								],
 								'toggle' => [
-									'100%' => [
-										'fields' => [ 'button_custom_width' ],
+									'custom' => [
+										'fields' => [ 'button_max_width' ],
 									],
 								],
 							],

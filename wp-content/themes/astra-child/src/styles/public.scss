@@ -6,3 +6,40 @@
 @import 'include/embeds';
 @import 'include/slick';
 @import 'include/typography';
+
+$brand-green : #87BC29;
+
+$brand-blue : #11276F;
+
+#masthead {
+	#site-navigation {
+		// #primary-menu {
+			a, a:link {
+				text-transform: uppercase;
+				color: $brand-blue;
+			}
+			.sub-menu {
+				a, a:link {
+					color: $brand-blue !important;
+					&:hover,
+					&:focus {
+						background: #f5f5f5;
+						color: $brand-blue !important;
+					}
+				}
+			}
+		.ast-theme-transparent-header & {
+			a, a:link {
+				color: #fff;
+			}
+		}
+		.ast-header-break-point & {
+			.ast-menu-toggle {
+				color: $brand-blue;
+			}
+			a, a:link {
+				color: $brand-blue !important;
+			}
+		}
+	}
+}

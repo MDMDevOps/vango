@@ -2,17 +2,12 @@ $color: false !default;
 $color_hover : false !default;
 $align : false !default;
 $iconalign : false !default;
-$iconmargin_left : 0 !default;
-$iconmargin_right : 0 !default;
+$iconmargin_left : 10px !default;
+$iconmargin_right : 10px !default;
 $iconmargin_top : 0 !default;
 $iconmargin_bottom : 0 !default;
 $iconsize : 1em !default;
 $iconalignitems : normal !default;
-
-$linkpadding_top : 10px !default;
-$linkpadding_bottom : 10px !default;
-$linkpadding_right : 0 !default;
-$linkpadding_left : 0 !default;
 
 @if $color {
 	a, a:link {
@@ -42,21 +37,14 @@ $linkpadding_left : 0 !default;
 	width: $iconsize;
 }
 
-ul.menu li.dk-menu-item a {
-	padding-left: $linkpadding_left;
-	padding-right: $linkpadding_right;
-	padding-top: $linkpadding_top;
-	padding-bottom: $linkpadding_bottom;
-}
-
-@if $iconalign == 'left' {
-	.menu-item-icon {
-		order: 1;
-	}
-	.menu-item-content {
-		order: 2;
-	}
-}
+// @if $iconalign == 'left' {
+// 	.menu-item-icon {
+// 		order: 1;
+// 	}
+// 	.menu-item-content {
+// 		order: 2;
+// 	}
+// }
 
 
 @if $align == 'right' {
