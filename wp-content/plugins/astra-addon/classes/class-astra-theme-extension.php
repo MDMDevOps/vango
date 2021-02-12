@@ -120,6 +120,8 @@ if ( ! class_exists( 'Astra_Theme_Extension' ) ) {
 			add_action( 'admin_init', array( $this, 'redirect_addon_listing_page' ) );
 
 			add_action( 'enqueue_block_editor_assets', array( $this, 'addon_gutenberg_assets' ) );
+
+			add_filter( 'astra_svg_icons', array( $this, 'astra_addon_svg_icons' ), 1, 10 );
 		}
 
 		/**
@@ -480,7 +482,6 @@ if ( ! class_exists( 'Astra_Theme_Extension' ) ) {
 			return $actions;
 		}
 
-
 		/**
 		 * Admin Scripts
 		 */
@@ -525,6 +526,8 @@ if ( ! class_exists( 'Astra_Theme_Extension' ) ) {
 			if ( ! defined( 'ASTRA_THEME_VERSION' ) ) {
 				return;
 			}
+
+			require_once ASTRA_EXT_DIR . 'classes/class-astra-addon-builder-loader.php';
 
 			require_once ASTRA_EXT_DIR . 'classes/astra-common-functions.php';
 
@@ -1202,6 +1205,23 @@ if ( ! class_exists( 'Astra_Theme_Extension' ) ) {
 					)
 				);
 			}
+		}
+
+		/**
+		 * Load SVG Icon array from the JSON file.
+		 *
+		 * @param Array $svg_arr Array of svg icons.
+		 * @since 3.0.0
+		 * @return Array addon svg icons.
+		 */
+		public function astra_addon_svg_icons( $svg_arr = array() ) {
+
+			ob_start();
+			// Include SVGs Json file.
+			include_once ASTRA_EXT_DIR . 'assets/svg/svgs.json';
+			$svg_icon_arr  = json_decode( ob_get_clean(), true );
+			$ast_svg_icons = array_merge( $svg_arr, $svg_icon_arr );
+			return $ast_svg_icons;
 		}
 	}
 }

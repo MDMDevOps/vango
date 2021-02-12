@@ -243,3 +243,14 @@ function astra_addon_header_css_optimizations() {
 
 	update_option( 'astra-settings', $theme_options );
 }
+
+/**
+ * Regenerate Astra cache files.
+ * Added this function for this version because from theme at same version we migrating old header & footer layout to make it compatible with new Header-Footer Builder.
+ *
+ * @since 3.0.0
+ * @return void
+ */
+function astra_addon_clear_assets_cache() {
+	Astra_Minify::refresh_assets();
+}

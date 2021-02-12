@@ -81,9 +81,12 @@ if ( ! class_exists( 'Astra_Customizer_Learndash_General_Configs' ) ) {
 					'section'  => 'section-learndash',
 					'title'    => __( 'Profile Picture Links to:', 'astra-addon' ),
 					'priority' => 15,
-					'required' => array(
-						'conditions' => array(
-							array( ASTRA_THEME_SETTINGS . '[learndash-profile-link-enabled]', '==', true ),
+					'context'  => array(
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[learndash-profile-link-enabled]',
+							'operator' => '==',
+							'value'    => true,
 						),
 					),
 				),

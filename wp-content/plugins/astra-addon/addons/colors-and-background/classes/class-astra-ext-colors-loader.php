@@ -147,13 +147,12 @@ if ( ! class_exists( 'Astra_Ext_Colors_Loader' ) ) {
 			/**
 			* Primary Menu
 			*/
-			$defaults['primary-menu-bg-color']   = '';
-			$defaults['primary-menu-color']      = '';
-			$defaults['primary-menu-h-bg-color'] = '';
-			$defaults['primary-menu-h-color']    = '';
-			$defaults['primary-menu-a-bg-color'] = '';
-			$defaults['primary-menu-a-color']    = '';
-
+			$defaults['primary-menu-bg-color']          = '';
+			$defaults['primary-menu-color']             = '';
+			$defaults['primary-menu-h-bg-color']        = '';
+			$defaults['primary-menu-h-color']           = '';
+			$defaults['primary-menu-a-bg-color']        = '';
+			$defaults['primary-menu-a-color']           = '';
 			$defaults['primary-menu-bg-obj-responsive'] = array(
 				'desktop' => array(
 					'background-color'      => '',
@@ -186,8 +185,7 @@ if ( ! class_exists( 'Astra_Ext_Colors_Loader' ) ) {
 					'background-media'      => '',
 				),
 			);
-
-			$defaults['primary-menu-color-responsive'] = array(
+			$defaults['primary-menu-color-responsive']  = array(
 				'desktop' => '',
 				'tablet'  => '',
 				'mobile'  => '',
@@ -271,7 +269,7 @@ if ( ! class_exists( 'Astra_Ext_Colors_Loader' ) ) {
 			/**
 			* Sidebar
 			*/
-			$defaults['sidebar-bg-obj'] = array(
+			$defaults['sidebar-bg-obj']             = array(
 				'background-color'      => '',
 				'background-image'      => '',
 				'background-repeat'     => 'repeat',
@@ -281,7 +279,6 @@ if ( ! class_exists( 'Astra_Ext_Colors_Loader' ) ) {
 				'background-type'       => '',
 				'background-media'      => '',
 			);
-
 			$defaults['sidebar-widget-title-color'] = '';
 			$defaults['sidebar-text-color']         = '';
 			$defaults['sidebar-link-color']         = '';
@@ -307,6 +304,26 @@ if ( ! class_exists( 'Astra_Ext_Colors_Loader' ) ) {
 			$defaults['footer-link-color']   = '';
 			$defaults['footer-link-h-color'] = '';
 
+			/**
+			 * Search Border.
+			 */
+			$defaults['header-search-border-size']   = array(
+				'top'    => '1',
+				'right'  => '1',
+				'bottom' => '1',
+				'left'   => '1',
+			);
+			$defaults['header-search-border-color']  = '#ddd';
+			$defaults['header-search-border-radius'] = 2;
+
+			$defaults['header-account-popup-colors']             = '';
+			$defaults['header-account-popup-label-color']        = '';
+			$defaults['header-account-popup-input-text-color']   = '';
+			$defaults['header-account-popup-button-text-color']  = '';
+			$defaults['header-account-popup-button-bg-color']    = '';
+			$defaults['header-account-popup-input-border-color'] = '';
+			$defaults['header-account-popup-bg-color']           = '';
+
 			return $defaults;
 		}
 
@@ -330,6 +347,7 @@ if ( ! class_exists( 'Astra_Ext_Colors_Loader' ) ) {
 			}
 			require_once ASTRA_EXT_COLORS_DIR . 'classes/sections/class-astra-customizer-colors-sidebar.php';
 			require_once ASTRA_EXT_COLORS_DIR . 'classes/sections/class-astra-customizer-colors-single.php';
+			require_once ASTRA_EXT_COLORS_DIR . 'classes/sections/class-astra-customizer-colors-header-builder.php';
 
 		}
 
@@ -345,6 +363,16 @@ if ( ! class_exists( 'Astra_Ext_Colors_Loader' ) ) {
 			}
 
 			wp_enqueue_script( 'astra-ext-colors-customize-preview-js', ASTRA_EXT_COLORS_URI . $js_path, array( 'customize-preview', 'astra-customizer-preview-js', 'astra-addon-customizer-preview-js' ), ASTRA_EXT_VER, true );
+
+			$localize_array = array(
+				'tablet_break_point'  => astra_addon_get_tablet_breakpoint(),
+				'mobile_break_point'  => astra_addon_get_mobile_breakpoint(),
+				'header_html_count'   => Astra_Addon_Builder_Helper::$num_of_header_html,
+				'header_menu_count'   => Astra_Addon_Builder_Helper::$num_of_header_menu,
+				'header_button_count' => Astra_Addon_Builder_Helper::$num_of_header_button,
+				'header_html_count'   => Astra_Addon_Builder_Helper::$num_of_footer_html,
+			);
+			wp_localize_script( 'astra-ext-colors-customize-preview-js', 'astColors', $localize_array );
 
 		}
 

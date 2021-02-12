@@ -54,6 +54,8 @@ if ( ! class_exists( 'Astra_Customizer_Sidebar_Spacing_Configs' ) ) {
 					'title'    => __( 'Spacing', 'astra-addon' ),
 					'priority' => 25,
 					'settings' => array(),
+					'context'  => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
+						Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
 				),
 
 				/**
@@ -66,6 +68,8 @@ if ( ! class_exists( 'Astra_Customizer_Sidebar_Spacing_Configs' ) ) {
 					'transport'      => 'postMessage',
 					'control'        => 'ast-responsive-spacing',
 					'section'        => 'section-sidebars',
+					'context'        => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
+						Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
 					'priority'       => 25,
 					'title'          => __( 'Outside Sidebar', 'astra-addon' ),
 					'linked_choices' => true,
@@ -89,6 +93,8 @@ if ( ! class_exists( 'Astra_Customizer_Sidebar_Spacing_Configs' ) ) {
 					'control'        => 'ast-responsive-spacing',
 					'section'        => 'section-sidebars',
 					'priority'       => 25,
+					'context'        => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
+						Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
 					'title'          => __( 'Inside Sidebar', 'astra-addon' ),
 					'linked_choices' => true,
 					'unit_choices'   => array( 'px', 'em', '%' ),

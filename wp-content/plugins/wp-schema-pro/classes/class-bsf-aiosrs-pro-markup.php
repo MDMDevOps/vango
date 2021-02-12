@@ -271,7 +271,7 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Markup' ) ) {
 
 					wp_enqueue_script( 'wp-schema-pro-fontend-script' );
 					wp_enqueue_style( 'wp-schema-pro-fontend-style' );
-
+					$avg_rating = apply_filters( 'update_avg_star_ratings_schema_pro_markup', $avg_rating );
 					apply_filters( 'add_ratings_schema_pro_markup', $review_counts, $avg_rating );
 					?>
 					<div class="aiosrs-rating-wrap" data-schema-id="<?php echo esc_attr( $schema_id ); ?>">

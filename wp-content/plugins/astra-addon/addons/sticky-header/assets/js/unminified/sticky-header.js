@@ -19,6 +19,7 @@
 		document      = window.document,
 		windowWidth   = jQuery( window ).outerWidth(),
 		viewPortWidth = jQuery( window ).width(),
+		header_builder_active = astraAddon.header_builder_active,
 		defaults      = {
 			dependent            : [],
 			max_width            : '',
@@ -94,6 +95,14 @@
 			max_width         = parseInt( selector.parent().attr( 'data-stick-maxwidth' ) ), // parseInt( self.options.max_width ),
 			gutter            = parseInt( selector.parent().attr( 'data-stick-gutter' ) ); // parseInt( self.options.gutter ).
 
+		if ( header_builder_active && astraAddon.header_main_shrink ) {
+			// Decrese the top of primary / below as we decrease the min-height of all sticked headers by 20.
+			if ( ( selector.hasClass( 'ast-stick-primary-below-wrapper' ) || ( selector.hasClass( 'ast-primary-header' ) ) ) && 1 == astraAddon.header_above_stick && gutter > 0  ) {
+
+				gutter = gutter - 20;
+			}
+		}
+
 		/**
 		 * Check window width
 		 */
@@ -103,22 +112,48 @@
 			self.stickRelease( self );
 		} else {
 
+			// stick_upto_scroll with negative value enables a sticky by default so rounding up to zero.
+			if ( stick_upto_scroll < 0 ) {
+				stick_upto_scroll = 0;
+			}
+
 			if ( jQuery( window ).scrollTop() > stick_upto_scroll ) {
 
 				var fixed_header = selector;
-				
+
+				if ( header_builder_active ) {
+
+					var mobile_parent = selector.closest( '.ast-mobile-header-wrap' );
+
+					mobile_parent = ( 0 === mobile_parent.length ) ? selector.find( '.ast-mobile-header-wrap' ) : mobile_parent;
+
+					mobile_parent.find( '.ast-mobile-header-content' ).css( 'top', selector.outerHeight() + gutter );
+					mobile_parent.find( '.ast-mobile-header-content' ).css( 'width', max_width );
+				}
+
 				if ( '1' === self.options.hide_on_scroll ) {
 
 					self.hasScrolled( self, 'stick' );
-				}else if ( 'none' == self.options.header_style ) {					
+				}else if ( 'none' == self.options.header_style ) {
+
 					selector.parent().css( 'min-height', selector.outerHeight() );
 
 					selector.addClass( 'ast-sticky-active' ).stop().css({
 						'max-width'      : max_width,
-						'top'            : gutter,
 						'padding-top'    : self.options.shrink.padding_top,
 						'padding-bottom' : self.options.shrink.padding_bottom,
+						'top'            : gutter,
 					});
+
+					if ( ( selector.hasClass( 'ast-stick-primary-below-wrapper' ) || selector.hasClass( 'ast-primary-header' ) ) && 1 == astraAddon.header_above_stick && 70 > selector.closest('#ast-desktop-header').find('.ast-above-header-bar').outerHeight() ) {
+
+						selector.addClass( 'ast-sticky-active' ).stop().css({
+							'top'            : 'unset',
+						});
+
+						selector.parent().css( 'min-height', 'unset' );
+					}
+
 					selector.addClass( 'ast-sticky-shrunk' ).stop();
 					$( document ).trigger( "addStickyClass" );
 					fixed_header.addClass('ast-header-sticked');
@@ -265,13 +300,13 @@
 	}
 
 	astExtSticky.prototype.hasScrolled = function( self, method ) {
-		
+
 		var st = $( window ).scrollTop();
-    
+
 	    // Make sure they scroll more than delta
 	    if(Math.abs(lastScrollTop - st) <= delta)
 	        return;
-	    
+
 	    // If they scrolled down and are past the navbar, add class .nav-up.
 	    // This is necessary so you never see what is "behind" the navbar.
 		var fixed_header = jQuery(self.element);
@@ -285,7 +320,7 @@
 	            jQuery(self.element).removeClass('ast-nav-up').addClass('ast-nav-down');
 	        }
 	    }
-	    
+
 	    lastScrollTop = st;
 
 	    if ( !$(self.element).hasClass('ast-nav-up') && 'stick' == method ) {
@@ -308,7 +343,7 @@
 			setTimeout(function() {
 				fixed_header.removeClass( 'ast-sticky-active' );
 			}, 300);
-			fixed_header.css({ 
+			fixed_header.css({
 				'visibility' : 'hidden',
 				'top' : '',
 			});
@@ -339,7 +374,7 @@
 				fixed_header.removeClass( 'ast-sticky-active' ).stop().css({
 					'transform':'translateY(-100%)',
 				});
-				fixed_header.css({ 
+				fixed_header.css({
 					'visibility' : 'hidden',
 					'top' : '',
 				});
@@ -352,7 +387,7 @@
 				fixed_header.removeClass( 'ast-sticky-active' ).stop().css({
 					'opacity' : '0',
 				});
-				fixed_header.css({ 
+				fixed_header.css({
 					'visibility' : 'hidden',
 				});
 				fixed_header.removeClass('ast-header-sticked');
@@ -406,7 +441,7 @@
 			jQuery( window ).on('scroll', function() {
 				// update the stick_upto_scroll if normal main header navigation is opend.
 				self.stick_me( self, 'scroll' );
-				 
+
 				if( jQuery( 'body' ).hasClass( 'ast-sticky-toggled-off' ) ){
 					self.update_attrs();
 					self.stick_me( self, 'scroll' );
@@ -447,7 +482,6 @@
 		stick_origin_position    = astraAddon.stick_origin_position || '',
 		tablet_break_point    = astraAddon.tablet_break_point || 768,
 		mobile_break_point    = astraAddon.mobile_break_point || 544;
-		
 
 	/**
 	 * Check meta options
@@ -469,31 +503,56 @@
 		if ( typeof id_height === 'undefined' ) {
 			id_height 	= id_img.height();
 		}
-		
+
 		if ( id_height == 0 ) {
 			id_height = '';
 		}
-		
+
 		if ( -1 === id_height.toString().indexOf('%') ) {
 			id_height += 'px';
 		}
 
 		if ( '' != responsive_header_logo_width.desktop || '' != responsive_header_logo_width.tablet ||  '' != responsive_header_logo_width.mobile  ) {
-		var output = "<style type='text/css' id='ast-site-identity-img' class='ast-site-identity-img' > #masthead .site-logo-img .astra-logo-svg { width: " + responsive_header_logo_width.desktop + "px; } @media (max-width: " + tablet_break_point + "px) { #masthead .site-logo-img .astra-logo-svg { width: " + responsive_header_logo_width.tablet + "px; } } @media (max-width: " + mobile_break_point + "px) { #masthead .site-logo-img .astra-logo-svg{ width: " + responsive_header_logo_width.mobile + "px; } }  #masthead .site-logo-img img { max-height: " + id_height + "; width: auto; } </style>";
+		var output = "<style type='text/css' id='ast-site-identity-img' class='ast-site-identity-img' > #masthead .ast-header-sticked .site-logo-img .astra-logo-svg { width: " + responsive_header_logo_width.desktop + "px; } @media (max-width: " + tablet_break_point + "px) { #masthead .ast-header-sticked .site-logo-img .astra-logo-svg { width: " + responsive_header_logo_width.tablet + "px; } } @media (max-width: " + mobile_break_point + "px) { #masthead .ast-header-sticked .site-logo-img .astra-logo-svg{ width: " + responsive_header_logo_width.mobile + "px; } } </style>";
 		}else if( '' != header_logo_width ){
-			var output = "<style type='text/css' id='ast-site-identity-img' class='ast-site-identity-img' > #masthead .site-logo-img .astra-logo-svg { width: " + header_logo_width + "px; } #masthead .site-logo-img img { max-height: " + id_height + "; width: auto; } </style>";
+			var output = "<style type='text/css' id='ast-site-identity-img' class='ast-site-identity-img' > #masthead .ast-header-sticked .site-logo-img .astra-logo-svg { width: " + header_logo_width + "px; } #masthead .ast-header-sticked .site-logo-img img { max-height: " + id_height + "; width: auto; } </style>";
 		}
 
 		$("head").append( output );
 	}
 
+	function is_customizer_preview() {
+		var in_customizer = false;
+
+		// check for wp.customize return boolean
+		if ( typeof wp !== 'undefined' ) {
+			in_customizer =  typeof wp.customize !== 'undefined' ? true : false;
+		}
+
+		return in_customizer;
+	}
+
+	function stickHeaderToTop() {
+
+		if( ! is_customizer_preview() ) {
+			return ;
+		}
+
+		stick_upto_scroll = 0;
+		jQuery( window ).scrollTop( 0 );
+	}
+
 	// Any stick header is enabled?
 	if ( stick_main || stick_above || stick_below ) {
+
+		if ( header_builder_active ) {
+			stickHeaderToTop();
+		}
 
 		// Add Respective class to the body dependent on which sticky header is activated.
 		$( document ).on( "addStickyClass", function() {
 			var bodyClass = '';
-			
+
 			if ( '1' == stick_main || 'on' == stick_main ) {
 				bodyClass += " ast-primary-sticky-header-active";
 			}
@@ -528,7 +587,24 @@
 			break;
 		}
 
-		jQuery( document ).ready(function($) {
+		jQuery( document ).on('ready astLayoutWidthChanged', function( e ) {
+
+			if( 'astLayoutWidthChanged' === e.type ) {
+
+				// return if sticky not enabled.
+				if (!(stick_main || stick_below || stick_above)) {
+					return;
+				}
+
+				stickHeaderToTop();
+
+				// Unwrapping sticky to reapply again.
+				jQuery('div.ast-stick-primary-below-wrapper').children().unwrap();
+				jQuery('div[data-stick-support="on"]').children().unwrap();
+
+			}
+
+
 
 			if ( '1' == sticky_hide_on_scroll ) {
 	    		if ( '1' == main_shrink ) {
@@ -554,67 +630,130 @@
 					hide_on_scroll: sticky_hide_on_scroll,
 				});
 			}else{
-		    	if ( 'none' == sticky_header_style ) {
-			    	/**
-			    	 * Stick Above Header
-			    	 */
-			    	if ( '1' == stick_above || 'on' == stick_above ) {
-			    		jQuery( '#masthead .ast-above-header' ).astExtSticky({
-					    	max_width: layout_width,
-					    	site_layout: site_layout,
-					    	sticky_on_device: sticky_header_on_devices,
-					    	header_style: sticky_header_style,
-					    	hide_on_scroll: sticky_hide_on_scroll,
-					    });
-			    	}
-			    	// Add wrapper class to primary header & below header if stick primary header , stick below header and shrink primary header is enabled.
-			    	// stick wrapper class of primary header and below header
-			    	if ( ( '1' == stick_main || 'on' == stick_main ) &&
-			    		( '1' == stick_below || 'on' == stick_below ) 
-			    	) {
+				if ('none' == sticky_header_style) {
 
-			    		jQuery( '#masthead .main-header-bar-wrap' ).wrap('<div class="ast-stick-primary-below-wrapper"></div>')
-				    	jQuery( '#masthead .ast-below-header-wrap' ).prependTo('.ast-stick-primary-below-wrapper');
-				    	jQuery( '#masthead .main-header-bar-wrap' ).prependTo('.ast-stick-primary-below-wrapper');
+					if (header_builder_active) {
+						var headers = 'both' === sticky_header_on_devices ? ['desktop', 'mobile'] : [sticky_header_on_devices];
 
-				    	jQuery( '#masthead .ast-stick-primary-below-wrapper' ).astExtSticky({
-					    	dependent: ['#masthead .ast-above-header'],
-					    	max_width: layout_width,
-					    	site_layout: site_layout,
-					    	shrink: shrink_options,
-					    	sticky_on_device: sticky_header_on_devices,
-					    	header_style: sticky_header_style,
-					    	hide_on_scroll: sticky_hide_on_scroll,
-					    });
+						headers.forEach(function (header) {
 
-			    	} else {
+							/**
+							 * Stick Above Header
+							 */
+							if ('1' == stick_above || 'on' == stick_above) {
+								jQuery('#masthead #ast-' + header + '-header .ast-above-header').astExtSticky({
+									max_width: layout_width,
+									site_layout: site_layout,
+									sticky_on_device: sticky_header_on_devices,
+									header_style: sticky_header_style,
+									hide_on_scroll: sticky_hide_on_scroll,
+								});
+							}
+							// Add wrapper class to primary header & below header if stick primary header , stick below header and shrink primary header is enabled.
+							// stick wrapper class of primary header and below header
+							if (('1' == stick_main || 'on' == stick_main) &&
+								('1' == stick_below || 'on' == stick_below)
+							) {
 
-				    	/**
-				    	 * Stick Main Header
-				    	 */
-				    	if ( '1' == stick_main || 'on' == stick_main ) {
+								var selector = jQuery('#masthead #ast-' + header + '-header .main-header-bar-wrap').length ?
+									jQuery('#masthead #ast-' + header + '-header .main-header-bar-wrap') :
+									jQuery('#masthead #ast-' + header + '-header .ast-below-header-wrap');
 
-				    		// If shrink is enabled
-				    		// then add shrink top and bottom paddings.
-			    			var shrink_options = '';
-				    		if( main_shrink ) {
-				    			shrink_options = {
-						    		padding_top: '',
-						    		padding_bottom: '',
-						    	}
-				    		}
+								selector.wrap('<div class="ast-stick-primary-below-wrapper"></div>')
+								jQuery('#masthead #ast-' + header + '-header .ast-below-header-wrap').prependTo('#masthead #ast-' + header + '-header .ast-stick-primary-below-wrapper');
+								jQuery('#masthead #ast-' + header + '-header .main-header-bar-wrap').prependTo('#masthead #ast-' + header + '-header .ast-stick-primary-below-wrapper');
 
-						    jQuery( '#masthead .main-header-bar' ).astExtSticky({
-						    	dependent: ['#masthead .ast-above-header'],
-						    	max_width: layout_width,
-						    	site_layout: site_layout,
-						    	shrink: shrink_options,
-						    	sticky_on_device: sticky_header_on_devices,
-						    	header_style: sticky_header_style,
-						    	hide_on_scroll: sticky_hide_on_scroll,
-						    });
+								jQuery('#masthead #ast-' + header + '-header .ast-stick-primary-below-wrapper').astExtSticky({
+									dependent: ['#masthead #ast-' + header + '-header .ast-above-header'],
+									max_width: layout_width,
+									site_layout: site_layout,
+									shrink: shrink_options,
+									sticky_on_device: sticky_header_on_devices,
+									header_style: sticky_header_style,
+									hide_on_scroll: sticky_hide_on_scroll,
+								});
 
-						    jQuery( '#masthead .ast-custom-header' ).astExtSticky({
+							} else {
+
+								/**
+								 * Stick Main Header
+								 */
+								if ('1' == stick_main || 'on' == stick_main) {
+
+									// If shrink is enabled
+									// then add shrink top and bottom paddings.
+									var shrink_options = '';
+									if (main_shrink) {
+										shrink_options = {
+											padding_top: '',
+											padding_bottom: '',
+										}
+									}
+
+									jQuery('#masthead #ast-' + header + '-header .main-header-bar').astExtSticky({
+										dependent: ['#masthead #ast-' + header + '-header .ast-above-header'],
+										max_width: layout_width,
+										site_layout: site_layout,
+										shrink: shrink_options,
+										sticky_on_device: sticky_header_on_devices,
+										header_style: sticky_header_style,
+										hide_on_scroll: sticky_hide_on_scroll,
+									});
+
+									jQuery('#masthead #ast-' + header + '-header .ast-custom-header').astExtSticky({
+										max_width: layout_width,
+										site_layout: site_layout,
+										shrink: shrink_options,
+										sticky_on_device: sticky_header_on_devices,
+										header_style: sticky_header_style,
+										hide_on_scroll: sticky_hide_on_scroll,
+									});
+								}
+
+								/**
+								 * Stick Below Header
+								 */
+								if (('1' == stick_below || 'on' == stick_below)) {
+									jQuery('#masthead #ast-' + header + '-header .ast-below-header').astExtSticky({
+										dependent: ['#masthead #ast-' + header + '-header .main-header-bar', '#masthead #ast-' + header + '-header .ast-above-header'],
+										max_width: layout_width,
+										site_layout: site_layout,
+										sticky_on_device: sticky_header_on_devices,
+										header_style: sticky_header_style,
+										hide_on_scroll: sticky_hide_on_scroll,
+									});
+
+								}
+							}
+
+						});
+
+					} else {
+
+						/**
+						 * Stick Above Header
+						 */
+						if ('1' == stick_above || 'on' == stick_above) {
+							jQuery('#masthead .ast-above-header').astExtSticky({
+								max_width: layout_width,
+								site_layout: site_layout,
+								sticky_on_device: sticky_header_on_devices,
+								header_style: sticky_header_style,
+								hide_on_scroll: sticky_hide_on_scroll,
+							});
+						}
+						// Add wrapper class to primary header & below header if stick primary header , stick below header and shrink primary header is enabled.
+						// stick wrapper class of primary header and below header
+						if (('1' == stick_main || 'on' == stick_main) &&
+							('1' == stick_below || 'on' == stick_below)
+						) {
+
+							jQuery('#masthead .main-header-bar-wrap').wrap('<div class="ast-stick-primary-below-wrapper"></div>')
+							jQuery('#masthead .ast-below-header-wrap').prependTo('.ast-stick-primary-below-wrapper');
+							jQuery('#masthead .main-header-bar-wrap').prependTo('.ast-stick-primary-below-wrapper');
+
+							jQuery('#masthead .ast-stick-primary-below-wrapper').astExtSticky({
+								dependent: ['#masthead .ast-above-header'],
 								max_width: layout_width,
 								site_layout: site_layout,
 								shrink: shrink_options,
@@ -622,25 +761,64 @@
 								header_style: sticky_header_style,
 								hide_on_scroll: sticky_hide_on_scroll,
 							});
-				    	}
 
-				    	/**
-				    	 * Stick Below Header
-				    	 */
-				    	if ( ('1' == stick_below || 'on' == stick_below ) ) {
-						    jQuery( '#masthead .ast-below-header' ).astExtSticky( {
-						    	dependent: [ '#masthead .main-header-bar', '#masthead .ast-above-header'],
-						    	max_width: layout_width,
-						    	site_layout: site_layout,
-						    	sticky_on_device: sticky_header_on_devices,
-						    	header_style: sticky_header_style,
-						    	hide_on_scroll: sticky_hide_on_scroll,
-						    } );
+						} else {
 
+							/**
+							 * Stick Main Header
+							 */
+							if ('1' == stick_main || 'on' == stick_main) {
+
+								// If shrink is enabled
+								// then add shrink top and bottom paddings.
+								var shrink_options = '';
+								if (main_shrink) {
+									shrink_options = {
+										padding_top: '',
+										padding_bottom: '',
+									}
+								}
+
+								jQuery('#masthead .main-header-bar').astExtSticky({
+									dependent: ['#masthead .ast-above-header'],
+									max_width: layout_width,
+									site_layout: site_layout,
+									shrink: shrink_options,
+									sticky_on_device: sticky_header_on_devices,
+									header_style: sticky_header_style,
+									hide_on_scroll: sticky_hide_on_scroll,
+								});
+
+								jQuery('#masthead .ast-custom-header').astExtSticky({
+									max_width: layout_width,
+									site_layout: site_layout,
+									shrink: shrink_options,
+									sticky_on_device: sticky_header_on_devices,
+									header_style: sticky_header_style,
+									hide_on_scroll: sticky_hide_on_scroll,
+								});
+							}
+
+							/**
+							 * Stick Below Header
+							 */
+							if (('1' == stick_below || 'on' == stick_below)) {
+								jQuery('#masthead .ast-below-header').astExtSticky({
+									dependent: ['#masthead .main-header-bar', '#masthead .ast-above-header'],
+									max_width: layout_width,
+									site_layout: site_layout,
+									sticky_on_device: sticky_header_on_devices,
+									header_style: sticky_header_style,
+									hide_on_scroll: sticky_hide_on_scroll,
+								});
+
+							}
 						}
-			    	}
 
-				}else{
+					}
+
+				}
+		    	else{
 
 					jQuery( '#ast-fixed-header' ).addClass( 'ast-sticky-shrunk' ).stop();
 
@@ -694,10 +872,10 @@
 						// Add body class to update the stick_upto_scroll.
 						$body.addClass('ast-sticky-toggled-off');
 
-						if ( 
-							'none' == defaults['header_style'] && 
-							( jQuery( '#masthead .main-header-bar' ).hasClass('ast-sticky-active') || 
-								jQuery( '#masthead .ast-stick-primary-below-wrapper' ).hasClass('ast-sticky-active') ) 
+						if (
+							'none' == defaults['header_style'] &&
+							( jQuery( '#masthead .main-header-bar' ).hasClass('ast-sticky-active') ||
+								jQuery( '#masthead .ast-stick-primary-below-wrapper' ).hasClass('ast-sticky-active') )
 							){
 
 							// Only If none style is selected
@@ -715,9 +893,9 @@
 								});
 							}
 					    	// add min height to wrapper class of primary header and below header
-					    	if (  '1' == main_shrink && 
+					    	if (  '1' == main_shrink &&
 					    		( '1' == stick_main || 'on' == stick_main ) &&
-					    		( '1' == stick_below || 'on' == stick_below ) 
+					    		( '1' == stick_below || 'on' == stick_below )
 					    	) {
 								jQuery( '#masthead .ast-stick-primary-below-wrapper' ).css({
 									'max-height'      : ( windowHeight - headerSectionHeight ) +'px',
@@ -737,9 +915,9 @@
 						jQuery( 'html' ).css({
 							'overflow'      : '',
 						});
-						if (  '1' == main_shrink && 
+						if (  '1' == main_shrink &&
 					    		( '1' == stick_main || 'on' == stick_main ) &&
-					    		( '1' == stick_below || 'on' == stick_below ) 
+					    		( '1' == stick_below || 'on' == stick_below )
 					    	) {
 								jQuery( '#masthead .ast-stick-primary-below-wrapper' ).css({
 									'max-height'      : '',
@@ -789,5 +967,6 @@
 
 	    });
 	}
+
 
 }(jQuery, window));

@@ -100,8 +100,7 @@ if ( ! class_exists( 'Astra_Ext_Header_Sections_Loader' ) ) {
 			$defaults['below-header-submenu-bg-hover-color']  = '';
 			$defaults['below-header-submenu-active-color']    = '';
 			$defaults['below-header-submenu-active-bg-color'] = '';
-
-			$defaults['below-header-menu-bg-obj-responsive'] = array(
+			$defaults['below-header-menu-bg-obj-responsive']  = array(
 				'desktop' => array(
 					'background-color'      => '',
 					'background-image'      => '',
@@ -133,7 +132,6 @@ if ( ! class_exists( 'Astra_Ext_Header_Sections_Loader' ) ) {
 					'background-media'      => '',
 				),
 			);
-
 			// Responsive Below Header Background Image & Colors.
 			$defaults['below-header-text-color-responsive'] = array(
 				'desktop' => '#ffffff',

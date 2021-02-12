@@ -286,24 +286,7 @@ input.wpsp-datetime-local-field
 	border-color: #7e8993 !important;
 }
 
-
-.wpsp-specific-field-connect {
-	position: absolute;
-	color: #999;
-	right: 0px;
-	top: 0px;
-	font-size: 18px;
-	line-height: 15px;
-	width: 15px;
-	height: 15px;
-	display: inline-block;
-	cursor: pointer;
-	top: 52%;
-	transform: translateY(-50%);
-	margin-right: 1.5%;
-}
-
-.wpsp-field-close, .wpsp-custom-field-connect {
+.wpsp-field-close, .wpsp-custom-field-connect, .wpsp-specific-field-connect {
 	align-items: center;
     color: #999;
     cursor: pointer;
@@ -318,6 +301,9 @@ input.wpsp-datetime-local-field
 
 .wpsp-custom-field-connect {
 	top: 6.5px;
+}
+.wpsp-specific-field-connect {
+	top: 5.5px;
 }
 
 .wpsp-parent-field {
@@ -343,6 +329,10 @@ input.wpsp-datetime-local-field
     width:27%;
     padding: 10px 12px;
     margin-bottom: unset;
+}
+
+.aiosrs-pro-custom-field.aiosrs-pro-custom-field-repeater .aiosrs-pro-repeater-table tr.bsf-aiosrs-schema-row.bsf-aiosrs-schema-row-text-type:first-child td{
+    padding-top:30px;
 }
 
 .aiosrs-pro-custom-field.aiosrs-pro-custom-field-repeater table.aiosrs-pro-repeater-table {
@@ -403,18 +393,7 @@ select[disabled] {
 #aiosrs-pro-custom-fields .bsf-repeater-close {
 	display: inline-block;
 }
-.aiosrs-pro-repeater-table-wrap .bsf-repeater-target-close {
-	position: absolute;
-	top: 0;
-	right: 0;
-	padding: 2px;
-	border: 1px solid #f1f1f1;
-}
-.bsf-aiosrs-schema-type-wrap .aiosrs-pro-repeater-table-wrap .bsf-repeater-target-close{
-	opacity: .3;
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
-	pointer-events: none;
-}
+
 .wpsp-local-fields .aiosrs-pro-custom-field input {
 	min-height: 33px;
 	padding-right: 18%;

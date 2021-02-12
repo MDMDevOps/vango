@@ -1,3 +1,16 @@
+v2.3.0
+# New: Dynamic repeater fields on the post or page.
+# Improvement: Added optimised Logo image size in the Organization schema.
+# Improvement: Added Validation on published date and modified date in the Article schema.
+# Fix: FAQ Schema - Fixed child block not inheriting question tag from the parent block when adding a new question.
+# Fix: Bulk schema type select issue in the schema dashboard.
+# Fix: Fixed schema markup error issue in the about page and contact page schema.
+# Fix: Fixed Event attendance mode option select issue on the event schema.
+# Fix: FAQ console error when accessing child by id in the FAQ block schema.
+# Fix: Select other custom field option issue on the post or page. 
+# Fix: Fixed online location markup issue inside Course schema.
+# Fix: Fixed test link is not shown on the admin bar.
+
 v2.2.3
 # Improvement:PHP Deprecated: Required parameters follows optional parameters in get meta markup function - Compatibility with PHP v8.0
 # Improvement: Compatible with WordPress v5.6

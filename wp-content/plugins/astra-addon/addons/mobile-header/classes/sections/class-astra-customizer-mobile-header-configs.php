@@ -69,10 +69,17 @@ if ( ! class_exists( 'Astra_Customizer_Mobile_Header_Configs' ) ) {
 					'section'     => 'section-primary-menu',
 					'default'     => astra_get_option( 'mobile-menu-style' ),
 					'title'       => __( 'Menu Style', 'astra-addon' ),
-					'required'    => array( ASTRA_THEME_SETTINGS . '[disable-primary-nav]', '!=', '1' ),
 					'priority'    => 40,
 					'choices'     => $menu_style_choices,
 					'description' => $menu_style_description,
+					'context'     => array(
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[disable-primary-nav]',
+							'operator' => '!=',
+							'value'    => '1',
+						),
+					),
 				),
 
 				/**
@@ -85,7 +92,16 @@ if ( ! class_exists( 'Astra_Customizer_Mobile_Header_Configs' ) ) {
 					'default'  => astra_get_option( 'flyout-mobile-menu-alignment' ),
 					'type'     => 'control',
 					'control'  => 'select',
-					'required' => array( ASTRA_THEME_SETTINGS . '[mobile-menu-style]', '==', 'flyout' ),
+
+					'context'  => array(
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[mobile-menu-style]',
+							'operator' => '==',
+							'value'    => 'flyout',
+						),
+					),
+
 					'priority' => 41,
 					'choices'  => array(
 						'left'  => __( 'Left', 'astra-addon' ),

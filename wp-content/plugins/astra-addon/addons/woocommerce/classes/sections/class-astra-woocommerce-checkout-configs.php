@@ -39,6 +39,52 @@ if ( ! class_exists( 'Astra_Woocommerce_Checkout_Configs' ) ) {
 			$_configs = array(
 
 				/**
+				 * Option: Checkout Content Width
+				 */
+				array(
+					'name'      => ASTRA_THEME_SETTINGS . '[checkout-content-width]',
+					'default'   => astra_get_option( 'checkout-content-width' ),
+					'type'      => 'control',
+					'control'   => 'select',
+					'priority'  => 5,
+					'section'   => 'woocommerce_checkout',
+					'transport' => 'postMessage',
+					'title'     => __( 'Checkout Form Width', 'astra-addon' ),
+					'choices'   => array(
+						'default' => __( 'Default', 'astra-addon' ),
+						'custom'  => __( 'Custom', 'astra-addon' ),
+					),
+				),
+
+				/**
+				 * Option: Enter Width
+				 */
+				array(
+					'name'        => ASTRA_THEME_SETTINGS . '[checkout-content-max-width]',
+					'default'     => 1200,
+					'type'        => 'control',
+					'transport'   => 'postMessage',
+					'control'     => 'ast-slider',
+					'context'     => array(
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[checkout-content-width]',
+							'operator' => '==',
+							'value'    => 'custom',
+						),
+					),
+					'section'     => 'woocommerce_checkout',
+					'title'       => __( 'Custom Width', 'astra-addon' ),
+					'suffix'      => '',
+					'priority'    => 5,
+					'input_attrs' => array(
+						'min'  => 768,
+						'step' => 1,
+						'max'  => 1920,
+					),
+				),
+
+				/**
 				 * Option: Two Step Checkout
 				 */
 				array(
@@ -111,43 +157,6 @@ if ( ! class_exists( 'Astra_Woocommerce_Checkout_Configs' ) ) {
 					'control'     => 'checkbox',
 				),
 
-				/**
-				 * Option: Checkout Content Width
-				 */
-				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[checkout-content-width]',
-					'default'  => astra_get_option( 'checkout-content-width' ),
-					'type'     => 'control',
-					'control'  => 'select',
-					'priority' => 5,
-					'section'  => 'woocommerce_checkout',
-					'title'    => __( 'Checkout Form Width', 'astra-addon' ),
-					'choices'  => array(
-						'default' => __( 'Default', 'astra-addon' ),
-						'custom'  => __( 'Custom', 'astra-addon' ),
-					),
-				),
-
-				/**
-				 * Option: Enter Width
-				 */
-				array(
-					'name'        => ASTRA_THEME_SETTINGS . '[checkout-content-max-width]',
-					'default'     => 1200,
-					'type'        => 'control',
-					'transport'   => 'postMessage',
-					'control'     => 'ast-slider',
-					'required'    => array( ASTRA_THEME_SETTINGS . '[checkout-content-width]', '==', 'custom' ),
-					'section'     => 'woocommerce_checkout',
-					'title'       => __( 'Custom Width', 'astra-addon' ),
-					'suffix'      => '',
-					'priority'    => 5,
-					'input_attrs' => array(
-						'min'  => 768,
-						'step' => 1,
-						'max'  => 1920,
-					),
-				),
 			);
 
 			$configurations = array_merge( $configurations, $_configs );

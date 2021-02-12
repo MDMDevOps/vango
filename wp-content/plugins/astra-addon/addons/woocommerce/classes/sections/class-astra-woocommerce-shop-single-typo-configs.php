@@ -49,7 +49,14 @@ if ( ! class_exists( 'Astra_Woocommerce_Shop_Single_Typo_Configs' ) ) {
 					'title'    => __( 'Typography', 'astra-addon' ),
 					'settings' => array(),
 					'priority' => 82,
-					'required' => array( ASTRA_THEME_SETTINGS . '[single-product-structure]', 'contains', 'title' ),
+					'context'  => array(
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[single-product-structure]',
+							'operator' => 'contains',
+							'value'    => 'title',
+						),
+					),
 				),
 
 				/**
@@ -63,7 +70,14 @@ if ( ! class_exists( 'Astra_Woocommerce_Shop_Single_Typo_Configs' ) ) {
 					'title'     => __( 'Title', 'astra-addon' ),
 					'section'   => 'section-woo-shop-single',
 					'transport' => 'postMessage',
-					'required'  => array( ASTRA_THEME_SETTINGS . '[single-product-structure]', 'contains', 'title' ),
+					'context'   => array(
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[single-product-structure]',
+							'operator' => 'contains',
+							'value'    => 'title',
+						),
+					),
+
 					'priority'  => 82,
 				),
 
@@ -177,7 +191,13 @@ if ( ! class_exists( 'Astra_Woocommerce_Shop_Single_Typo_Configs' ) ) {
 					'title'     => __( 'Price', 'astra-addon' ),
 					'section'   => 'section-woo-shop-single',
 					'transport' => 'postMessage',
-					'required'  => array( ASTRA_THEME_SETTINGS . '[single-product-structure]', 'contains', 'title' ),
+					'context'   => array(
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[single-product-structure]',
+							'operator' => 'contains',
+							'value'    => 'title',
+						),
+					),
 					'priority'  => 82,
 				),
 
@@ -268,7 +288,13 @@ if ( ! class_exists( 'Astra_Woocommerce_Shop_Single_Typo_Configs' ) ) {
 					'title'     => __( 'Breadcrumb', 'astra-addon' ),
 					'section'   => 'section-woo-shop-single',
 					'transport' => 'postMessage',
-					'required'  => array( ASTRA_THEME_SETTINGS . '[single-product-breadcrumb-disable]', '!=', 1 ),
+					'context'   => array(
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[single-product-breadcrumb-disable]',
+							'operator' => '!=',
+							'value'    => 1,
+						),
+					),
 					'priority'  => 82,
 				),
 

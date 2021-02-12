@@ -126,6 +126,13 @@ if ( ! class_exists( 'ASTRA_Ext_LearnDash_Markup' ) ) {
 				$user_id   = get_current_user_id();
 
 				if ( astra_get_option( 'learndash-distraction-free-learning' ) && sfwd_lms_has_access( $course_id, $user_id ) ) {
+
+					// HFB Support for distration free checkout.
+					if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+						remove_action( 'astra_header', array( Astra_Builder_Header::get_instance(), 'prepare_header_builder_markup' ) );
+						remove_action( 'astra_footer', array( Astra_Builder_Footer::get_instance(), 'footer_markup' ), 10 );
+					}
+
 					remove_action( 'astra_header', 'astra_header_markup' );
 					remove_action( 'astra_footer', 'astra_footer_markup' );
 

@@ -48,7 +48,15 @@ if ( ! class_exists( 'Astra_Footer_Typo_Configs' ) ) {
 					'section'  => 'section-footer-small',
 					'title'    => __( 'Typography', 'astra-addon' ),
 					'priority' => 47,
-					'required' => array( ASTRA_THEME_SETTINGS . '[footer-sml-layout]', '!=', 'disabled' ),
+					'context'  => array(
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[footer-sml-layout]',
+							'operator' => '!=',
+							'value'    => 'disabled',
+						),
+					),
+
 					'settings' => array(),
 				),
 
@@ -64,7 +72,13 @@ if ( ! class_exists( 'Astra_Footer_Typo_Configs' ) ) {
 					'section'   => 'section-footer-small',
 					'transport' => 'postMessage',
 					'priority'  => 47,
-					'required'  => array( ASTRA_THEME_SETTINGS . '[footer-sml-layout]', '!=', 'disabled' ),
+					'context'   => array(
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[footer-sml-layout]',
+							'operator' => '!=',
+							'value'    => 'disabled',
+						),
+					),
 				),
 
 				/**

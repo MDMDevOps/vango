@@ -70,12 +70,19 @@ if ( ! class_exists( 'Astra_Site_Layout_Configuration' ) ) {
 					'priority'          => 15,
 					'title'             => __( 'Width', 'astra-addon' ),
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_number_n_blank' ),
-					'required'          => array( ASTRA_THEME_SETTINGS . '[site-layout]', '==', 'ast-padded-layout' ),
 					'suffix'            => '',
 					'input_attrs'       => array(
 						'min'  => 768,
 						'step' => 1,
 						'max'  => 1920,
+					),
+					'context'           => array(
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[site-layout]',
+							'operator' => '==',
+							'value'    => 'ast-padded-layout',
+						),
 					),
 				),
 
@@ -92,7 +99,14 @@ if ( ! class_exists( 'Astra_Site_Layout_Configuration' ) ) {
 					'priority'    => 25,
 					'title'       => __( 'Max Width', 'astra-addon' ),
 					'suffix'      => '',
-					'required'    => array( ASTRA_THEME_SETTINGS . '[site-layout]', '==', 'ast-box-layout' ),
+					'context'     => array(
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[site-layout]',
+							'operator' => '==',
+							'value'    => 'ast-box-layout',
+						),
+					),
 					'input_attrs' => array(
 						'min'  => 768,
 						'step' => 1,
@@ -112,7 +126,14 @@ if ( ! class_exists( 'Astra_Site_Layout_Configuration' ) ) {
 					'section'        => 'section-container-layout',
 					'priority'       => 20,
 					'title'          => __( 'Space Outside Body', 'astra-addon' ),
-					'required'       => array( ASTRA_THEME_SETTINGS . '[site-layout]', '==', 'ast-padded-layout' ),
+					'context'        => array(
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[site-layout]',
+							'operator' => '==',
+							'value'    => 'ast-padded-layout',
+						),
+					),
 					'linked_choices' => true,
 					'unit_choices'   => array( 'px', 'em', '%' ),
 					'choices'        => array(
@@ -135,7 +156,16 @@ if ( ! class_exists( 'Astra_Site_Layout_Configuration' ) ) {
 					'section'     => 'section-container-layout',
 					'priority'    => 30,
 					'title'       => __( 'Top & Bottom Margin', 'astra-addon' ),
-					'required'    => array( ASTRA_THEME_SETTINGS . '[site-layout]', '==', 'ast-box-layout' ),
+
+					'context'     => array(
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[site-layout]',
+							'operator' => '==',
+							'value'    => 'ast-box-layout',
+						),
+					),
+
 					'suffix'      => '',
 					'input_attrs' => array(
 						'min'  => 0,
@@ -160,7 +190,15 @@ if ( ! class_exists( 'Astra_Site_Layout_Configuration' ) ) {
 					'section'     => 'section-container-layout',
 					'priority'    => 35,
 					'title'       => __( 'Left & Right Padding', 'astra-addon' ),
-					'required'    => array( ASTRA_THEME_SETTINGS . '[site-layout]', '==', 'ast-fluid-width-layout' ),
+					'context'     => array(
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[site-layout]',
+							'operator' => '==',
+							'value'    => 'ast-fluid-width-layout',
+						),
+					),
+
 					'suffix'      => '',
 					'input_attrs' => array(
 						'min'  => 1,

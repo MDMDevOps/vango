@@ -46,16 +46,30 @@ if ( ! class_exists( 'Astra_Existing_Nav_Menu_Below_Header_Colors' ) ) {
 					'default'   => astra_get_option( 'below-header-megamenu-group' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
-					'title'     => __( 'Mega Menu Colum Heading', 'astra-addon' ),
+					'title'     => __( 'Mega Menu Column Heading', 'astra-addon' ),
 					'section'   => 'section-below-header',
 					'transport' => 'postMessage',
 					'priority'  => 136,
-					'required'  => array(
-						'conditions' => array(
-							array( ASTRA_THEME_SETTINGS . '[below-header-section-1]', '==', 'menu' ),
-							array( ASTRA_THEME_SETTINGS . '[below-header-section-2]', '==', 'menu' ),
+					'context'   => array(
+						'relation' => 'AND',
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[below-header-layout]',
+							'operator' => '!=',
+							'value'    => 'disabled',
 						),
-						'operator'   => 'OR',
+						array(
+							'relation' => 'OR',
+							array(
+								'setting'  => ASTRA_THEME_SETTINGS . '[below-header-section-1]',
+								'operator' => '==',
+								'value'    => 'menu',
+							),
+							array(
+								'setting'  => ASTRA_THEME_SETTINGS . '[below-header-section-2]',
+								'operator' => '==',
+								'value'    => 'menu',
+							),
+						),
 					),
 				),
 
@@ -99,12 +113,18 @@ if ( ! class_exists( 'Astra_Existing_Nav_Menu_Below_Header_Colors' ) ) {
 					'name'      => 'sticky-below-header-megamenu-heading-color',
 					'default'   => astra_get_option( 'sticky-below-header-megamenu-heading-color' ),
 					'title'     => __( 'Color', 'astra-addon' ),
-					'required'  => array(
-						'conditions' => array(
-							array( ASTRA_THEME_SETTINGS . '[below-header-section-1]', '==', 'menu' ),
-							array( ASTRA_THEME_SETTINGS . '[below-header-section-2]', '==', 'menu' ),
+					'context'   => array(
+						'relation' => 'OR',
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[below-header-section-1]',
+							'operator' => '==',
+							'value'    => 'menu',
 						),
-						'operator'   => 'OR',
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[below-header-section-2]',
+							'operator' => '==',
+							'value'    => 'menu',
+						),
 					),
 				),
 
@@ -120,12 +140,19 @@ if ( ! class_exists( 'Astra_Existing_Nav_Menu_Below_Header_Colors' ) ) {
 					'name'      => 'sticky-below-header-megamenu-heading-h-color',
 					'default'   => astra_get_option( 'sticky-below-header-megamenu-heading-h-color' ),
 					'title'     => __( 'Color', 'astra-addon' ),
-					'required'  => array(
-						'conditions' => array(
-							array( ASTRA_THEME_SETTINGS . '[below-header-section-1]', '==', 'menu' ),
-							array( ASTRA_THEME_SETTINGS . '[below-header-section-2]', '==', 'menu' ),
+
+					'context'   => array(
+						'relation' => 'OR',
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[below-header-section-1]',
+							'operator' => '==',
+							'value'    => 'menu',
 						),
-						'operator'   => 'OR',
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[below-header-section-2]',
+							'operator' => '==',
+							'value'    => 'menu',
+						),
 					),
 				),
 			);
@@ -138,4 +165,3 @@ if ( ! class_exists( 'Astra_Existing_Nav_Menu_Below_Header_Colors' ) ) {
 }
 
 new Astra_Existing_Nav_Menu_Below_Header_Colors();
-

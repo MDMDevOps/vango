@@ -46,10 +46,16 @@ if ( ! class_exists( 'Astra_Nav_Menu_Below_Header_Layout' ) ) {
 					'section'  => 'section-below-header',
 					'type'     => 'control',
 					'control'  => 'ast-heading',
-					'required' => array( ASTRA_THEME_SETTINGS . '[below-header-layout]', '!=', 'disabled' ),
 					'title'    => __( 'Spacing', 'astra-addon' ),
 					'priority' => 150,
 					'settings' => array(),
+					'context'  => array(
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[below-header-layout]',
+							'operator' => '!=',
+							'value'    => 'disabled',
+						),
+					),
 				),
 
 				// Option - Megamenu Heading Space.
@@ -70,12 +76,27 @@ if ( ! class_exists( 'Astra_Nav_Menu_Below_Header_Layout' ) ) {
 						'left'   => __( 'Left', 'astra-addon' ),
 					),
 					'section'        => 'section-below-header',
-					'required'       => array(
-						'conditions' => array(
-							array( ASTRA_THEME_SETTINGS . '[below-header-section-1]', '==', 'menu' ),
-							array( ASTRA_THEME_SETTINGS . '[below-header-section-2]', '==', 'menu' ),
+					'context'        => array(
+						'relation' => 'AND',
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[below-header-layout]',
+							'operator' => '!=',
+							'value'    => 'disabled',
 						),
-						'operator'   => 'OR',
+						array(
+							'relation' => 'OR',
+							array(
+								'setting'  => ASTRA_THEME_SETTINGS . '[below-header-section-1]',
+								'operator' => '==',
+								'value'    => 'menu',
+							),
+							array(
+								'setting'  => ASTRA_THEME_SETTINGS . '[below-header-section-2]',
+								'operator' => '==',
+								'value'    => 'menu',
+							),
+						),
+
 					),
 				),
 			);

@@ -49,7 +49,14 @@ if ( ! class_exists( 'Astra_Nav_Menu_Above_Header_Layout' ) ) {
 					'title'    => __( 'Spacing', 'astra-addon' ),
 					'priority' => 150,
 					'settings' => array(),
-					'required' => array( ASTRA_THEME_SETTINGS . '[above-header-layout]', '!=', 'disabled' ),
+					'context'  => array(
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-layout]',
+							'operator' => '!=',
+							'value'    => 'disabled',
+						),
+					),
 				),
 
 				// Option - Megamenu Heading Space.
@@ -70,12 +77,18 @@ if ( ! class_exists( 'Astra_Nav_Menu_Above_Header_Layout' ) ) {
 						'left'   => __( 'Left', 'astra-addon' ),
 					),
 					'section'        => 'section-above-header',
-					'required'       => array(
-						'conditions' => array(
-							array( ASTRA_THEME_SETTINGS . '[above-header-section-1]', '==', 'menu' ),
-							array( ASTRA_THEME_SETTINGS . '[above-header-section-2]', '==', 'menu' ),
+					'context'        => array(
+						'relation' => 'OR',
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-1]',
+							'operator' => '==',
+							'value'    => 'menu',
 						),
-						'operator'   => 'OR',
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-2]',
+							'operator' => '==',
+							'value'    => 'menu',
+						),
 					),
 				),
 			);

@@ -218,7 +218,6 @@
 		} );
 	} );
 
-
 	/**
 	 * Button Border Radius
 	 */
@@ -231,6 +230,20 @@
 		} );
 	} );
 	
+	/**
+	 * Cart icon color
+	 */
+	wp.customize( 'astra-settings[header-woo-cart-icon-color]', function( setting ) {
+		setting.bind( function( color ) {
+
+
+			var dynamicStyle = '.ast-menu-cart-fill .ast-addon-cart-wrap .count, .ast-menu-cart-fill .ast-addon-cart-wrap { background-color: ' + color + '; } ';
+			dynamicStyle += '.ast-site-header-cart .ast-addon-cart-wrap .count, .ast-site-header-cart .ast-addon-cart-wrap .count:after { border-color: ' + color + '; } ';
+			astra_add_dynamic_css( 'header-woo-cart-icon-color', dynamicStyle );
+			wp.customize.preview.send( 'refresh' );
+		} );
+	} );
+
 	// Single Product Colors.
 	astra_css( 'astra-settings[single-product-title-color]', 'color', '.single-product div.product .entry-title' );
 	astra_css( 'astra-settings[single-product-price-color]', 'color', '.single-product div.product p.price, .single-product div.product span.price' );

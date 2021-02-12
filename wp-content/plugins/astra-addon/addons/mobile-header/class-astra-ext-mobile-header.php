@@ -39,6 +39,10 @@ if ( ! class_exists( 'Astra_Ext_Mobile_Header' ) ) {
 		 */
 		public function __construct() {
 
+			if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+				return;
+			}
+
 			require_once ASTRA_EXT_MOBILE_HEADER_DIR . 'classes/class-astra-ext-mobile-header-loader.php';
 			require_once ASTRA_EXT_MOBILE_HEADER_DIR . 'classes/class-astra-ext-mobile-header-markup.php';
 

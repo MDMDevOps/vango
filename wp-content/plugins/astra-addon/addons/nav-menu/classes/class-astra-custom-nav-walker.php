@@ -86,8 +86,40 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 						'background-position' => $this->megamenu_bg_position,
 					);
 
-					$style[ '.ast-desktop .astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' .astra-full-megamenu-wrapper, .ast-desktop .astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' .astra-mega-menu-width-menu-container, .ast-desktop .astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' .astra-mega-menu-width-content' ] = astra_get_megamenu_background_obj( $bg_object );
+					$style[ '.ast-desktop .astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' .astra-full-megamenu-wrapper, .ast-desktop .astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' .astra-mega-menu-width-menu-container, .ast-desktop .astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' .astra-mega-menu-width-content, .ast-desktop .astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' .astra-mega-menu-width-custom' ] = astra_get_megamenu_background_obj( $bg_object );
 				}
+
+				if ( 'custom' === $this->megamenu_width ) {
+
+					$megamenu_custom_width = $this->megamenu_custom_width;
+
+					$megamenu_custom_width = ( isset( $megamenu_custom_width ) && ! empty( $megamenu_custom_width ) ) ? $megamenu_custom_width : 1200;
+
+					$style[ '.ast-desktop .astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' .astra-mega-menu-width-custom:before' ] = array(
+						'content'    => '"' . $megamenu_custom_width . '"',
+						'opacity'    => 0,
+						'visibility' => 'hidden',
+					);
+				}
+
+				// Advanced spacing options.
+				$margin_object = array(
+					'margin-top'    => $this->megamenu_margin_top,
+					'margin-right'  => $this->megamenu_margin_right,
+					'margin-bottom' => $this->megamenu_margin_bottom,
+					'margin-left'   => $this->megamenu_margin_left,
+				);
+
+				$style[ '.ast-desktop .astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' div.astra-full-megamenu-wrapper, .ast-desktop .astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' ul.astra-mega-menu-width-menu-container, .ast-desktop .astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' ul.astra-mega-menu-width-content, .ast-desktop .astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' ul.astra-mega-menu-width-custom' ] = astra_get_megamenu_spacing_css( $margin_object );
+
+				$padding_object = array(
+					'padding-top'    => $this->megamenu_padding_top,
+					'padding-right'  => $this->megamenu_padding_right,
+					'padding-bottom' => $this->megamenu_padding_bottom,
+					'padding-left'   => $this->megamenu_padding_left,
+				);
+
+				$style[ '.ast-desktop .ast-mega-menu-enabled .astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' .astra-full-megamenu-wrapper, .ast-desktop .ast-mega-menu-enabled .astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' .astra-mega-menu-width-menu-container, .ast-desktop .ast-mega-menu-enabled .astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' .astra-mega-menu-width-content, .ast-desktop .ast-mega-menu-enabled .astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' .astra-mega-menu-width-custom' ] = astra_get_megamenu_spacing_css( $padding_object );
 
 				Astra_Ext_Nav_Menu_Loader::add_css( astra_parse_css( $style ) );
 
@@ -132,7 +164,8 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 			if ( 0 === $depth ) {
 				$this->megamenu = get_post_meta( $item->ID, '_menu_item_megamenu', true );
 
-				$this->megamenu_width = get_post_meta( $item->ID, '_menu_item_megamenu_width', true );
+				$this->megamenu_width        = get_post_meta( $item->ID, '_menu_item_megamenu_width', true );
+				$this->megamenu_custom_width = get_post_meta( $item->ID, '_menu_item_megamenu_custom_width', true );
 
 				$this->megamenu_bg_image = get_post_meta( $item->ID, '_menu_item_megamenu_background_image', true );
 
@@ -151,6 +184,15 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 
 				$this->menu_megamenu_item_id = $item->ID;
 
+				$this->megamenu_margin_top    = get_post_meta( $item->ID, '_menu_item_megamenu_margin_top', true );
+				$this->megamenu_margin_right  = get_post_meta( $item->ID, '_menu_item_megamenu_margin_right', true );
+				$this->megamenu_margin_bottom = get_post_meta( $item->ID, '_menu_item_megamenu_margin_bottom', true );
+				$this->megamenu_margin_left   = get_post_meta( $item->ID, '_menu_item_megamenu_margin_left', true );
+
+				$this->megamenu_padding_top    = get_post_meta( $item->ID, '_menu_item_megamenu_padding_top', true );
+				$this->megamenu_padding_right  = get_post_meta( $item->ID, '_menu_item_megamenu_padding_right', true );
+				$this->megamenu_padding_bottom = get_post_meta( $item->ID, '_menu_item_megamenu_padding_bottom', true );
+				$this->megamenu_padding_left   = get_post_meta( $item->ID, '_menu_item_megamenu_padding_left', true );
 			}
 
 			$this->menu_megamenu_individual_item_id = $item->ID;
@@ -240,7 +282,7 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 			 *
 			 * @since 2.6.2
 			 */
-			remove_filter( 'nav_menu_link_attributes', 'astra_menu_anchor_class_for_nav_menus' );
+			remove_filter( 'nav_menu_link_attributes', 'astra_menu_anchor_class_for_nav_menus', 11 );
 
 			/**
 			 * Filters the HTML attributes applied to a menu item's anchor element.

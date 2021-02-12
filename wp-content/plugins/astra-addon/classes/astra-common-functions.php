@@ -431,3 +431,28 @@ function astra_get_megamenu_background_obj( $bg_obj ) {
 
 	return $gen_bg_css;
 }
+
+/**
+ * Calculate Astra Mega-menu spacing.
+ *
+ * @param  array $spacing_obj - Spacing dimensions with their values.
+ *
+ * @return array parsed CSS.
+ *
+ * @since 3.0.0
+ */
+function astra_get_megamenu_spacing_css( $spacing_obj ) {
+
+	$gen_spacing_css = array();
+
+	foreach ( $spacing_obj as $property => $value ) {
+
+		if ( '' == $value && 0 !== $value ) {
+			continue;
+		}
+
+		$gen_spacing_css[ $property ] = esc_attr( $spacing_obj[ $property ] ) . 'px';
+	}
+
+	return $gen_spacing_css;
+}

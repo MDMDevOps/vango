@@ -912,6 +912,10 @@ li.woocommerce-custom-menu-item .ast-site-header-cart i.astra-icon:after {
   padding-right: 2px;
 }
 
+.astra-hfb-header .ast-addon-cart-wrap {
+  padding: 0.2em .6em;
+}
+
 .ast-icon-shopping-cart:before {
   content: "\f07a";
 }

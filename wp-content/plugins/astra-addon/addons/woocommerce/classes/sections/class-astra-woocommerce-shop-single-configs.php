@@ -189,7 +189,14 @@ if ( ! class_exists( 'Astra_Woocommerce_Shop_Single_Configs' ) ) {
 					'type'     => 'control',
 					'section'  => 'section-woo-shop-single',
 					'title'    => __( 'Layout', 'astra-addon' ),
-					'required' => array( ASTRA_THEME_SETTINGS . '[single-product-tabs-display]', '==', true ),
+					'context'  => array(
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[single-product-tabs-display]',
+							'operator' => '==',
+							'value'    => true,
+						),
+					),
 					'control'  => 'select',
 					'priority' => 35,
 					'choices'  => array(
@@ -251,10 +258,17 @@ if ( ! class_exists( 'Astra_Woocommerce_Shop_Single_Configs' ) ) {
 					'transport'   => 'postMessage',
 					'control'     => 'ast-responsive-slider',
 					'section'     => 'section-woo-shop-single',
-					'required'    => array(
-						'conditions' => array(
-							array( ASTRA_THEME_SETTINGS . '[single-product-related-display]', '==', true ),
-							array( ASTRA_THEME_SETTINGS . '[single-product-up-sells-display]', '==', true ),
+					'context'     => array(
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[single-product-related-display]',
+							'operator' => '==',
+							'value'    => true,
+						),
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[single-product-up-sells-display]',
+							'operator' => '==',
+							'value'    => true,
 						),
 					),
 					'priority'    => 70,
@@ -275,10 +289,17 @@ if ( ! class_exists( 'Astra_Woocommerce_Shop_Single_Configs' ) ) {
 					'type'     => 'control',
 					'section'  => 'section-woo-shop-single',
 					'title'    => __( 'No. of Related Product', 'astra-addon' ),
-					'required' => array(
-						'conditions' => array(
-							array( ASTRA_THEME_SETTINGS . '[single-product-related-display]', '==', true ),
-							array( ASTRA_THEME_SETTINGS . '[single-product-up-sells-display]', '==', true ),
+					'context'  => array(
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[single-product-related-display]',
+							'operator' => '==',
+							'value'    => true,
+						),
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[single-product-up-sells-display]',
+							'operator' => '==',
+							'value'    => true,
 						),
 					),
 					'control'  => 'number',

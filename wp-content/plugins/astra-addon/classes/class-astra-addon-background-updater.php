@@ -46,6 +46,9 @@ if ( ! class_exists( 'Astra_Addon_Background_Updater' ) ) {
 			'2.6.0' => array(
 				'astra_addon_header_css_optimizations',
 			),
+			'3.0.0' => array(
+				'astra_addon_clear_assets_cache',
+			),
 		);
 
 		/**

@@ -504,8 +504,16 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Template' ) ) {
 				$field_type = self::get_field_type( $type, $key );
 
 				if ( 'repeater' === $field_type && is_array( $value ) ) {
-					$values = array();
-					foreach ( $value as $index => $repeater_values ) {
+					$values                = array();
+					$repeater_field_values = isset( $local_meta[ $type . '-' . $schema_id . '-' . $key ][0] ) ? $local_meta[ $type . '-' . $schema_id . '-' . $key ][0] : '';
+
+					$repeater_field_values = maybe_unserialize( $repeater_field_values );
+					if ( ! is_array( $repeater_field_values ) || empty( $repeater_field_values ) ) {
+
+						$repeater_field_values = $value;
+					}
+
+					foreach ( $repeater_field_values as $index => $repeater_values ) {
 						foreach ( $repeater_values as $repeater_key => $repeater_value ) {
 							$field_type = self::get_field_type( $type, $repeater_key, $key );
 

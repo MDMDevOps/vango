@@ -36,27 +36,33 @@ if ( ! class_exists( 'Astra_Nav_Menu_Below_Header_Colors' ) ) {
 		 */
 		public function register_configuration( $configurations, $wp_customize ) {
 
-			$_configs = array(
+			$_configs = array();
 
-				/**
-				 * Option: Sticky Header Below Mega Menu Column Color Group
-				 */
-				array(
-					'name'            => ASTRA_THEME_SETTINGS . '[sticky-header-below-mega-menus-colors]',
-					'default'         => astra_get_option( 'sticky-header-below-mega-menus-colors' ),
-					'type'            => 'control',
-					'control'         => 'ast-settings-group',
-					'title'           => __( 'Mega Menu Column Heading', 'astra-addon' ),
-					'section'         => 'section-sticky-header',
-					'transport'       => 'postMessage',
-					'priority'        => 130,
-					'active_callback' => 'Astra_Sticky_Header_Configs::is_header_section_active',
-				),
-			);
+			if ( is_callable( 'Astra_Sticky_Header_Configs::is_header_section_active' ) && Astra_Sticky_Header_Configs::is_header_section_active() && ! Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
 
-			$configurations = array_merge( $configurations, $_configs );
+				$_configs = array(
 
-			return $configurations;
+					/**
+					 * Option: Sticky Header Below Mega Menu Column Color Group
+					 */
+					array(
+						'name'      => ASTRA_THEME_SETTINGS . '[sticky-header-below-mega-menus-colors]',
+						'default'   => astra_get_option( 'sticky-header-below-mega-menus-colors' ),
+						'type'      => 'control',
+						'control'   => 'ast-settings-group',
+						'title'     => __( 'Mega Menu Column Heading', 'astra-addon' ),
+						'section'   => 'section-sticky-header',
+						'transport' => 'postMessage',
+						'priority'  => 130,
+						'context'   => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
+							Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+					),
+
+				);
+
+			}
+
+			return array_merge( $configurations, $_configs );
 		}
 	}
 }

@@ -37,21 +37,32 @@ if ( ! class_exists( 'Astra_Sticky_Above_Header_Colors_Bg_Configs' ) ) {
 		public function register_configuration( $configurations, $wp_customize ) {
 
 			$defaults = Astra_Theme_Options::defaults();
-			$_config  = array(
+
+			$header_above_section        = 'section-sticky-header';
+			$header_above_color_priority = 60;
+			$context                     = Astra_Addon_Builder_Helper::$general_tab_config;
+
+			if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+
+				$header_above_section        = 'section-above-header-builder';
+				$header_above_color_priority = 85;
+				$context                     = Astra_Addon_Builder_Helper::$design_tab;
+			}
+
+			$_config = array(
 
 				array(
-					'name'       => 'sticky-above-header-bg-color-responsive',
+					'name'       => ASTRA_THEME_SETTINGS . '[sticky-above-header-bg-color-responsive]',
 					'default'    => $defaults['sticky-above-header-bg-color-responsive'],
-					'type'       => 'sub-control',
-					'priority'   => 6,
-					'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-above-header-colors]',
-					'section'    => 'section-sticky-header',
+					'type'       => 'control',
+					'priority'   => $header_above_color_priority,
+					'section'    => $header_above_section,
 					'transport'  => 'postMessage',
-					'required'   => array( ASTRA_THEME_SETTINGS . '[above-header-layout]', '!=', 'disabled' ),
 					'control'    => 'ast-responsive-color',
 					'title'      => __( 'Background Color', 'astra-addon' ),
 					'responsive' => true,
 					'rgba'       => true,
+					'context'    => $context,
 				),
 
 				/**
@@ -70,12 +81,19 @@ if ( ! class_exists( 'Astra_Sticky_Above_Header_Colors_Bg_Configs' ) ) {
 					'title'      => __( 'Link / Text Color', 'astra-addon' ),
 					'responsive' => true,
 					'rgba'       => true,
-					'required'   => array(
-						'conditions' => array(
-							array( ASTRA_THEME_SETTINGS . '[above-header-section-1]', '==', 'menu' ),
-							array( ASTRA_THEME_SETTINGS . '[above-header-section-2]', '==', 'menu' ),
+					'context'    => array(
+						'relation' => 'OR',
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-1]',
+							'operator' => '==',
+							'value'    => 'menu',
 						),
-						'operator'   => 'OR',
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-2]',
+							'operator' => '==',
+							'value'    => 'menu',
+						),
 					),
 				),
 				/**
@@ -94,12 +112,19 @@ if ( ! class_exists( 'Astra_Sticky_Above_Header_Colors_Bg_Configs' ) ) {
 					'title'      => __( 'Background Color', 'astra-addon' ),
 					'responsive' => true,
 					'rgba'       => true,
-					'required'   => array(
-						'conditions' => array(
-							array( ASTRA_THEME_SETTINGS . '[above-header-section-1]', '==', 'menu' ),
-							array( ASTRA_THEME_SETTINGS . '[above-header-section-2]', '==', 'menu' ),
+					'context'    => array(
+						'relation' => 'OR',
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-1]',
+							'operator' => '==',
+							'value'    => 'menu',
 						),
-						'operator'   => 'OR',
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-2]',
+							'operator' => '==',
+							'value'    => 'menu',
+						),
 					),
 				),
 
@@ -133,12 +158,19 @@ if ( ! class_exists( 'Astra_Sticky_Above_Header_Colors_Bg_Configs' ) ) {
 					'title'      => __( 'Link Color', 'astra-addon' ),
 					'responsive' => true,
 					'rgba'       => true,
-					'required'   => array(
-						'conditions' => array(
-							array( ASTRA_THEME_SETTINGS . '[above-header-section-1]', '==', 'menu' ),
-							array( ASTRA_THEME_SETTINGS . '[above-header-section-2]', '==', 'menu' ),
+					'context'    => array(
+						'relation' => 'OR',
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-1]',
+							'operator' => '==',
+							'value'    => 'menu',
 						),
-						'operator'   => 'OR',
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-2]',
+							'operator' => '==',
+							'value'    => 'menu',
+						),
 					),
 				),
 				/**
@@ -157,12 +189,19 @@ if ( ! class_exists( 'Astra_Sticky_Above_Header_Colors_Bg_Configs' ) ) {
 					'title'      => __( 'Link Background Color', 'astra-addon' ),
 					'responsive' => true,
 					'rgba'       => true,
-					'required'   => array(
-						'conditions' => array(
-							array( ASTRA_THEME_SETTINGS . '[above-header-section-1]', '==', 'menu' ),
-							array( ASTRA_THEME_SETTINGS . '[above-header-section-2]', '==', 'menu' ),
+					'context'    => array(
+						'relation' => 'OR',
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-1]',
+							'operator' => '==',
+							'value'    => 'menu',
 						),
-						'operator'   => 'OR',
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-2]',
+							'operator' => '==',
+							'value'    => 'menu',
+						),
 					),
 				),
 
@@ -182,12 +221,19 @@ if ( ! class_exists( 'Astra_Sticky_Above_Header_Colors_Bg_Configs' ) ) {
 					'title'      => __( 'Link / Text Color', 'astra-addon' ),
 					'responsive' => true,
 					'rgba'       => true,
-					'required'   => array(
-						'conditions' => array(
-							array( ASTRA_THEME_SETTINGS . '[above-header-section-1]', '==', 'menu' ),
-							array( ASTRA_THEME_SETTINGS . '[above-header-section-2]', '==', 'menu' ),
+					'context'    => array(
+						'relation' => 'OR',
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-1]',
+							'operator' => '==',
+							'value'    => 'menu',
 						),
-						'operator'   => 'OR',
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-2]',
+							'operator' => '==',
+							'value'    => 'menu',
+						),
 					),
 				),
 				/**
@@ -206,12 +252,19 @@ if ( ! class_exists( 'Astra_Sticky_Above_Header_Colors_Bg_Configs' ) ) {
 					'title'      => __( 'Background Color', 'astra-addon' ),
 					'responsive' => true,
 					'rgba'       => true,
-					'required'   => array(
-						'conditions' => array(
-							array( ASTRA_THEME_SETTINGS . '[above-header-section-1]', '==', 'menu' ),
-							array( ASTRA_THEME_SETTINGS . '[above-header-section-2]', '==', 'menu' ),
+					'context'    => array(
+						'relation' => 'OR',
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-1]',
+							'operator' => '==',
+							'value'    => 'menu',
 						),
-						'operator'   => 'OR',
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-2]',
+							'operator' => '==',
+							'value'    => 'menu',
+						),
 					),
 				),
 
@@ -245,12 +298,19 @@ if ( ! class_exists( 'Astra_Sticky_Above_Header_Colors_Bg_Configs' ) ) {
 					'title'      => __( 'Link Color', 'astra-addon' ),
 					'responsive' => true,
 					'rgba'       => true,
-					'required'   => array(
-						'conditions' => array(
-							array( ASTRA_THEME_SETTINGS . '[above-header-section-1]', '==', 'menu' ),
-							array( ASTRA_THEME_SETTINGS . '[above-header-section-2]', '==', 'menu' ),
+					'context'    => array(
+						'relation' => 'OR',
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-1]',
+							'operator' => '==',
+							'value'    => 'menu',
 						),
-						'operator'   => 'OR',
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-2]',
+							'operator' => '==',
+							'value'    => 'menu',
+						),
 					),
 				),
 
@@ -270,12 +330,19 @@ if ( ! class_exists( 'Astra_Sticky_Above_Header_Colors_Bg_Configs' ) ) {
 					'title'      => __( 'Link Background Color', 'astra-addon' ),
 					'responsive' => true,
 					'rgba'       => true,
-					'required'   => array(
-						'conditions' => array(
-							array( ASTRA_THEME_SETTINGS . '[above-header-section-1]', '==', 'menu' ),
-							array( ASTRA_THEME_SETTINGS . '[above-header-section-2]', '==', 'menu' ),
+					'context'    => array(
+						'relation' => 'OR',
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-1]',
+							'operator' => '==',
+							'value'    => 'menu',
 						),
-						'operator'   => 'OR',
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-2]',
+							'operator' => '==',
+							'value'    => 'menu',
+						),
 					),
 				),
 
@@ -295,20 +362,19 @@ if ( ! class_exists( 'Astra_Sticky_Above_Header_Colors_Bg_Configs' ) ) {
 					'title'      => __( 'Text Color', 'astra-addon' ),
 					'responsive' => true,
 					'rgba'       => true,
-					'required'   => array(
-						'conditions' => array(
-							array(
-								ASTRA_THEME_SETTINGS . '[above-header-section-1]',
-								'==',
-								array( 'search', 'widget', 'text-html', 'edd' ),
-							),
-							array(
-								ASTRA_THEME_SETTINGS . '[above-header-section-2]',
-								'==',
-								array( 'search', 'widget', 'text-html', 'edd' ),
-							),
+					'context'    => array(
+						'relation' => 'OR',
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-1]',
+							'operator' => '==',
+							'value'    => array( 'search', 'widget', 'text-html', 'edd' ),
 						),
-						'operator'   => 'OR',
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-2]',
+							'operator' => '==',
+							'value'    => array( 'search', 'widget', 'text-html', 'edd' ),
+						),
 					),
 				),
 				/**
@@ -327,20 +393,19 @@ if ( ! class_exists( 'Astra_Sticky_Above_Header_Colors_Bg_Configs' ) ) {
 					'title'      => __( 'Link Color', 'astra-addon' ),
 					'responsive' => true,
 					'rgba'       => true,
-					'required'   => array(
-						'conditions' => array(
-							array(
-								ASTRA_THEME_SETTINGS . '[above-header-section-1]',
-								'==',
-								array( 'search', 'widget', 'text-html', 'edd' ),
-							),
-							array(
-								ASTRA_THEME_SETTINGS . '[above-header-section-2]',
-								'==',
-								array( 'search', 'widget', 'text-html', 'edd' ),
-							),
+					'context'    => array(
+						'relation' => 'OR',
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-1]',
+							'operator' => '==',
+							'value'    => array( 'search', 'widget', 'text-html', 'edd' ),
 						),
-						'operator'   => 'OR',
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-2]',
+							'operator' => '==',
+							'value'    => array( 'search', 'widget', 'text-html', 'edd' ),
+						),
 					),
 				),
 
@@ -360,21 +425,21 @@ if ( ! class_exists( 'Astra_Sticky_Above_Header_Colors_Bg_Configs' ) ) {
 					'title'      => __( 'Link Color', 'astra-addon' ),
 					'responsive' => true,
 					'rgba'       => true,
-					'required'   => array(
-						'conditions' => array(
-							array(
-								ASTRA_THEME_SETTINGS . '[above-header-section-1]',
-								'==',
-								array( 'search', 'widget', 'text-html', 'edd' ),
-							),
-							array(
-								ASTRA_THEME_SETTINGS . '[above-header-section-2]',
-								'==',
-								array( 'search', 'widget', 'text-html', 'edd' ),
-							),
+					'context'    => array(
+						'relation' => 'OR',
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-1]',
+							'operator' => '==',
+							'value'    => array( 'search', 'widget', 'text-html', 'edd' ),
 						),
-						'operator'   => 'OR',
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-2]',
+							'operator' => '==',
+							'value'    => array( 'search', 'widget', 'text-html', 'edd' ),
+						),
 					),
+
 				),
 			);
 
@@ -385,6 +450,3 @@ if ( ! class_exists( 'Astra_Sticky_Above_Header_Colors_Bg_Configs' ) ) {
 }
 
 new Astra_Sticky_Above_Header_Colors_Bg_Configs();
-
-
-

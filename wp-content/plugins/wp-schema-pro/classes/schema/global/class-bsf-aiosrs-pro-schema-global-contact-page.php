@@ -46,7 +46,7 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Global_Contact_Page' ) ) {
 			if ( 'organization' === $settings['site-represent'] || 'Webshop' === $settings['site-represent'] || 'Smallbusiness' === $settings['site-represent'] || 'Otherbusiness' === $settings['site-represent'] ) {
 				$settings['site-represent'] = 'organization';
 			}
-			$schema['publisher']['@type'] = ( isset( $settings['site-name'] ) && ! empty( $settings['site-name'] ) ) ? $settings['site-name'] : 'Organization';
+			$schema['publisher']['@type'] = ( isset( $settings['site-represent'] ) && ! empty( $settings['site-represent'] ) ) ? $settings['site-represent'] : 'Organization';
 			if ( 'organization' === $settings['site-represent'] ) {
 				$schema['publisher']['name'] = ( isset( $settings['site-name'] ) && ! empty( $settings['site-name'] ) ) ? $settings['site-name'] : wp_strip_all_tags( get_bloginfo( 'name' ) );
 			} else {

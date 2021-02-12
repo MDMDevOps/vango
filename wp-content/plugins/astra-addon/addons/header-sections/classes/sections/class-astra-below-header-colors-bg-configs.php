@@ -50,7 +50,13 @@ if ( ! class_exists( 'Astra_Below_Header_Colors_Bg_Configs' ) ) {
 					'type'      => 'sub-control',
 					'control'   => 'ast-responsive-background',
 					'transport' => 'postMessage',
-					'required'  => array( ASTRA_THEME_SETTINGS . '[below-header-layout]', '!=', 'disabled' ),
+					'context'   => array(
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[below-header-layout]',
+							'operator' => '!=',
+							'value'    => 'disabled',
+						),
+					),
 					'default'   => $defaults['below-header-bg-obj-responsive'],
 					'label'     => __( 'Background', 'astra-addon' ),
 				),

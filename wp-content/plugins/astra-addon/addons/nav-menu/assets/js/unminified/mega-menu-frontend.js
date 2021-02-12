@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", display_mega_menu_on_load);
+document.addEventListener("astPartialContentRendered", display_mega_menu_on_load);
 
 /**
  * Remove "hidden" class after the page is fully loaded to fix the visibility issue of MegaMenu width.
@@ -10,22 +11,22 @@ function display_mega_menu_on_load() {
         for (var i = 0; i < menu_content.length; i++) {
             menu_content[i].addEventListener( "mouseenter", function( event ) {
                 var mega_menu_container = event.target.querySelector(".astra-mega-menu-width-content");
-                mega_menu_container.classList.remove("ast-hidden"); 
+                mega_menu_container.classList.remove("ast-hidden");
             });
         }
     }
-    
+
     // For Menu Container width.
     var menu_container = document.querySelectorAll(".menu-container-width-mega");
     if ( menu_container.length > 0 ) {
         for (var i = 0; i < menu_container.length; i++) {
             menu_container[i].addEventListener( "mouseenter", function( event ) {
                 var mega_menu_container = event.target.querySelector(".astra-mega-menu-width-menu-container");
-                mega_menu_container.classList.remove("ast-hidden"); 
+                mega_menu_container.classList.remove("ast-hidden");
             });
         }
     }
-    
+
     // For Full width.
     var menu_full_width = document.querySelectorAll(".full-width-mega");
     if ( menu_full_width.length > 0 ) {
@@ -51,6 +52,17 @@ function display_mega_menu_on_load() {
             });
         }
     }
+
+    // For Custom Width MegaMenu.
+    var customWidthStretched = document.querySelectorAll(".custom-width-mega");
+    if ( customWidthStretched.length > 0 ) {
+        for (var i = 0; i < customWidthStretched.length; i++) {
+            customWidthStretched[i].addEventListener( "mouseenter", function( event ) {
+                var megaMenuSubmenu = event.target.querySelector(".astra-mega-menu-width-custom");
+                megaMenuSubmenu.classList.remove("ast-hidden");
+            });
+        }
+    }
 }
 
 var items = document.getElementsByClassName('astra-megamenu-li');
@@ -73,15 +85,30 @@ var items = document.getElementsByClassName('astra-megamenu-li');
             var $menuWidth           = $main_container.width(),
                 $menuPosition        = $main_container.offset(),
                 $menuItemPosition    = $this.offset(),
-                $positionLeft        = $menuItemPosition.left - ( $menuPosition.left + parseFloat($main_container.css('paddingLeft') ) );
+                positionLeft        = $menuItemPosition.left - ( $menuPosition.left + parseFloat($main_container.css('paddingLeft') ) );
 
             var $fullMenuWidth           = $full_width_main_container.width(),
                 $fullMenuPosition        = $full_width_main_container.offset(),
-                $fullPositionLeft        = $menuItemPosition.left - ( $fullMenuPosition.left + parseFloat( $full_width_main_container.css( 'paddingLeft' ) ) );
+                fullPositionLeft        = $menuItemPosition.left - ( $fullMenuPosition.left + parseFloat( $full_width_main_container.css( 'paddingLeft' ) ) );
+
+            if( $this.hasClass( 'custom-width-mega' ) ) {
+                var customMegaMenuWidth     = window.getComputedStyle( $this.find( '.astra-mega-menu-width-custom' )[0], '::before' ).getPropertyValue('content') || 1200;
+
+                customMegaMenuWidth = customMegaMenuWidth.replace( /[^0-9]/g, '' );
+                customMegaMenuWidth = parseInt( customMegaMenuWidth );
+
+                if( customMegaMenuWidth <= $menuWidth ) {
+                    var extra_width = parseInt( $menuWidth - customMegaMenuWidth ),
+                        customWithPositionLeft = parseInt( positionLeft - extra_width );
+                } else {
+                    var extra_width = parseInt( customMegaMenuWidth - $menuWidth ),
+                        customWithPositionLeft = parseInt( positionLeft + extra_width );
+                }
+            }
 
             if( $this.hasClass( 'menu-container-width-mega' ) ) {
 
-                var menu_width_container = jQuery(".main-navigation");
+                var menu_width_container = jQuery(container).parents( '.main-navigation' );
 
                 if( $full_width_main_container.hasClass( 'ast-above-header' ) ) {
                     menu_width_container = jQuery(".ast-above-header-navigation");
@@ -99,15 +126,17 @@ var items = document.getElementsByClassName('astra-megamenu-li');
                 var $offset_right    = jQuery(window).width() - ( $target_container.offset().left + $target_container.outerWidth() );
                 var $current_offset  = $this.offset();
                 var $width           = ( jQuery(window).width() - $offset_right ) - $current_offset.left;
-                $positionLeft        = parseInt( $target_container.width() - $width );
+                positionLeft        = parseInt( $target_container.width() - $width );
             }
             if( $this.hasClass( 'full-width-mega' ) ) {
-                $this.find( '.astra-full-megamenu-wrapper' ).css( { 'left': '-'+$fullPositionLeft+'px', 'width': $fullMenuWidth } );
+                $this.find( '.astra-full-megamenu-wrapper' ).css( { 'left': '-' + fullPositionLeft + 'px', 'width': $fullMenuWidth } );
                 $this.find( '.astra-megamenu' ).css( { 'width': $menuWidth } );
             } else if( $this.hasClass( 'full-stretched-width-mega' ) ) {
-                $this.find( '.astra-full-megamenu-wrapper' ).css( { 'left': '-'+$fullPositionLeft+'px', 'width': $fullMenuWidth } );
+                $this.find( '.astra-full-megamenu-wrapper' ).css( { 'left': '-'+fullPositionLeft+'px', 'width': $fullMenuWidth } );
+            } else if( $this.hasClass( 'custom-width-mega' ) ) {
+                $this.find( '.astra-mega-menu-width-custom' ).css( { 'left': '-' + customWithPositionLeft + 'px', 'width': customMegaMenuWidth+'px' } );
             } else {
-                $this.find( '.astra-megamenu' ).css( { 'left': '-'+$positionLeft+'px', 'width': $menuWidth } );
+                $this.find( '.astra-megamenu' ).css( { 'left': '-' + positionLeft + 'px', 'width': $menuWidth } );
             }
         } else {
             $this.find( '.astra-megamenu' ).css( { 'left': '', 'width': '', 'background-image': '' } );
@@ -132,16 +161,31 @@ var items = document.getElementsByClassName('astra-megamenu-li');
     $this.find( '.menu-link' ).focusin(function( e ) {
         $this.find( '.sub-menu' ).addClass( 'astra-megamenu-focus' );
         $this.find( '.astra-full-megamenu-wrapper' ).addClass( 'astra-megamenu-wrapper-focus' );
-        if ( parseInt( jQuery(window).width() ) > parseInt( astra.break_point ) ) { 
+        if ( parseInt( jQuery(window).width() ) > parseInt( astra.break_point ) ) {
 
-            var $menuWidth           = $main_container.width(),     
-                $menuPosition        = $main_container.offset(), 
+            var $menuWidth           = $main_container.width(),
+                $menuPosition        = $main_container.offset(),
                 $menuItemPosition    = $this.offset(),
-                $positionLeft        = $menuItemPosition.left - ( $menuPosition.left + parseFloat($main_container.css('paddingLeft') ) );
+                positionLeft        = $menuItemPosition.left - ( $menuPosition.left + parseFloat($main_container.css('paddingLeft') ) );
 
             var $fullMenuWidth           = $full_width_main_container.width(),
                 $fullMenuPosition        = $full_width_main_container.offset(),
-                $fullPositionLeft        = $menuItemPosition.left - ( $fullMenuPosition.left + parseFloat( $full_width_main_container.css( 'paddingLeft' ) ) );
+                fullPositionLeft        = $menuItemPosition.left - ( $fullMenuPosition.left + parseFloat( $full_width_main_container.css( 'paddingLeft' ) ) );
+
+            if( $this.hasClass( 'custom-width-mega' ) ) {
+                var customMegaMenuWidth     = window.getComputedStyle( $this.find( '.astra-mega-menu-width-custom' )[0], '::before' ).getPropertyValue('content') || 1200;
+
+                customMegaMenuWidth = customMegaMenuWidth.replace( /[^0-9]/g, '' );
+                customMegaMenuWidth = parseInt( customMegaMenuWidth );
+
+                if( customMegaMenuWidth <= $menuWidth ) {
+                    var extra_width = parseInt( $menuWidth - customMegaMenuWidth ),
+                        customWithPositionLeft = parseInt( positionLeft - extra_width );
+                } else {
+                    var extra_width = parseInt( customMegaMenuWidth - $menuWidth ),
+                        customWithPositionLeft = parseInt( positionLeft + extra_width );
+                }
+            }
 
             if( $this.hasClass( 'menu-container-width-mega' ) ) {
 
@@ -163,15 +207,17 @@ var items = document.getElementsByClassName('astra-megamenu-li');
                 var $offset_right    = jQuery(window).width() - ( $target_container.offset().left + $target_container.outerWidth() );
                 var $current_offset  = $this.offset();
                 var $width           = ( jQuery(window).width() - $offset_right ) - $current_offset.left;
-                $positionLeft        = parseInt( $target_container.width() - $width );
+                var positionLeft        = parseInt( $target_container.width() - $width );
             }
             if( $this.hasClass( 'full-width-mega' ) ) {
-                $this.find( '.astra-full-megamenu-wrapper' ).css( { 'left': '-'+$fullPositionLeft+'px', 'width': $fullMenuWidth } );
+                $this.find( '.astra-full-megamenu-wrapper' ).css( { 'left': '-' + fullPositionLeft + 'px', 'width': $fullMenuWidth } );
                 $this.find( '.astra-megamenu' ).css( { 'width': $menuWidth } );
             } else if( $this.hasClass( 'full-stretched-width-mega' ) ) {
-                $this.find( '.astra-full-megamenu-wrapper' ).css( { 'left': '-'+$fullPositionLeft+'px', 'width': $fullMenuWidth } );
-            } else{
-                $this.find( '.astra-megamenu' ).css( { 'left': '-'+$positionLeft+'px', 'width': $menuWidth } );
+                $this.find( '.astra-full-megamenu-wrapper' ).css( { 'left': '-' + fullPositionLeft + 'px', 'width': $fullMenuWidth } );
+            } else if( $this.hasClass( 'custom-width-mega' ) ) {
+                $this.find( '.astra-mega-menu-width-custom' ).css( { 'left': '-' + customWithPositionLeft + 'px', 'width': customMegaMenuWidth+'px' } );
+            } else {
+                $this.find( '.astra-megamenu' ).css( { 'left': '-' + positionLeft + 'px', 'width': $menuWidth } );
             }
         } else {
             $this.find( '.astra-megamenu' ).css( { 'left': '', 'width': '', 'background-image': '' } );
@@ -179,7 +225,7 @@ var items = document.getElementsByClassName('astra-megamenu-li');
         }
     });
 
-    $this.find( '.menu-link' ).keydown(function (e) {    
+    $this.find( '.menu-link' ).keydown(function (e) {
     if (e.which  == 9 && e.shiftKey) {
         $this.find( '.sub-menu' ).removeClass( 'astra-megamenu-focus' );
         $this.find( '.astra-full-megamenu-wrapper' ).removeClass( 'astra-megamenu-wrapper-focus' );
@@ -198,7 +244,7 @@ var items = document.getElementsByClassName('astra-megamenu-li');
 
     $this.click(function(event){
         if ( ! jQuery(event.target).hasClass('menu-item') ){
-            return;   
+            return;
         }
         // event.stopPropagation();
         event.stopImmediatePropagation();

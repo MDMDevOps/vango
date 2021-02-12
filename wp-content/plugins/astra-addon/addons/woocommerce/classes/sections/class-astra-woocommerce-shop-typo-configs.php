@@ -49,7 +49,14 @@ if ( ! class_exists( 'Astra_Woocommerce_Shop_Typo_Configs' ) ) {
 					'title'    => __( 'Typography', 'astra-addon' ),
 					'settings' => array(),
 					'priority' => 230,
-					'required' => array( ASTRA_THEME_SETTINGS . '[shop-product-structure]', 'contains', 'title' ),
+					'context'  => array(
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[shop-product-structure]',
+							'operator' => 'contains',
+							'value'    => 'title',
+						),
+					),
 				),
 
 				/**
@@ -63,7 +70,14 @@ if ( ! class_exists( 'Astra_Woocommerce_Shop_Typo_Configs' ) ) {
 					'title'     => __( 'Product Title', 'astra-addon' ),
 					'section'   => 'woocommerce_product_catalog',
 					'transport' => 'postMessage',
-					'required'  => array( ASTRA_THEME_SETTINGS . '[shop-product-structure]', 'contains', 'title' ),
+					'context'   => array(
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[shop-product-structure]',
+							'operator' => 'contains',
+							'value'    => 'title',
+						),
+					),
 					'priority'  => 230,
 				),
 
@@ -177,7 +191,13 @@ if ( ! class_exists( 'Astra_Woocommerce_Shop_Typo_Configs' ) ) {
 					'title'     => __( 'Product Price', 'astra-addon' ),
 					'section'   => 'woocommerce_product_catalog',
 					'transport' => 'postMessage',
-					'required'  => array( ASTRA_THEME_SETTINGS . '[shop-product-structure]', 'contains', 'price' ),
+					'context'   => array(
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[shop-product-structure]',
+							'operator' => 'contains',
+							'value'    => 'price',
+						),
+					),
 					'priority'  => 230,
 				),
 
@@ -268,12 +288,24 @@ if ( ! class_exists( 'Astra_Woocommerce_Shop_Typo_Configs' ) ) {
 					'title'     => __( 'Product Content', 'astra-addon' ),
 					'section'   => 'woocommerce_product_catalog',
 					'transport' => 'postMessage',
-					'required'  => array(
-						'conditions' => array(
-							array( ASTRA_THEME_SETTINGS . '[shop-product-structure]', 'contains', 'category' ),
-							array( ASTRA_THEME_SETTINGS . '[shop-product-structure]', 'contains', 'structure' ),
+					'context'   => array(
+						'relation' => 'AND',
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'relation' => 'OR',
+							array(
+								'setting'  => ASTRA_THEME_SETTINGS . '[shop-product-structure]',
+								'operator' => 'contains',
+								'value'    => 'category',
+							),
+							array(
+								'setting'  => ASTRA_THEME_SETTINGS . '[shop-product-structure]',
+								'operator' => 'contains',
+								'value'    => 'structure',
+							),
+
 						),
-						'operator'   => 'OR',
+
 					),
 					'priority'  => 230,
 				),

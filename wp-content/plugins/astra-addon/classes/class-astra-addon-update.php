@@ -1320,9 +1320,9 @@ if ( ! class_exists( 'Astra_Addon_Update' ) ) {
 					'mobile'  => '',
 				),
 				'sticky-header-bg-color-responsive'        => array(
-					'desktop' => ( ! empty( $astra_options['header-bg-obj-responsive']['desktop']['background-color'] ) ) ? astra_hex_to_rgba( astra_rgba2hex( $astra_options['header-bg-obj-responsive']['desktop']['background-color'] ), $sticky_header_opacity ) : astra_hex_to_rgba( '#ffffff', $sticky_header_opacity ),
-					'tablet'  => ( ! empty( $astra_options['header-bg-obj-responsive']['tablet']['background-color'] ) ) ? astra_hex_to_rgba( astra_rgba2hex( $astra_options['header-bg-obj-responsive']['tablet']['background-color'] ), $sticky_header_opacity ) : '',
-					'mobile'  => ( ! empty( $astra_options['header-bg-obj-responsive']['mobile']['background-color'] ) ) ? astra_hex_to_rgba( astra_rgba2hex( $astra_options['header-bg-obj-responsive']['mobile']['background-color'] ), $sticky_header_opacity ) : '',
+					'desktop' => ( ! empty( $astra_options['header-bg-obj-responsive']['desktop']['background'] ) ) ? astra_hex_to_rgba( astra_rgba2hex( $astra_options['header-bg-obj-responsive']['desktop']['background'] ), $sticky_header_opacity ) : astra_hex_to_rgba( '#ffffff', $sticky_header_opacity ),
+					'tablet'  => ( ! empty( $astra_options['header-bg-obj-responsive']['tablet']['background'] ) ) ? astra_hex_to_rgba( astra_rgba2hex( $astra_options['header-bg-obj-responsive']['tablet']['background'] ), $sticky_header_opacity ) : '',
+					'mobile'  => ( ! empty( $astra_options['header-bg-obj-responsive']['mobile']['background'] ) ) ? astra_hex_to_rgba( astra_rgba2hex( $astra_options['header-bg-obj-responsive']['mobile']['background'] ), $sticky_header_opacity ) : '',
 				),
 				'sticky-header-menu-bg-color-responsive'   => array(
 					'desktop' => ( ! empty( $astra_options['primary-menu-bg-obj-responsive']['desktop']['background-color'] ) ) ? astra_hex_to_rgba( astra_rgba2hex( $astra_options['primary-menu-bg-obj-responsive']['desktop']['background-color'] ), $sticky_header_opacity ) : '',
@@ -1367,9 +1367,9 @@ if ( ! class_exists( 'Astra_Addon_Update' ) ) {
 
 				// Below header.
 				'sticky-below-header-bg-color-responsive'  => array(
-					'desktop' => ( ! empty( $astra_options['below-header-bg-obj-responsive']['desktop']['background-color'] ) ) ? astra_hex_to_rgba( astra_rgba2hex( $astra_options['below-header-bg-obj-responsive']['desktop']['background-color'] ), $sticky_header_opacity ) : astra_hex_to_rgba( '#414042', $sticky_header_opacity ),
-					'tablet'  => ( ! empty( $astra_options['below-header-bg-obj-responsive']['tablet']['background-color'] ) ) ? astra_hex_to_rgba( astra_rgba2hex( $astra_options['below-header-bg-obj-responsive']['tablet']['background-color'] ), $sticky_header_opacity ) : '',
-					'mobile'  => ( ! empty( $astra_options['below-header-bg-obj-responsive']['mobile']['background-color'] ) ) ? astra_hex_to_rgba( astra_rgba2hex( $astra_options['below-header-bg-obj-responsive']['mobile']['background-color'] ), $sticky_header_opacity ) : '',
+					'desktop' => ( ! empty( $astra_options['below-header-bg-obj-responsive']['desktop']['background'] ) ) ? astra_hex_to_rgba( astra_rgba2hex( $astra_options['below-header-bg-obj-responsive']['desktop']['background'] ), $sticky_header_opacity ) : astra_hex_to_rgba( '#414042', $sticky_header_opacity ),
+					'tablet'  => ( ! empty( $astra_options['below-header-bg-obj-responsive']['tablet']['background'] ) ) ? astra_hex_to_rgba( astra_rgba2hex( $astra_options['below-header-bg-obj-responsive']['tablet']['background'] ), $sticky_header_opacity ) : '',
+					'mobile'  => ( ! empty( $astra_options['below-header-bg-obj-responsive']['mobile']['background'] ) ) ? astra_hex_to_rgba( astra_rgba2hex( $astra_options['below-header-bg-obj-responsive']['mobile']['background'] ), $sticky_header_opacity ) : '',
 				),
 				'sticky-below-header-menu-bg-color-responsive' => array(
 					'desktop' => ( ! empty( $astra_options['below-header-menu-bg-obj-responsive']['desktop']['background-color'] ) ) ? astra_hex_to_rgba( astra_rgba2hex( $astra_options['below-header-menu-bg-obj-responsive']['desktop']['background-color'] ), $sticky_header_opacity ) : '',
@@ -1414,9 +1414,9 @@ if ( ! class_exists( 'Astra_Addon_Update' ) ) {
 
 				// Above header.
 				'sticky-above-header-bg-color-responsive'  => array(
-					'desktop' => ( ! empty( $astra_options['above-header-bg-obj-responsive']['desktop']['background-color'] ) ) ? astra_hex_to_rgba( astra_rgba2hex( $astra_options['above-header-bg-obj-responsive']['desktop']['background-color'] ), $sticky_header_opacity ) : astra_hex_to_rgba( '#ffffff', $sticky_header_opacity ),
-					'tablet'  => ( ! empty( $astra_options['above-header-bg-obj-responsive']['tablet']['background-color'] ) ) ? astra_hex_to_rgba( astra_rgba2hex( $astra_options['above-header-bg-obj-responsive']['tablet']['background-color'] ), $sticky_header_opacity ) : '',
-					'mobile'  => ( ! empty( $astra_options['above-header-bg-obj-responsive']['mobile']['background-color'] ) ) ? astra_hex_to_rgba( astra_rgba2hex( $astra_options['above-header-bg-obj-responsive']['mobile']['background-color'] ), $sticky_header_opacity ) : '',
+					'desktop' => ( ! empty( $astra_options['above-header-bg-obj-responsive']['desktop']['background'] ) ) ? astra_hex_to_rgba( astra_rgba2hex( $astra_options['above-header-bg-obj-responsive']['desktop']['background'] ), $sticky_header_opacity ) : astra_hex_to_rgba( '#ffffff', $sticky_header_opacity ),
+					'tablet'  => ( ! empty( $astra_options['above-header-bg-obj-responsive']['tablet']['background'] ) ) ? astra_hex_to_rgba( astra_rgba2hex( $astra_options['above-header-bg-obj-responsive']['tablet']['background'] ), $sticky_header_opacity ) : '',
+					'mobile'  => ( ! empty( $astra_options['above-header-bg-obj-responsive']['mobile']['background'] ) ) ? astra_hex_to_rgba( astra_rgba2hex( $astra_options['above-header-bg-obj-responsive']['mobile']['background'] ), $sticky_header_opacity ) : '',
 				),
 				'sticky-above-header-menu-bg-color-responsive' => array(
 					'desktop' => ( ! empty( $astra_options['above-header-menu-bg-obj-responsive']['desktop']['background-color'] ) ) ? astra_hex_to_rgba( astra_rgba2hex( $astra_options['above-header-menu-bg-obj-responsive']['desktop']['background-color'] ), $sticky_header_opacity ) : '',

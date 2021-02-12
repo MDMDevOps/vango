@@ -42,13 +42,14 @@ if ( ! class_exists( 'Astra_Scroll_To_Top_Configs' ) ) {
 				 * Option: Scroll to Top Display On
 				 */
 				array(
-					'name'    => ASTRA_THEME_SETTINGS . '[scroll-to-top-on-devices]',
-					'default' => astra_get_option( 'scroll-to-top-on-devices' ),
-					'type'    => 'control',
-					'control' => 'select',
-					'section' => 'section-scroll-to-top',
-					'title'   => __( 'Display On', 'astra-addon' ),
-					'choices' => array(
+					'name'     => ASTRA_THEME_SETTINGS . '[scroll-to-top-on-devices]',
+					'default'  => astra_get_option( 'scroll-to-top-on-devices' ),
+					'type'     => 'control',
+					'control'  => 'select',
+					'section'  => 'section-scroll-to-top',
+					'priority' => 10,
+					'title'    => __( 'Display On', 'astra-addon' ),
+					'choices'  => array(
 						'desktop' => __( 'Desktop', 'astra-addon' ),
 						'mobile'  => __( 'Mobile', 'astra-addon' ),
 						'both'    => __( 'Desktop + Mobile', 'astra-addon' ),
@@ -70,6 +71,7 @@ if ( ! class_exists( 'Astra_Scroll_To_Top_Configs' ) ) {
 						'right' => __( 'Right', 'astra-addon' ),
 						'left'  => __( 'Left', 'astra-addon' ),
 					),
+					'priority'  => 11,
 				),
 
 				/**
@@ -83,6 +85,7 @@ if ( ! class_exists( 'Astra_Scroll_To_Top_Configs' ) ) {
 					'transport' => 'postMessage',
 					'section'   => 'section-scroll-to-top',
 					'title'     => __( 'Icon Size', 'astra-addon' ),
+					'priority'  => 12,
 				),
 
 				/**
@@ -96,18 +99,7 @@ if ( ! class_exists( 'Astra_Scroll_To_Top_Configs' ) ) {
 					'transport' => 'postMessage',
 					'section'   => 'section-scroll-to-top',
 					'title'     => __( 'Border Radius', 'astra-addon' ),
-				),
-
-				/**
-				 * Option: Scroll On Top Colors Divider
-				 */
-				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[scroll-on-top-color-divider]',
-					'type'     => 'control',
-					'control'  => 'ast-heading',
-					'section'  => 'section-scroll-to-top',
-					'title'    => __( 'Colors', 'astra-addon' ),
-					'settings' => array(),
+					'priority'  => 13,
 				),
 
 				array(
@@ -115,9 +107,12 @@ if ( ! class_exists( 'Astra_Scroll_To_Top_Configs' ) ) {
 					'default'   => astra_get_option( 'scroll-on-top-color-group' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
-					'title'     => __( 'Icon', 'astra-addon' ),
+					'title'     => __( 'Colors', 'astra-addon' ),
 					'section'   => 'section-scroll-to-top',
 					'transport' => 'postMessage',
+					'context'   => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
+						Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+					'priority'  => 15,
 				),
 
 				/**
@@ -188,6 +183,25 @@ if ( ! class_exists( 'Astra_Scroll_To_Top_Configs' ) ) {
 				),
 
 			);
+
+			if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+
+				array_push(
+					$_configs,
+					/**
+					 * Option: Scroll To Top Tabs
+					 */
+					array(
+						'name'        => 'section-scroll-to-top-ast-context-tabs',
+						'section'     => 'section-scroll-to-top',
+						'type'        => 'control',
+						'control'     => 'ast-builder-header-control',
+						'priority'    => 0,
+						'description' => '',
+
+					)
+				);
+			}
 
 			$configurations = array_merge( $configurations, $_configs );
 

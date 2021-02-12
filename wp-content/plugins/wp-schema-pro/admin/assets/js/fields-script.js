@@ -1,14 +1,15 @@
-(function($) {
+(function ($) {
 
-    $(window).on('load', function() {
+    $(window).on('load', function () {
 
         $('.aiosrs-pro-custom-field.aiosrs-pro-custom-field-repeater .aiosrs-pro-repeater-table-wrap').hide();
+        $('.aiosrs-pro-custom-field.aiosrs-pro-custom-field-repeater .bsf-repeater-add-new-btn').hide();
         $('.aiosrs-pro-custom-field.aiosrs-pro-custom-field-repeater-target .aiosrs-pro-repeater-table-wrap').hide();
         $('.aiosrs-pro-custom-field.aiosrs-pro-custom-field-repeater-target .bsf-repeater-add-new-btn').hide();
     });
 
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         const { __ } = wp.i18n;
         $("#wpsp-reset-dialog-confirmation").dialog({
             dialogClass: 'wp-dialog',
@@ -16,87 +17,31 @@
             modal: true
         });
         // Added support to repeater validation.
-        $('.aiosrs-pro-custom-field-repeater').each(function(index, repeater) {
+        $('.aiosrs-pro-custom-field-repeater').each(function (index, repeater) {
             if (!$(repeater).find('.wpsp-required-error-field').length) {
                 $(repeater).parents('.bsf-aiosrs-schema-row-content').prev().removeClass('wpsp-required-error-field');
             }
         });
 
-        $('.wpsp-local-fields').find("select, textarea, input").on('change keyup', function(event) {
-
-            if (event.isTrigger && !$(this).hasClass('wpsp-specific-field') && !$(this).hasClass('wpsp-date-field')) {
-                return false;
-            }
-
-            var parent = $(this).parents('.wpsp-local-fields');
-            parent.find('.wpsp-default-hidden-value').val($(this).val());
-            parent.find('.wpsp-default-hidden-fieldtype').val($(this).parents('.wpsp-parent-field').attr('data-type'));
-
-            if ($(this).is("select") && $(this).parent().hasClass('wpsp-connect-field')) {
-
-                let selected_option = $(this).val();
-
-                if ("create-field" === selected_option || "specific-field" === selected_option) {
-                    if ("create-field" === selected_option) {
-                        display_custom_field(parent);
-                        parent.find('.wpsp-default-hidden-fieldtype').val('custom-field');
-                    }
-                    if ("specific-field" === selected_option) {
-                        display_specific_field(parent);
-                        parent.find('.wpsp-default-hidden-fieldtype').val('specific-field');
-                    }
-                    parent.find('.wpsp-default-hidden-value').val("");
-                }
-            }
-
-        });
-
-        $('select.bsf-aiosrs-schema-meta-field').change(function() {
-
-            var parent = $(this).parents('.wpsp-local-fields');
-            var label = parent.find('select option:selected').html();
-
-            let selected_option = $(this).val();
-
-            if ('none' === selected_option || 'create-field' === selected_option || 'specific-field' === selected_option) {
-                parent.find('.bsf-aiosrs-schema-heading-help').attr('title', 'Please connect any field to apply in the Schema Markup!');
-            } else {
-                parent.find('.bsf-aiosrs-schema-heading-help').attr('title', 'The ' + label + ' value in this field will be added to the schema markup of this particular post/page.');
-            }
-        });
-
-        $('input[type="checkbox"].wpsp-enable-schema-toggle__input').on('click', function() {
-
-            let parent = $(this).parents('.wpsp-enable-schema-markup');
-            let this_val = $(this).val();
-            let is_checked = parent.find('.wpsp-enable-schema-toggle').hasClass('is-checked');
-
-            if (!is_checked && "1" === this_val) {
-                parent.find('.wpsp-enable-schema-toggle__input-hidden').attr('value', '1');
-                parent.find('.wpsp-enable-schema-toggle').addClass('is-checked');
-            } else {
-                parent.find('.wpsp-enable-schema-toggle__input-hidden').attr('value', 'disabled');
-                parent.find('.wpsp-enable-schema-toggle').removeClass('is-checked');
-            }
-        });
-
-        $('.wpsp-show-repeater-field').click(function() {
+        $('.wpsp-show-repeater-field').click(function () {
 
             var parent = $(this).parents('.aiosrs-pro-custom-field-repeater');
             parent.find('.aiosrs-pro-repeater-table-wrap').show();
+            parent.find('.bsf-repeater-add-new-btn').show();
             parent.find('.wpsp-show-repeater-field').addClass('bsf-hidden');
             parent.find('.wpsp-hide-repeater-field').removeClass('bsf-hidden');
         });
 
-        $('.wpsp-hide-repeater-field').click(function() {
+        $('.wpsp-hide-repeater-field').click(function () {
 
             var parent = $(this).parents('.aiosrs-pro-custom-field-repeater');
             parent.find('.aiosrs-pro-repeater-table-wrap').hide();
+            parent.find('.bsf-repeater-add-new-btn').hide();
             parent.find('.wpsp-hide-repeater-field').addClass('bsf-hidden');
             parent.find('.wpsp-show-repeater-field').removeClass('bsf-hidden');
         });
 
-        $('.wpsp-show-repeater-target-field').click(function() {
+        $('.wpsp-show-repeater-target-field').click(function () {
 
             var parent = $(this).parents('.aiosrs-pro-custom-field-repeater-target');
             parent.find('.aiosrs-pro-repeater-table-wrap').show();
@@ -105,7 +50,7 @@
             parent.find('.wpsp-hide-repeater-target-field').removeClass('bsf-hidden');
         });
 
-        $('.wpsp-hide-repeater-target-field').click(function() {
+        $('.wpsp-hide-repeater-target-field').click(function () {
 
             var parent = $(this).parents('.aiosrs-pro-custom-field-repeater-target');
             parent.find('.aiosrs-pro-repeater-table-wrap').hide();
@@ -114,45 +59,117 @@
             parent.find('.wpsp-show-repeater-target-field').removeClass('bsf-hidden');
         });
 
-        function display_specific_field(parent) {
 
-            parent.find('.wpsp-connect-field,.wpsp-custom-field').hide();
-            parent.find('.wpsp-specific-field').removeClass('bsf-hidden').show().find("select, textarea, input").val('');
-        }
+        $(document).on('change click', function () {
+            $('.wpsp-local-fields').find("select, textarea, input").on('change keyup', function (event) {
 
-        function display_custom_field(parent) {
+                if (event.isTrigger && !$(this).hasClass('wpsp-specific-field') && !$(this).hasClass('wpsp-date-field')) {
+                    return false;
+                }
 
-            parent.find('.wpsp-connect-field,.wpsp-specific-field').hide();
-            parent.find('.wpsp-custom-field').removeClass('bsf-hidden').show().find("select, textarea, input").val('');
-        }
+                var parent = $(this).parents('.wpsp-local-fields');
+                parent.find('.wpsp-default-hidden-value').val($(this).val());
+                parent.find('.wpsp-default-hidden-fieldtype').val($(this).parents('.wpsp-parent-field').attr('data-type'));
 
-        $('.wpsp-field-close').click(function() {
+                if ($(this).is("select") && $(this).parent().hasClass('wpsp-connect-field')) {
 
-            var parent = $(this).parents('.wpsp-local-fields');
-            parent.find('.wpsp-default-hidden-value').val("");
-            parent.find('.wpsp-default-hidden-fieldtype').val("custom-field");
-            display_custom_field(parent);
-        });
+                    let selected_option = $(this).val();
 
-        $('.wpsp-specific-field-connect, .wpsp-custom-field-connect').click(function() {
+                    if ("create-field" === selected_option || "specific-field" === selected_option) {
+                        if ("create-field" === selected_option) {
+                            display_custom_field(parent);
+                            parent.find('.wpsp-default-hidden-fieldtype').val('custom-field');
+                        }
+                        if ("specific-field" === selected_option) {
+                            display_specific_field(parent);
+                            parent.find('.wpsp-default-hidden-fieldtype').val('specific-field');
+                        }
+                        parent.find('.wpsp-default-hidden-value').val("");
+                    }
+                }
 
-            let parent = $(this).parents('.wpsp-local-fields');
-            let select = parent.find('.wpsp-connect-field')
-                .removeClass('bsf-hidden').show()
-                .find("select").removeAttr('disabled');
+            });
 
-            let select_val = select.val();
+            $('select.bsf-aiosrs-schema-meta-field').change(function () {
 
-            if ("create-field" === select_val || "specific-field" === select_val) {
-                select_val = "none";
+                var parent = $(this).parents('.wpsp-local-fields');
+                var label = parent.find('select option:selected').html();
+
+                let selected_option = $(this).val();
+
+                if ('none' === selected_option || 'create-field' === selected_option || 'specific-field' === selected_option) {
+                    parent.find('.bsf-aiosrs-schema-heading-help').attr('title', 'Please connect any field to apply in the Schema Markup!');
+                } else {
+                    parent.find('.bsf-aiosrs-schema-heading-help').attr('title', 'The ' + label + ' value in this field will be added to the schema markup of this particular post/page.');
+                }
+            });
+
+            $('input[type="checkbox"].wpsp-enable-schema-toggle__input').on('click', function () {
+
+                let parent = $(this).parents('.wpsp-enable-schema-markup');
+                let this_val = $(this).val();
+                let is_checked = parent.find('.wpsp-enable-schema-toggle').hasClass('is-checked');
+
+                if (!is_checked && "1" === this_val) {
+                    parent.find('.wpsp-enable-schema-toggle__input-hidden').attr('value', '1');
+                    parent.find('.wpsp-enable-schema-toggle').addClass('is-checked');
+                } else {
+                    parent.find('.wpsp-enable-schema-toggle__input-hidden').attr('value', 'disabled');
+                    parent.find('.wpsp-enable-schema-toggle').removeClass('is-checked');
+                }
+            });
+
+            function display_specific_field(parent) {
+
+                parent.find('.wpsp-connect-field,.wpsp-custom-field').hide();
+                parent.find('.wpsp-specific-field').removeClass('bsf-hidden').show().find("select, textarea, input").val('');
             }
 
-            parent.find('.wpsp-default-hidden-value').val(select_val);
-            parent.find('.wpsp-default-hidden-fieldtype').val("global-field");
-            parent.find('.wpsp-custom-field, .wpsp-specific-field').hide();
+            function display_custom_field(parent) {
+
+                parent.find('.wpsp-connect-field,.wpsp-specific-field').hide();
+                parent.find('.wpsp-custom-field').removeClass('bsf-hidden').show().find("select, textarea, input").val('');
+            }
+
+            $(document).on('click', ".wpsp-field-close", function () {
+
+                var parent = $(this).parents('.wpsp-local-fields');
+                let select = parent.find('.wpsp-connect-field')
+                .removeClass('bsf-hidden').show()
+                .find("select").removeAttr('disabled');
+                let select_val = select.val();
+                if("specific-field" === select_val) {
+                    parent.find('.wpsp-default-hidden-value').val("");
+                    parent.find('.wpsp-default-hidden-fieldtype').val("specific-field");
+                    display_specific_field(parent);
+                    return;
+                }
+                parent.find('.wpsp-default-hidden-value').val("");
+                parent.find('.wpsp-default-hidden-fieldtype').val("custom-field");
+                display_custom_field(parent);
+
+            });
+
+            $(document).on('click', ".wpsp-specific-field-connect, .wpsp-custom-field-connect", function () {
+
+                let parent = $(this).parents('.wpsp-local-fields');
+                let select = parent.find('.wpsp-connect-field')
+                    .removeClass('bsf-hidden').show()
+                    .find("select").removeAttr('disabled');
+
+                let select_val = select.val();
+
+                if ("create-field" === select_val || "specific-field" === select_val) {
+                    select_val = "none";
+                }
+
+                parent.find('.wpsp-default-hidden-value').val(select_val);
+                parent.find('.wpsp-default-hidden-fieldtype').val("global-field");
+                parent.find('.wpsp-custom-field, .wpsp-specific-field').hide();
+            });
         });
 
-        $(document).on('change input', '.bsf-rating-field', function() {
+        $(document).on('change input', '.bsf-rating-field', function () {
 
             var star_wrap = $(this).next('.aiosrs-star-rating-wrap'),
                 value = $(this).val(),
@@ -160,7 +177,7 @@
                 half = (value == filled || value > 5 || value < 0) ? 0 : 1,
                 empty = 5 - (filled + half);
 
-            star_wrap.find('span').each(function(index, el) {
+            star_wrap.find('span').each(function (index, el) {
                 $(this).removeClass('dashicons-star-filled dashicons-star-half dashicons-star-empty');
                 if (index < filled) {
                     $(this).addClass('dashicons-star-filled')
@@ -172,14 +189,14 @@
             });
         });
 
-        $(document).on('click', '.aiosrs-star-rating-wrap:not(.disabled) > .aiosrs-star-rating', function(e) {
+        $(document).on('click', '.aiosrs-star-rating-wrap:not(.disabled) > .aiosrs-star-rating', function (e) {
             e.preventDefault();
             var index = $(this).data('index');
             var star_wrap = $(this).parent();
             var parent = $(this).parents('.wpsp-local-fields');
             star_wrap.prev('.bsf-rating-field').val(index);
             parent.find('.wpsp-default-hidden-value').val(index);
-            star_wrap.find('.aiosrs-star-rating').each(function(i, el) {
+            star_wrap.find('.aiosrs-star-rating').each(function (i, el) {
                 $(this).removeClass('dashicons-star-filled dashicons-star-half dashicons-star-empty');
                 if (i < index) {
                     $(this).addClass('dashicons-star-filled')
@@ -189,7 +206,7 @@
             });
         });
 
-        $(document).on('change', '#aiosrs-pro-custom-fields .aiosrs-pro-custom-field-checkbox input[type="checkbox"]', function(e) {
+        $(document).on('change', '#aiosrs-pro-custom-fields .aiosrs-pro-custom-field-checkbox input[type="checkbox"]', function (e) {
             e.preventDefault();
 
             var siblings = $(this).closest('tr.row').siblings('tr.row');
@@ -202,7 +219,7 @@
 
         $('#aiosrs-pro-custom-fields .aiosrs-pro-custom-field-checkbox input[type="checkbox"]').trigger('change');
 
-        $(document.body).on('change', '#aiosrs-pro-custom-fields .wpsp-enable-schema-markup input[type="checkbox"].wpsp-enable-schema-toggle__input', function(e) {
+        $(document.body).on('change', '#aiosrs-pro-custom-fields .wpsp-enable-schema-markup input[type="checkbox"].wpsp-enable-schema-toggle__input', function (e) {
             e.preventDefault();
 
             let parent = $(this).parents('.wpsp-enable-schema-markup');
@@ -218,7 +235,7 @@
 
         $('#aiosrs-pro-custom-fields .wpsp-enable-schema-markup input[type="checkbox"].wpsp-enable-schema-toggle__input').trigger('change');
 
-        $(document).on('click', '.aiosrs-reset-rating', function(e) {
+        $(document).on('click', '.aiosrs-reset-rating', function (e) {
             e.preventDefault();
             let this_obj = $(this);
             let parent = this_obj.closest('.aiosrs-pro-custom-field-rating');
@@ -236,13 +253,13 @@
                 height: "auto",
                 width: 400,
                 modal: true,
-                open: function(event, ui) {
+                open: function (event, ui) {
                     $(this).closest('.ui-dialog').find('.ui-dialog-titlebar-close').hide();
                     var markup = '<p><span class="dashicons dashicons-trash"></span> Do you really want to reset current post rating?</p>';
                     $(this).html(markup);
                 },
                 buttons: {
-                    "Yes": function() {
+                    "Yes": function () {
                         this_obj.addClass('reset-disabled');
                         parent.find('.spinner').addClass('is-active');
                         jQuery.ajax({
@@ -250,7 +267,7 @@
                             type: 'post',
                             dataType: 'json',
                             data: ajax_data
-                        }).success(function(response) {
+                        }).success(function (response) {
                             if ('undefined' != typeof response['success'] && response['success'] == true) {
                                 let avg_rating = response['rating-avg'],
                                     review_count = response['review-count'];
@@ -266,7 +283,7 @@
                         });
                         $(this).dialog("close");
                     },
-                    "Cancel": function() {
+                    "Cancel": function () {
                         $(this).dialog("close");
                     }
                 }
@@ -274,7 +291,7 @@
             $("#wpsp-reset-dialog-confirmation").dialog("open");
         });
 
-        $(document).on('change', '.multi-select-wrap select', function() {
+        $(document).on('change', '.multi-select-wrap select', function () {
 
             var multiselect_wrap = $(this).closest('.multi-select-wrap'),
                 select_wrap = multiselect_wrap.find('select'),
@@ -289,7 +306,7 @@
         });
 
         // Verticle Tabs
-        $(document).on('click', '.aiosrs-pro-meta-fields-tab', function(e) {
+        $(document).on('click', '.aiosrs-pro-meta-fields-tab', function (e) {
             e.preventDefault();
 
             var id = $(this).data('tab-id');
@@ -302,7 +319,7 @@
 
         // Toggle Js for Enable Schema Markup.
 
-        $(document.body).on('change', '#aiosrs-pro-custom-fields .wpsp-enable-schema-markup .wpsp-enable-schema-toggle', function(e) {
+        $(document.body).on('change', '#aiosrs-pro-custom-fields .wpsp-enable-schema-markup .wpsp-enable-schema-toggle', function (e) {
             var parent = $(this).parents('.aiosrs-pro-meta-fields-tab');
             var parents = $(this).parents('.inside');
             var id = parent.data('tab-id');
@@ -316,7 +333,7 @@
 
         $('#aiosrs-pro-custom-fields .wpsp-enable-schema-markup .wpsp-enable-schema-toggle').trigger('change');
 
-        $('.wpsp-enable-schema-toggle').on('click', function() {
+        $('.wpsp-enable-schema-toggle').on('click', function () {
 
             var parent = $(this).parents('.aiosrs-pro-meta-fields-tab');
             var parents = $(this).parents('.inside');
@@ -327,7 +344,7 @@
 
         // Call Tooltip
         $('.bsf-aiosrs-schema-heading-help').tooltip({
-            content: function() {
+            content: function () {
                 return $(this).prop('title');
             },
             tooltipClass: 'bsf-aiosrs-schema-ui-tooltip',
@@ -346,7 +363,7 @@
         var file_frame;
         window.inputWrapper = '';
 
-        $(document.body).on('click', '.image-field-wrap .aiosrs-image-select', function(e) {
+        $(document.body).on('click', '.image-field-wrap .aiosrs-image-select', function (e) {
 
             e.preventDefault();
 
@@ -368,7 +385,7 @@
             });
 
             // When an image is selected, run a callback.
-            file_frame.on('select', function() {
+            file_frame.on('select', function () {
 
                 var attachment = file_frame.state().get('selection').first().toJSON();
 
@@ -392,7 +409,7 @@
         });
 
 
-        $(document).on('click', '.aiosrs-image-remove', function(e) {
+        $(document).on('click', '.aiosrs-image-remove', function (e) {
 
             e.preventDefault();
             var parent = $(this).closest('.bsf-aiosrs-schema-custom-text-wrap, .aiosrs-pro-custom-field-image');

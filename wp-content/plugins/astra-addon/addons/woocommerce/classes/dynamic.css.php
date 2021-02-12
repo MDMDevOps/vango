@@ -102,8 +102,8 @@ function astra_woocommerce_dynamic_css( $dynamic_css, $dynamic_css_filtered = ''
 	$checkout_width        = astra_get_option( 'checkout-content-width' );
 	$checkout_custom_width = astra_get_option( 'checkout-content-max-width' );
 
-	$header_cart_icon_style  = astra_get_option( 'woo-header-cart-icon-styl' );
-	$header_cart_icon_color  = astra_get_option( 'woo-header-cart-icon-color', $theme_color );
+	$header_cart_icon_style  = astra_get_option( 'woo-header-cart-icon-style' );
+	$header_cart_icon_color  = astra_get_option( 'header-woo-cart-icon-color', $theme_color );
 	$header_cart_icon_radius = astra_get_option( 'woo-header-cart-icon-radius' );
 	$cart_h_color            = astra_get_foreground_color( $header_cart_icon_color );
 
@@ -244,60 +244,81 @@ function astra_woocommerce_dynamic_css( $dynamic_css, $dynamic_css_filtered = ''
 	 */
 	if ( 'none' != $header_cart_icon_style ) {
 
-		/**
-		 * Header Cart Icon colors
-		 */
-		$header_cart_icon = array(
-			'li.ast-masthead-custom-menu-items.woocommerce-custom-menu-item, .ast-masthead-custom-menu-items.woocommerce-custom-menu-item' => array(
+		$header_cart_icon = array();
+
+		if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+
+			/**
+			 * Header Cart Icon colors
+			 */
+			$header_cart_icon['.ast-builder-layout-element[data-section="section-hb-woo-cart"]'] = array(
+				'padding'      => esc_attr( 0 ),
+				'margin-left'  => esc_attr( '1em' ),
+				'margin-right' => esc_attr( '1em' ),
+				'margin'       => esc_attr( '0' ),
+			);
+
+			$header_cart_icon['.ast-builder-layout-element[data-section="section-hb-woo-cart"] .ast-addon-cart-wrap'] = array(
+				'display' => esc_attr( 'inline-block' ),
+				'padding' => esc_attr( '0 .6em' ),
+			);
+
+		} else {
+
+			$header_cart_icon = array(
+				// Default icon colors.
+				'.ast-woocommerce-cart-menu .ast-cart-menu-wrap .count, .ast-woocommerce-cart-menu .ast-cart-menu-wrap .count:after' => array(
+					'border-color' => esc_attr( $header_cart_icon_color ),
+					'color'        => esc_attr( $header_cart_icon_color ),
+				),
+				// Outline icon hover colors.
+				'.ast-woocommerce-cart-menu .ast-cart-menu-wrap:hover .count' => array(
+					'color'            => esc_attr( $cart_h_color ),
+					'background-color' => esc_attr( $header_cart_icon_color ),
+				),
+				// Outline icon colors.
+				'.ast-menu-cart-outline .ast-addon-cart-wrap' => array(
+					'background' => '#ffffff',
+					'border'     => '1px solid ' . $header_cart_icon_color,
+					'color'      => esc_attr( $header_cart_icon_color ),
+				),
+				// Fill icon Color.
+				'.ast-woocommerce-cart-menu .ast-menu-cart-fill .ast-cart-menu-wrap .count, .ast-menu-cart-fill .ast-addon-cart-wrap' => array(
+					'background-color' => esc_attr( $header_cart_icon_color ),
+					'color'            => esc_attr( $cart_h_color ),
+				),
+
+				// Border radius.
+				'.ast-site-header-cart.ast-menu-cart-outline .ast-addon-cart-wrap, .ast-site-header-cart.ast-menu-cart-fill .ast-addon-cart-wrap' => array(
+					'border-radius' => astra_get_css_value( $header_cart_icon_radius, 'px' ),
+				),
+			);
+
+			/**
+			 * Header Cart Icon colors
+			 */
+			$header_cart_icon['li.ast-masthead-custom-menu-items.woocommerce-custom-menu-item, .ast-masthead-custom-menu-items.woocommerce-custom-menu-item'] = array(
 				'padding' => esc_attr( 0 ),
-			),
-			'.ast-header-break-point li.ast-masthead-custom-menu-items.woocommerce-custom-menu-item' => array(
+			);
+			$header_cart_icon['.ast-header-break-point li.ast-masthead-custom-menu-items.woocommerce-custom-menu-item']                                       = array(
 				'padding-left'  => esc_attr( '20px' ),
 				'padding-right' => esc_attr( '20px' ),
 				'margin'        => esc_attr( '0' ),
-			),
-			'.ast-header-break-point .ast-masthead-custom-menu-items.woocommerce-custom-menu-item' => array(
+			);
+			$header_cart_icon['.ast-header-break-point .ast-masthead-custom-menu-items.woocommerce-custom-menu-item'] = array(
 				'margin-left'  => esc_attr( '1em' ),
 				'margin-right' => esc_attr( '1em' ),
-			),
-			'.ast-header-break-point .ast-above-header-mobile-inline.mobile-header-order-2 .ast-masthead-custom-menu-items.woocommerce-custom-menu-item' => array(
+			);
+			$header_cart_icon['.ast-header-break-point .ast-above-header-mobile-inline.mobile-header-order-2 .ast-masthead-custom-menu-items.woocommerce-custom-menu-item'] = array(
 				'margin-left' => esc_attr( '0' ),
-			),
-			'.ast-header-break-point li.ast-masthead-custom-menu-items.woocommerce-custom-menu-item .ast-addon-cart-wrap' => array(
+			);
+			$header_cart_icon['.ast-header-break-point li.ast-masthead-custom-menu-items.woocommerce-custom-menu-item .ast-addon-cart-wrap']                                = array(
 				'display' => esc_attr( 'inline-block' ),
-			),
-
-			'.woocommerce-custom-menu-item .ast-addon-cart-wrap' => array(
+			);
+			$header_cart_icon['.woocommerce-custom-menu-item .ast-addon-cart-wrap'] = array(
 				'padding' => esc_attr( '0 .6em' ),
-			),
-
-			// Default icon colors.
-			'.ast-woocommerce-cart-menu .ast-cart-menu-wrap .count, .ast-woocommerce-cart-menu .ast-cart-menu-wrap .count:after' => array(
-				'border-color' => esc_attr( $header_cart_icon_color ),
-				'color'        => esc_attr( $header_cart_icon_color ),
-			),
-			// Outline icon hover colors.
-			'.ast-woocommerce-cart-menu .ast-cart-menu-wrap:hover .count' => array(
-				'color'            => esc_attr( $cart_h_color ),
-				'background-color' => esc_attr( $header_cart_icon_color ),
-			),
-			// Outline icon colors.
-			'.ast-menu-cart-outline .ast-addon-cart-wrap' => array(
-				'background' => '#ffffff',
-				'border'     => '1px solid ' . $header_cart_icon_color,
-				'color'      => esc_attr( $header_cart_icon_color ),
-			),
-			// Fill icon Color.
-			'.ast-woocommerce-cart-menu .ast-menu-cart-fill .ast-cart-menu-wrap .count,.ast-menu-cart-fill .ast-addon-cart-wrap' => array(
-				'background-color' => esc_attr( $header_cart_icon_color ),
-				'color'            => esc_attr( $cart_h_color ),
-			),
-
-			// Border radius.
-			'.ast-site-header-cart.ast-menu-cart-outline .ast-addon-cart-wrap, .ast-site-header-cart.ast-menu-cart-fill .ast-addon-cart-wrap' => array(
-				'border-radius' => astra_get_css_value( $header_cart_icon_radius, 'px' ),
-			),
-		);
+			);
+		}
 
 		$css_output .= astra_parse_css( $header_cart_icon );
 	}

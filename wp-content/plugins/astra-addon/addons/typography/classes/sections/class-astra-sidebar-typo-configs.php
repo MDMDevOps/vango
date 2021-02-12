@@ -49,6 +49,8 @@ if ( ! class_exists( 'Astra_Sidebar_Typo_Configs' ) ) {
 					'title'    => __( 'Typography', 'astra-addon' ),
 					'priority' => 24,
 					'settings' => array(),
+					'context'  => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
+						Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
 				),
 
 				/**
@@ -63,6 +65,8 @@ if ( ! class_exists( 'Astra_Sidebar_Typo_Configs' ) ) {
 					'section'   => 'section-sidebars',
 					'transport' => 'postMessage',
 					'priority'  => 24,
+					'context'   => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
+						Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
 				),
 
 				/**
@@ -171,6 +175,8 @@ if ( ! class_exists( 'Astra_Sidebar_Typo_Configs' ) ) {
 					'section'   => 'section-sidebars',
 					'transport' => 'postMessage',
 					'priority'  => 24,
+					'context'   => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
+						Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
 				),
 
 				/**

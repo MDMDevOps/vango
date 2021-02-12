@@ -8295,6 +8295,8 @@ var WPSPFaqEdit = function (_Component) {
 	}, {
 		key: "componentDidUpdate",
 		value: function componentDidUpdate(prevProps, prevState) {
+			var _this2 = this;
+
 			if (JSON.stringify(this.props.schemaJsonData) !== JSON.stringify(prevProps.schemaJsonData)) {
 				this.props.setAttributes({
 					schema: JSON.stringify(this.props.schemaJsonData)
@@ -8305,6 +8307,11 @@ var WPSPFaqEdit = function (_Component) {
 			if (null !== element && undefined !== element) {
 				element.innerHTML = Object(__WEBPACK_IMPORTED_MODULE_5__styling__["a" /* default */])(this.props);
 			}
+			var getChildBlocks = select('core/block-editor').getBlocks(this.props.clientId);
+
+			getChildBlocks.forEach(function (faqChild, key) {
+				faqChild.attributes.headingTag = _this2.props.attributes.headingTag;
+			});
 		}
 	}, {
 		key: "onchangeIcon",
@@ -8360,7 +8367,7 @@ var WPSPFaqEdit = function (_Component) {
 	}, {
 		key: "render",
 		value: function render() {
-			var _this2 = this;
+			var _this3 = this;
 
 			var _props2 = this.props,
 			    attributes = _props2.attributes,
@@ -8465,7 +8472,7 @@ var WPSPFaqEdit = function (_Component) {
 						value: layout,
 						options: [{ value: "accordion", label: __("Accordion") }, { value: "grid", label: __("Grid") }],
 						onChange: function onChange(value) {
-							return _this2.onchangeLayout(value);
+							return _this3.onchangeLayout(value);
 						}
 					}),
 					'accordion' === layout && wp.element.createElement(
@@ -8924,7 +8931,7 @@ var WPSPFaqEdit = function (_Component) {
 						theme: "default",
 						value: icon,
 						onChange: function onChange(value) {
-							return _this2.onchangeIcon(value);
+							return _this3.onchangeIcon(value);
 						},
 						isMulti: false,
 						noSelectedPlaceholder: __("Select Icon")
@@ -8940,7 +8947,7 @@ var WPSPFaqEdit = function (_Component) {
 						theme: "default",
 						value: iconActive,
 						onChange: function onChange(value) {
-							return _this2.onchangeActiveIcon(value);
+							return _this3.onchangeActiveIcon(value);
 						},
 						isMulti: false,
 						noSelectedPlaceholder: __("Select Icon")
@@ -8986,7 +8993,7 @@ var WPSPFaqEdit = function (_Component) {
 						label: __("Question Tag"),
 						value: headingTag,
 						onChange: function onChange(value) {
-							return _this2.onchangeTag(value);
+							return _this3.onchangeTag(value);
 						},
 						options: [{ value: "span", label: __("Span") }, { value: "p", label: __("P") }, { value: "h1", label: __("H1") }, { value: "h2", label: __("H2") }, { value: "h3", label: __("H3") }, { value: "h4", label: __("H4") }, { value: "h5", label: __("H5") }, { value: "h6", label: __("H6") }]
 					}),

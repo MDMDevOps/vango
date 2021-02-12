@@ -40,7 +40,7 @@ if ( ! class_exists( 'Astra_Ext_Sticky_Header_Markup' ) ) {
 
 			/* Fixed header markup */
 			add_action( 'astra_header', array( $this, 'none_header_markup' ), 5 );
-			add_action( 'astra_header', array( $this, 'fixed_header_markup' ), 11 );
+			add_action( 'astra_sticky_header_markup', array( $this, 'fixed_header_markup' ) );
 
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 			add_action( 'astra_get_css_files', array( $this, 'add_styles' ) );
@@ -80,11 +80,19 @@ if ( ! class_exists( 'Astra_Ext_Sticky_Header_Markup' ) ) {
 				$classes[] = 'ast-sticky-main-shrink';
 			}
 
+			if ( Astra_Ext_Extension::is_active( 'sticky-header' ) && $shrink_main ) {
+				$classes[] = 'ast-sticky-header-shrink';
+			}
+
 			if ( '1' !== $inherit_desk_logo ) {
 				$classes[] = 'ast-inherit-site-logo-sticky';
 			}
 
 			if ( '1' == $inherit_desk_logo && '1' == $main_stick && '' !== $header_logo ) {
+				$classes[] = 'ast-sticky-custom-logo';
+			}
+
+			if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active && '1' == $inherit_desk_logo && '' !== $header_logo ) {
 				$classes[] = 'ast-sticky-custom-logo';
 			}
 
@@ -110,6 +118,13 @@ if ( ! class_exists( 'Astra_Ext_Sticky_Header_Markup' ) ) {
 			$sticky_primary_header_meta = astra_get_option_meta( 'header-main-stick-meta' );
 
 			if ( '1' == $inherit_desk_logo && ( '1' == $main_stick || ( 'enabled' == $sticky_header_meta && 'on' == $sticky_primary_header_meta ) ) && 'none' == $header_style ) {
+				// Logo For None Effect.
+				add_filter( 'astra_has_custom_logo', '__return_true' );
+				add_filter( 'get_custom_logo', array( $this, 'none_custom_logo' ), 10, 2 );
+			}
+
+			if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active && 'none' == $header_style ) {
+
 				// Logo For None Effect.
 				add_filter( 'astra_has_custom_logo', '__return_true' );
 				add_filter( 'get_custom_logo', array( $this, 'none_custom_logo' ), 10, 2 );
@@ -245,6 +260,7 @@ if ( ! class_exists( 'Astra_Ext_Sticky_Header_Markup' ) ) {
 		 * @return String          Custom logo HTML output
 		 */
 		public function sticky_custom_logo( $html, $blog_id ) {
+
 			$header_logo = astra_get_option( 'sticky-header-logo' );
 
 			if ( '' !== $header_logo ) {
@@ -463,6 +479,12 @@ if ( ! class_exists( 'Astra_Ext_Sticky_Header_Markup' ) ) {
 			$localize_vars['site_content_width']       = ( ASTRA_THEME_CONTAINER_PADDING_TWICE + astra_get_option( 'site-content-width' ) );
 			$localize_vars['site_layout_padded_width'] = ( astra_get_option( 'site-layout-padded-width', 1200 ) );
 			$localize_vars['site_layout_box_width']    = ( astra_get_option( 'site-layout-box-width', 1200 ) );
+
+			/**
+			 * Is new header builder active.
+			 */
+			$localize_vars['header_builder_active'] = Astra_Addon_Builder_Helper::$is_header_footer_builder_active;
+			$localize_vars['header_menu_count']     = Astra_Addon_Builder_Helper::$num_of_header_menu;
 
 			return $localize_vars;
 		}

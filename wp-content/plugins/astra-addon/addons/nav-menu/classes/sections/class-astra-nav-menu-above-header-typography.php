@@ -50,12 +50,18 @@ if ( ! class_exists( 'Astra_Nav_Menu_Above_Header_Typography' ) ) {
 					'section'   => 'section-above-header',
 					'transport' => 'postMessage',
 					'priority'  => 132,
-					'required'  => array(
-						'conditions' => array(
-							array( ASTRA_THEME_SETTINGS . '[above-header-section-1]', '==', 'menu' ),
-							array( ASTRA_THEME_SETTINGS . '[above-header-section-2]', '==', 'menu' ),
+					'context'   => array(
+						'relation' => 'OR',
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-1]',
+							'operator' => '==',
+							'value'    => 'menu',
 						),
-						'operator'   => 'OR',
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-2]',
+							'operator' => '==',
+							'value'    => 'menu',
+						),
 					),
 				),
 

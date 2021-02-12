@@ -968,7 +968,7 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Admin' ) ) {
 				wp_enqueue_media();
 				wp_enqueue_style( 'bsf-target-rule-select2', BSF_AIOSRS_PRO_URI . 'classes/lib/target-rule/select2.css', '', BSF_AIOSRS_PRO_VER, false );
 				wp_register_script( 'bsf-target-rule-select2', BSF_AIOSRS_PRO_URI . 'classes/lib/target-rule/select2.js', array( 'jquery', 'backbone', 'wp-util' ), BSF_AIOSRS_PRO_VER, true );
-				wp_enqueue_script( 'aiosrs-pro-settings-script', BSF_AIOSRS_PRO_URI . 'admin/assets/js/settings-script.js', array( 'jquery', 'bsf-target-rule-select2', 'wp-i18n', 'wp-util', 'updates' ), BSF_AIOSRS_PRO_VER, null, true );
+				wp_enqueue_script( 'aiosrs-pro-settings-script', BSF_AIOSRS_PRO_URI . 'admin/assets/js/settings-script.js', array( 'jquery', 'bsf-target-rule-select2', 'wp-i18n', 'wp-util' ), BSF_AIOSRS_PRO_VER, null, true );
 				if ( function_exists( 'wp_set_script_translations' ) ) {
 					wp_set_script_translations( 'aiosrs-pro-settings-script', 'wp-schema-pro' );
 				}

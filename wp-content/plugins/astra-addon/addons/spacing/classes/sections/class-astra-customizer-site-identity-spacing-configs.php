@@ -52,12 +52,22 @@ if ( ! class_exists( 'Astra_Customizer_Site_Identity_Spacing_Configs' ) ) {
 					'control'  => 'ast-heading',
 					'section'  => 'title_tagline',
 					'title'    => __( 'Spacing', 'astra-addon' ),
-					'required' => array(
-						'conditions' => array(
-							array( ASTRA_THEME_SETTINGS . '[display-site-title]', '!=', 0 ),
-							array( 'custom_logo', '!=', '' ),
+					'context'  => array(
+						'relation' => 'AND',
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'relation' => 'OR',
+							array(
+								'setting'  => ASTRA_THEME_SETTINGS . '[display-site-title]',
+								'operator' => '!=',
+								'value'    => 0,
+							),
+							array(
+								'setting'  => 'custom_logo',
+								'operator' => '!=',
+								'value'    => '',
+							),
 						),
-						'operator'   => 'OR',
 					),
 					'priority' => 50,
 					'settings' => array(),
@@ -75,12 +85,22 @@ if ( ! class_exists( 'Astra_Customizer_Site_Identity_Spacing_Configs' ) ) {
 					'section'        => 'title_tagline',
 					'priority'       => 50,
 					'title'          => __( 'Site Identity Space', 'astra-addon' ),
-					'required'       => array(
-						'conditions' => array(
-							array( ASTRA_THEME_SETTINGS . '[display-site-title]', '!=', 0 ),
-							array( 'custom_logo', '!=', '' ),
+					'context'        => array(
+						'relation' => 'AND',
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'relation' => 'OR',
+							array(
+								'setting'  => ASTRA_THEME_SETTINGS . '[display-site-title]',
+								'operator' => '!=',
+								'value'    => 0,
+							),
+							array(
+								'setting'  => 'custom_logo',
+								'operator' => '!=',
+								'value'    => '',
+							),
 						),
-						'operator'   => 'OR',
 					),
 					'linked_choices' => true,
 					'unit_choices'   => array( 'px', 'em', '%' ),

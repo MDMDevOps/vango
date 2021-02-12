@@ -63,11 +63,15 @@ if ( ! class_exists( 'Astra_Ext_Header_Sections_Markup' ) ) {
 			add_action( 'init', array( $this, 'register_menu_locations_widgets' ) );
 
 			/* Add HTML Markup Above Header */
-			add_action( 'astra_masthead', array( $this, 'above_header_html_markup_loader' ), 9 );
+			if ( ! Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+				add_action( 'astra_masthead', array( $this, 'above_header_html_markup_loader' ), 9 );
+			}
 			add_action( 'astra_above_header_toggle_buttons', array( $this, 'above_header_toggle_button' ), 10 );
 
 			/* Add HTML Markup Below Header */
-			add_action( 'astra_masthead', array( $this, 'below_header_html_markup_loader' ), 11 );
+			if ( ! Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+				add_action( 'astra_masthead', array( $this, 'below_header_html_markup_loader' ), 11 );
+			}
 			add_action( 'astra_below_header_toggle_buttons', array( $this, 'below_header_toggle_button' ), 11 );
 
 			add_action( 'astra_get_css_files', array( $this, 'add_styles' ) );

@@ -52,11 +52,12 @@ if ( ! class_exists( 'Astra_Customizer_Footer_Small_Spacing_Configs' ) ) {
 					'type'     => 'control',
 					'control'  => 'ast-heading',
 					'title'    => __( 'Spacing', 'astra-addon' ),
-					'required' => array(
-						'conditions' => array(
-							ASTRA_THEME_SETTINGS . '[footer-sml-layout]',
-							'!=',
-							'disabled',
+					'context'  => array(
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[footer-sml-layout]',
+							'operator' => '!=',
+							'value'    => 'disabled',
 						),
 					),
 					'priority' => 90,
@@ -75,11 +76,12 @@ if ( ! class_exists( 'Astra_Customizer_Footer_Small_Spacing_Configs' ) ) {
 					'section'        => 'section-footer-small',
 					'priority'       => 90,
 					'title'          => __( 'Footer Space', 'astra-addon' ),
-					'required'       => array(
-						'conditions' => array(
-							ASTRA_THEME_SETTINGS . '[footer-sml-layout]',
-							'!=',
-							'disabled',
+					'context'        => array(
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[footer-sml-layout]',
+							'operator' => '!=',
+							'value'    => 'disabled',
 						),
 					),
 					'linked_choices' => true,
@@ -104,12 +106,23 @@ if ( ! class_exists( 'Astra_Customizer_Footer_Small_Spacing_Configs' ) ) {
 					'section'        => 'section-footer-small',
 					'priority'       => 90,
 					'title'          => __( 'Menu Space', 'astra-addon' ),
-					'required'       => array(
-						'conditions' => array(
-							array( ASTRA_THEME_SETTINGS . '[footer-sml-section-1]', '==', 'menu' ),
-							array( ASTRA_THEME_SETTINGS . '[footer-sml-section-2]', '==', 'menu' ),
+					'context'        => array(
+						'relation' => 'AND',
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'relation' => 'OR',
+							array(
+								'setting'  => ASTRA_THEME_SETTINGS . '[footer-sml-section-1]',
+								'operator' => '==',
+								'value'    => 'menu',
+							),
+							array(
+								'setting'  => ASTRA_THEME_SETTINGS . '[footer-sml-section-2]',
+								'operator' => '==',
+								'value'    => 'menu',
+							),
 						),
-						'operator'   => 'OR',
+
 					),
 					'linked_choices' => true,
 					'unit_choices'   => array( 'px', 'em', '%' ),

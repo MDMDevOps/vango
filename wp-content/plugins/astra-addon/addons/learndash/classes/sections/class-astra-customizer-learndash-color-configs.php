@@ -210,9 +210,12 @@ if ( ! class_exists( 'Astra_Customizer_Learndash_Color_Configs' ) ) {
 						'section'  => 'section-learndash',
 						'title'    => __( 'Profile Picture Links to:', 'astra-addon' ),
 						'priority' => 15,
-						'required' => array(
-							'conditions' => array(
-								array( ASTRA_THEME_SETTINGS . '[learndash-profile-link-enabled]', '==', true ),
+						'context'  => array(
+							Astra_Addon_Builder_Helper::$general_tab_config,
+							array(
+								'setting'  => ASTRA_THEME_SETTINGS . '[learndash-profile-link-enabled]',
+								'operator' => '==',
+								'value'    => true,
 							),
 						),
 					),
@@ -228,7 +231,14 @@ if ( ! class_exists( 'Astra_Customizer_Learndash_Color_Configs' ) ) {
 						'title'    => __( 'Colors', 'astra-addon' ),
 						'section'  => 'section-learndash',
 						'priority' => 41,
-						'required' => array( ASTRA_THEME_SETTINGS . '[learndash-overwrite-colors]', '!=', 0 ),
+						'context'  => array(
+							Astra_Addon_Builder_Helper::$general_tab_config,
+							array(
+								'setting'  => ASTRA_THEME_SETTINGS . '[learndash-overwrite-colors]',
+								'operator' => '!=',
+								'value'    => 0,
+							),
+						),
 					),
 
 					/**
@@ -263,7 +273,14 @@ if ( ! class_exists( 'Astra_Customizer_Learndash_Color_Configs' ) ) {
 						'title'    => __( 'Highlight Text Color', 'astra-addon' ),
 						'section'  => 'section-learndash',
 						'priority' => 10,
-						'required' => array( ASTRA_THEME_SETTINGS . '[learndash-overwrite-colors]', '!=', 0 ),
+						'context'  => array(
+							Astra_Addon_Builder_Helper::$general_tab_config,
+							array(
+								'setting'  => ASTRA_THEME_SETTINGS . '[learndash-overwrite-colors]',
+								'operator' => '!=',
+								'value'    => 0,
+							),
+						),
 					),
 					array(
 						'name'     => 'learndash-course-progress-color',
@@ -274,7 +291,14 @@ if ( ! class_exists( 'Astra_Customizer_Learndash_Color_Configs' ) ) {
 						'title'    => __( 'Progress Color', 'astra-addon' ),
 						'section'  => 'section-learndash',
 						'priority' => 10,
-						'required' => array( ASTRA_THEME_SETTINGS . '[learndash-overwrite-colors]', '!=', 0 ),
+						'context'  => array(
+							Astra_Addon_Builder_Helper::$general_tab_config,
+							array(
+								'setting'  => ASTRA_THEME_SETTINGS . '[learndash-overwrite-colors]',
+								'operator' => '!=',
+								'value'    => 0,
+							),
+						),
 					),
 				);
 			}

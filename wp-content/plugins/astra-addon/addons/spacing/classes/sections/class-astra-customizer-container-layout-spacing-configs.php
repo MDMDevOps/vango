@@ -54,6 +54,8 @@ if ( ! class_exists( 'Astra_Customizer_Container_Layout_Spacing_Configs' ) ) {
 					'title'    => __( 'Spacing', 'astra-addon' ),
 					'priority' => 90,
 					'settings' => array(),
+					'context'  => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
+						Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
 				),
 
 				/**
@@ -66,6 +68,8 @@ if ( ! class_exists( 'Astra_Customizer_Container_Layout_Spacing_Configs' ) ) {
 					'control'        => 'ast-responsive-spacing',
 					'transport'      => 'postMessage',
 					'section'        => 'section-container-layout',
+					'context'        => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
+						Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
 					'priority'       => 95,
 					'title'          => __( 'Outside Container', 'astra-addon' ),
 					'linked_choices' => true,
@@ -86,6 +90,8 @@ if ( ! class_exists( 'Astra_Customizer_Container_Layout_Spacing_Configs' ) ) {
 					'default'        => astra_get_option( 'container-inside-spacing' ),
 					'type'           => 'control',
 					'control'        => 'ast-responsive-spacing',
+					'context'        => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
+						Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
 					'transport'      => 'postMessage',
 					'section'        => 'section-container-layout',
 					'priority'       => 100,
@@ -100,6 +106,26 @@ if ( ! class_exists( 'Astra_Customizer_Container_Layout_Spacing_Configs' ) ) {
 					),
 				),
 			);
+
+			if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+
+				array_push(
+					$_configs,
+					/**
+					 * Option: Container Tabs
+					 */
+					array(
+						'name'        => 'section-container-layout-ast-context-tabs',
+						'section'     => 'section-container-layout',
+						'type'        => 'control',
+						'control'     => 'ast-builder-header-control',
+						'priority'    => 0,
+						'description' => '',
+
+					)
+				);
+
+			}
 
 			return array_merge( $configurations, $_configs );
 		}

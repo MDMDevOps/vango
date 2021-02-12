@@ -249,11 +249,16 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Custom_Fields_Markup' ) ) {
 
 								$repeater_values = get_post_meta( $current_post_id, $schema_type . '-' . $post_id . '-' . $schema_key, true );
 
+								if ( ! is_array( $repeater_values ) || empty( $repeater_values ) ) {
+
+									$repeater_values = $schema_meta[ $schema_key ];
+								}
+
 								$repeter_fields = $schema_meta_fields[ $schema_key ]['fields'];
 
 								$tmp_fields = array();
 
-								foreach ( $schema_meta[ $schema_key ] as $index => $repeater_value ) {
+								foreach ( $repeater_values as $index => $repeater_value ) {
 
 									foreach ( $schema_field_value['fields'] as $field_key => $field ) {
 
@@ -906,7 +911,7 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Custom_Fields_Markup' ) ) {
 						<span class="bsf-aiosrs-schema-heading-help wpsp-hide-repeater-field bsf-hidden dashicons dashicons-dismiss"></span>
 						<?php foreach ( $option['fields'] as $index => $fields ) : ?>
 							<div class="aiosrs-pro-repeater-table-wrap">
-								<a href="#" class="bsf-repeater-target-close dashicons dashicons-no-alt"></a>
+								<a href="#" class="bsf-repeater-close dashicons dashicons-no-alt"></a>
 								<table class="aiosrs-pro-repeater-table">
 									<tbody>
 									<?php
@@ -1040,7 +1045,7 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Custom_Fields_Markup' ) ) {
 							</div>
 
 						<?php endforeach; ?>
-						<!-- <button type="button" class="bsf-repeater-add-new-btn button">+ Add</button>-->
+						<button type="button" class="bsf-repeater-add-new-btn button">+ Add</button>
 					</div>
 					<?php
 					break;

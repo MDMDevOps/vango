@@ -49,7 +49,14 @@ if ( ! class_exists( 'Astra_Woocommerce_Shop_Colors_Configs' ) ) {
 					'title'    => __( 'colors', 'astra-addon' ),
 					'settings' => array(),
 					'priority' => 228,
-					'required' => array( ASTRA_THEME_SETTINGS . '[shop-product-structure]', 'contains', 'title' ),
+					'context'  => array(
+						Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[shop-product-structure]',
+							'operator' => 'contains',
+							'value'    => 'title',
+						),
+					),
 				),
 
 				/**
@@ -63,7 +70,13 @@ if ( ! class_exists( 'Astra_Woocommerce_Shop_Colors_Configs' ) ) {
 					'title'     => __( 'Colors', 'astra-addon' ),
 					'section'   => 'woocommerce_product_catalog',
 					'transport' => 'postMessage',
-					'required'  => array( ASTRA_THEME_SETTINGS . '[shop-product-structure]', 'contains', 'title' ),
+					'context'   => array(
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[shop-product-structure]',
+							'operator' => 'contains',
+							'value'    => 'title',
+						),
+					),
 					'priority'  => 228,
 				),
 

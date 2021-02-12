@@ -224,8 +224,7 @@ if ( ! class_exists( 'Astra_Ext_Nav_Menu_Loader' ) ) {
 		 * @return array modified arguments.
 		 */
 		public function modify_nav_menu_args( $args ) {
-
-			if ( 'primary' == $args['theme_location'] || 'above_header_menu' == $args['theme_location'] || 'below_header_menu' == $args['theme_location'] ) {
+			if ( 'primary' == $args['theme_location'] || 'secondary_menu' == $args['theme_location'] || 'above_header_menu' == $args['theme_location'] || 'below_header_menu' == $args['theme_location'] || 'mobile_menu' == $args['theme_location'] ) {
 				$args['walker'] = new Astra_Custom_Nav_Walker();
 			}
 
@@ -370,6 +369,198 @@ if ( ! class_exists( 'Astra_Ext_Nav_Menu_Loader' ) ) {
 		 * @return array
 		 */
 		public function theme_defaults( $defaults ) {
+
+			for ( $index = 1; $index <= Astra_Addon_Builder_Helper::$num_of_header_menu; $index++ ) {
+
+				$_prefix = 'menu' . $index;
+
+				/**
+				 * Menu + Submenu Colors
+				 */
+				$defaults[ 'header-' . $_prefix . '-submenu-bg-color-responsive' ] = array(
+					'desktop' => '',
+					'tablet'  => '',
+					'mobile'  => '',
+				);
+
+				$defaults[ 'header-' . $_prefix . '-submenu-color-responsive' ] = array(
+					'desktop' => '',
+					'tablet'  => '',
+					'mobile'  => '',
+				);
+
+				$defaults[ 'header-' . $_prefix . '-submenu-h-bg-color-responsive' ] = array(
+					'desktop' => '',
+					'tablet'  => '',
+					'mobile'  => '',
+				);
+
+				$defaults[ 'header-' . $_prefix . '-submenu-h-color-responsive' ] = array(
+					'desktop' => '',
+					'tablet'  => '',
+					'mobile'  => '',
+				);
+
+				$defaults[ 'header-' . $_prefix . '-submenu-a-bg-color-responsive' ] = array(
+					'desktop' => '',
+					'tablet'  => '',
+					'mobile'  => '',
+				);
+
+				$defaults[ 'header-' . $_prefix . '-submenu-a-color-responsive' ] = array(
+					'desktop' => '',
+					'tablet'  => '',
+					'mobile'  => '',
+				);
+
+				/**
+				 * Submenu
+				 */
+				$defaults[ 'header-' . $_prefix . '-submenu-bg-color' ]   = '';
+				$defaults[ 'header-' . $_prefix . '-submenu-color' ]      = '';
+				$defaults[ 'header-' . $_prefix . '-submenu-h-bg-color' ] = '';
+				$defaults[ 'header-' . $_prefix . '-submenu-h-color' ]    = '';
+				$defaults[ 'header-' . $_prefix . '-submenu-a-bg-color' ] = '';
+				$defaults[ 'header-' . $_prefix . '-submenu-a-color' ]    = '';
+
+				/**
+				 * Sub Menu - Typography.
+				 */
+				$defaults[ 'header-font-size-' . $_prefix . '-sub-menu' ]      = array(
+					'desktop'      => '',
+					'tablet'       => '',
+					'mobile'       => '',
+					'desktop-unit' => 'px',
+					'tablet-unit'  => 'px',
+					'mobile-unit'  => 'px',
+				);
+				$defaults[ 'header-font-family-' . $_prefix . '-sub-menu' ]    = '';
+				$defaults[ 'header-font-weight-' . $_prefix . '-sub-menu' ]    = '';
+				$defaults[ 'header-text-transform-' . $_prefix . '-sub-menu' ] = '';
+				$defaults[ 'header-line-height-' . $_prefix . '-sub-menu' ]    = '';
+
+				/**
+				 * Mega Menu Color.
+				 */
+				$defaults[ 'header-' . $_prefix . '-header-megamenu-heading-color' ]   = '';
+				$defaults[ 'header-' . $_prefix . '-header-megamenu-heading-h-color' ] = '';
+
+				/**
+				 * Mega Menu Typography.
+				 */
+				$defaults[ 'header-' . $_prefix . '-megamenu-heading-font-family' ]    = 'inherit';
+				$defaults[ 'header-' . $_prefix . '-megamenu-heading-font-weight' ]    = '700';
+				$defaults[ 'header-' . $_prefix . '-megamenu-heading-text-transform' ] = '';
+				$defaults[ 'header-' . $_prefix . '-megamenu-heading-font-size' ]      = array(
+					'desktop'      => '',
+					'tablet'       => '',
+					'mobile'       => '',
+					'desktop-unit' => 'px',
+					'tablet-unit'  => 'px',
+					'mobile-unit'  => 'px',
+				);
+
+				/**
+				 * Menu Spacing.
+				 */
+				$defaults[ 'header-' . $_prefix . '-spacing' ]                       = array(
+					'desktop'      => array(
+						'top'    => '',
+						'right'  => '',
+						'bottom' => '',
+						'left'   => '',
+					),
+					'tablet'       => array(
+						'top'    => '0',
+						'right'  => '20',
+						'bottom' => '0',
+						'left'   => '20',
+					),
+					'mobile'       => array(
+						'top'    => '',
+						'right'  => '',
+						'bottom' => '',
+						'left'   => '',
+					),
+					'desktop-unit' => 'px',
+					'tablet-unit'  => 'px',
+					'mobile-unit'  => 'px',
+				);
+				$defaults[ 'header-' . $_prefix . '-submenu-spacing' ]               = array(
+					'desktop'      => array(
+						'top'    => '',
+						'right'  => '',
+						'bottom' => '',
+						'left'   => '',
+					),
+					'tablet'       => array(
+						'top'    => '0',
+						'right'  => '20',
+						'bottom' => '0',
+						'left'   => '30',
+					),
+					'mobile'       => array(
+						'top'    => '',
+						'right'  => '',
+						'bottom' => '',
+						'left'   => '',
+					),
+					'desktop-unit' => 'px',
+					'tablet-unit'  => 'px',
+					'mobile-unit'  => 'px',
+				);
+				$defaults[ 'header-' . $_prefix . '-header-megamenu-heading-space' ] = array(
+					'desktop'      => array(
+						'top'    => '',
+						'right'  => '',
+						'bottom' => '',
+						'left'   => '',
+					),
+					'tablet'       => array(
+						'top'    => '',
+						'right'  => '',
+						'bottom' => '',
+						'left'   => '',
+					),
+					'mobile'       => array(
+						'top'    => '',
+						'right'  => '',
+						'bottom' => '',
+						'left'   => '',
+					),
+					'desktop-unit' => 'px',
+					'tablet-unit'  => 'px',
+					'mobile-unit'  => 'px',
+				);
+			}
+
+			// Mobile Menu.
+			/**
+			 * Submenu
+			 */
+			$defaults['header-mobile-menu-submenu-bg-color']   = '';
+			$defaults['header-mobile-menu-submenu-color']      = '';
+			$defaults['header-mobile-menu-submenu-h-bg-color'] = '';
+			$defaults['header-mobile-menu-submenu-h-color']    = '';
+			$defaults['header-mobile-menu-submenu-a-bg-color'] = '';
+			$defaults['header-mobile-menu-submenu-a-color']    = '';
+
+			/**
+			 * Sub Menu - Typography.
+			 */
+			$defaults['header-font-size-mobile-menu-sub-menu']      = array(
+				'desktop'      => '',
+				'tablet'       => '',
+				'mobile'       => '',
+				'desktop-unit' => 'px',
+				'tablet-unit'  => 'px',
+				'mobile-unit'  => 'px',
+			);
+			$defaults['header-font-family-mobile-menu-sub-menu']    = '';
+			$defaults['header-font-weight-mobile-menu-sub-menu']    = '';
+			$defaults['header-text-transform-mobile-menu-sub-menu'] = '';
+			$defaults['header-line-height-mobile-menu-sub-menu']    = '';
+
 			// Above Header.
 			$defaults['above-header-megamenu-heading-color']          = '';
 			$defaults['above-header-megamenu-heading-h-color']        = '';

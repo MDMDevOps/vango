@@ -71,10 +71,10 @@ class BSF_AIOSRS_Pro_Helper {
 
 		// Advanced Settings.
 		'aiosrs-pro-settings'              => array(
-			'quick-test'          => 1,
+			'quick-test'          => '1',
 			'menu-position'       => 'options-general.php',
 			'schema-location'     => 'head',
-			'yoast-compatibility' => 1,
+			'yoast-compatibility' => '1',
 			'schema-validation'   => '',
 			'default_image'       => '',
 			'delete-schema-data'  => '',

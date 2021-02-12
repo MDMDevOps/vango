@@ -54,7 +54,13 @@ if ( ! class_exists( 'Astra_Customizer_Above_Header_Spacing_Configs' ) ) {
 					'title'    => __( 'Spacing', 'astra-addon' ),
 					'priority' => 150,
 					'settings' => array(),
-					'required' => array( ASTRA_THEME_SETTINGS . '[above-header-layout]', '!=', 'disabled' ),
+					'context'  => array(
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-layout]',
+							'operator' => '!=',
+							'value'    => 'disabled',
+						),
+					),
 				),
 
 				/**
@@ -69,9 +75,11 @@ if ( ! class_exists( 'Astra_Customizer_Above_Header_Spacing_Configs' ) ) {
 					'section'        => 'section-above-header',
 					'priority'       => 160,
 					'title'          => __( 'Header Space', 'astra-addon' ),
-					'required'       => array(
-						'conditions' => array(
-							array( ASTRA_THEME_SETTINGS . '[above-header-layout]', '!=', 'disabled' ),
+					'context'        => array(
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-layout]',
+							'operator' => '!=',
+							'value'    => 'disabled',
 						),
 					),
 					'linked_choices' => true,
@@ -96,13 +104,28 @@ if ( ! class_exists( 'Astra_Customizer_Above_Header_Spacing_Configs' ) ) {
 					'section'        => 'section-above-header',
 					'priority'       => 165,
 					'title'          => __( 'Menu Space', 'astra-addon' ),
-					'required'       => array(
-						'conditions' => array(
-							array( ASTRA_THEME_SETTINGS . '[above-header-section-1]', '==', 'menu' ),
-							array( ASTRA_THEME_SETTINGS . '[above-header-section-2]', '==', 'menu' ),
+					'context'        => array(
+						'relation' => 'AND',
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-layout]',
+							'operator' => '!=',
+							'value'    => 'disabled',
 						),
-						'operator'   => 'OR',
+						array(
+							'relation' => 'OR',
+							array(
+								'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-1]',
+								'operator' => '==',
+								'value'    => 'menu',
+							),
+							array(
+								'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-2]',
+								'operator' => '==',
+								'value'    => 'menu',
+							),
+						),
 					),
+
 					'linked_choices' => true,
 					'unit_choices'   => array( 'px', 'em', '%' ),
 					'choices'        => array(
@@ -125,13 +148,20 @@ if ( ! class_exists( 'Astra_Customizer_Above_Header_Spacing_Configs' ) ) {
 					'section'        => 'section-above-header',
 					'priority'       => 170,
 					'title'          => __( 'Submenu Space', 'astra-addon' ),
-					'required'       => array(
-						'conditions' => array(
-							array( ASTRA_THEME_SETTINGS . '[above-header-section-1]', '==', 'menu' ),
-							array( ASTRA_THEME_SETTINGS . '[above-header-section-2]', '==', 'menu' ),
+					'context'        => array(
+						'relation' => 'OR',
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-1]',
+							'operator' => '==',
+							'value'    => 'menu',
 						),
-						'operator'   => 'OR',
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-2]',
+							'operator' => '==',
+							'value'    => 'menu',
+						),
 					),
+
 					'linked_choices' => true,
 					'unit_choices'   => array( 'px', 'em', '%' ),
 					'choices'        => array(

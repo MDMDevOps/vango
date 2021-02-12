@@ -54,6 +54,8 @@ if ( ! class_exists( 'Astra_Customizer_Blog_Spacing_Configs' ) ) {
 					'title'    => __( 'Spacing', 'astra-addon' ),
 					'priority' => 160,
 					'settings' => array(),
+					'context'  => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
+						Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
 				),
 
 				/**
@@ -66,6 +68,8 @@ if ( ! class_exists( 'Astra_Customizer_Blog_Spacing_Configs' ) ) {
 					'control'        => 'ast-responsive-spacing',
 					'transport'      => 'postMessage',
 					'section'        => 'section-blog',
+					'context'        => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
+						Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
 					'priority'       => 165,
 					'title'          => __( 'Outside Post', 'astra-addon' ),
 					'linked_choices' => true,
@@ -88,6 +92,8 @@ if ( ! class_exists( 'Astra_Customizer_Blog_Spacing_Configs' ) ) {
 					'control'        => 'ast-responsive-spacing',
 					'transport'      => 'postMessage',
 					'section'        => 'section-blog',
+					'context'        => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
+						Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
 					'priority'       => 170,
 					'title'          => __( 'Inside Post', 'astra-addon' ),
 					'linked_choices' => true,
@@ -110,11 +116,15 @@ if ( ! class_exists( 'Astra_Customizer_Blog_Spacing_Configs' ) ) {
 					'control'        => 'ast-responsive-spacing',
 					'transport'      => 'postMessage',
 					'section'        => 'section-blog',
-					'priority'       => 120,
+					'priority'       => 175,
 					'title'          => __( 'Post Pagination Space', 'astra-addon' ),
-					'required'       => array(
-						'conditions' => array(
-							array( ASTRA_THEME_SETTINGS . '[blog-pagination]', '==', 'number' ),
+					'context'        => array(
+						'context' => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
+							Astra_Addon_Builder_Helper::$design_tab_config : Astra_Addon_Builder_Helper::$general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[blog-pagination]',
+							'operator' => '==',
+							'value'    => 'number',
 						),
 					),
 					'linked_choices' => true,

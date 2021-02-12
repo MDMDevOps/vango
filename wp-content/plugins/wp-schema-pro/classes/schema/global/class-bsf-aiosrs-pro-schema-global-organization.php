@@ -86,7 +86,8 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Global_Organization' ) ) {
 				}
 			}
 			if ( $logo_id ) {
-				$logo_image     = wp_get_attachment_image_src( $logo_id, 'full' );
+				$key            = 'site-logo';
+				$logo_image     = BSF_AIOSRS_Pro_Schema_Template::get_image_object( $logo_id, $key );
 				$schema['logo'] = BSF_AIOSRS_Pro_Schema_Template::get_image_schema( $logo_image, 'ImageObject' );
 			}
 

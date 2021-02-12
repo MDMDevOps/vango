@@ -58,12 +58,12 @@
 }
 
 /* Astra Customizer Blog Featured Image sizes */
-#customize-control-astra-settings-blog-archive-image-width:not(.ast-hide),
-#customize-control-astra-settings-blog-archive-image-height:not(.ast-hide),
-#customize-control-astra-settings-blog-single-post-image-width:not(.ast-hide),
-#customize-control-astra-settings-blog-single-post-image-height:not(.ast-hide),
-#customize-control-astra-settings-blog-archive-image-apply-sizes:not(.ast-hide),
-#customize-control-astra-settings-blog-single-post-image-apply-sizes:not(.ast-hide){
+#customize-control-astra-settings-blog-archive-image-width,
+#customize-control-astra-settings-blog-archive-image-height,
+#customize-control-astra-settings-blog-single-post-image-width,
+#customize-control-astra-settings-blog-single-post-image-height,
+#customize-control-astra-settings-blog-archive-image-apply-sizes,
+#customize-control-astra-settings-blog-single-post-image-apply-sizes {
     display: -webkit-inline-box !important;
     display: -ms-inline-flexbox !important;
     display: inline-flex !important;
@@ -76,12 +76,20 @@
     text-align: center;
     vertical-align: bottom;
 }
-#customize-control-astra-settings-blog-archive-image-width:not(.ast-hide) input[type="number"],
-#customize-control-astra-settings-blog-archive-image-height:not(.ast-hide) input[type="number"],
-#customize-control-astra-settings-blog-single-post-image-width:not(.ast-hide) input[type="number"],
-#customize-control-astra-settings-blog-single-post-image-height:not(.ast-hide) input[type="number"],
-#customize-control-astra-settings-blog-archive-image-apply-sizes:not(.ast-hide) input[type="number"],
-#customize-control-astra-settings-blog-single-post-image-apply-sizes:not(.ast-hide) input[type="number"]{
+#customize-control-astra-settings-blog-archive-image-height[style*="display: none;"],
+#customize-control-astra-settings-blog-single-post-image-width[style*="display: none;"],
+#customize-control-astra-settings-blog-single-post-image-height[style*="display: none;"],
+#customize-control-astra-settings-blog-archive-image-apply-sizes[style*="display: none;"],
+#customize-control-astra-settings-blog-single-post-image-apply-sizes[style*="display: none;"],
+#customize-control-astra-settings-blog-archive-image-width[style*="display: none;"] {
+    display: none !important;
+}
+#customize-control-astra-settings-blog-archive-image-width input[type="number"],
+#customize-control-astra-settings-blog-archive-image-height input[type="number"],
+#customize-control-astra-settings-blog-single-post-image-width input[type="number"],
+#customize-control-astra-settings-blog-single-post-image-height input[type="number"],
+#customize-control-astra-settings-blog-archive-image-apply-sizes input[type="number"],
+#customize-control-astra-settings-blog-single-post-image-apply-sizes input[type="number"]{
     margin-right: 5px;
     padding: 3px 5px;
     height: 28px;
@@ -90,17 +98,17 @@
 }
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
     /* IE10+ CSS styles go here */
-    #customize-control-astra-settings-blog-archive-image-width:not(.ast-hide) input[type="number"],
-    #customize-control-astra-settings-blog-archive-image-height:not(.ast-hide) input[type="number"],
-    #customize-control-astra-settings-blog-single-post-image-width:not(.ast-hide) input[type="number"],
-    #customize-control-astra-settings-blog-single-post-image-height:not(.ast-hide) input[type="number"],
-    #customize-control-astra-settings-blog-archive-image-apply-sizes:not(.ast-hide) input[type="number"],
-    #customize-control-astra-settings-blog-single-post-image-apply-sizes:not(.ast-hide) input[type="number"]{
+    #customize-control-astra-settings-blog-archive-image-width input[type="number"],
+    #customize-control-astra-settings-blog-archive-image-height input[type="number"],
+    #customize-control-astra-settings-blog-single-post-image-width input[type="number"],
+    #customize-control-astra-settings-blog-single-post-image-height input[type="number"],
+    #customize-control-astra-settings-blog-archive-image-apply-sizes input[type="number"],
+    #customize-control-astra-settings-blog-single-post-image-apply-sizes input[type="number"]{
         margin-right: 28px;
     }
 }
-#customize-control-astra-settings-blog-archive-image-apply-sizes:not(.ast-hide),
-#customize-control-astra-settings-blog-single-post-image-apply-sizes:not(.ast-hide){
+#customize-control-astra-settings-blog-archive-image-apply-sizes,
+#customize-control-astra-settings-blog-single-post-image-apply-sizes{
     margin-left: 1%;
     vertical-align: top;
 }

@@ -315,7 +315,6 @@ if ( ! class_exists( 'Astra_Ext_Woocommerce_Loader' ) ) {
 
 			require_once ASTRA_EXT_WOOCOMMERCE_DIR . 'classes/sections/class-astra-woocommerce-shop-typo-configs.php';
 			require_once ASTRA_EXT_WOOCOMMERCE_DIR . 'classes/sections/class-astra-woocommerce-shop-colors-configs.php';
-
 		}
 
 		/**

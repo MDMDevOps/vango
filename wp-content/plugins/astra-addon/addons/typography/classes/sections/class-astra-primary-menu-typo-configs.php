@@ -284,7 +284,13 @@ if ( ! class_exists( 'Astra_Primary_Menu_Typo_Configs' ) ) {
 					'title'     => __( 'Outside menu item', 'astra-addon' ),
 					'section'   => 'section-header',
 					'transport' => 'postMessage',
-					'required'  => array( ASTRA_THEME_SETTINGS . '[header-display-outside-menu]', '==', '1' ),
+					'context'   => array(
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[header-display-outside-menu]',
+							'operator' => '==',
+							'value'    => '1',
+						),
+					),
 					'priority'  => 73,
 				),
 

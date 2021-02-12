@@ -53,18 +53,24 @@ if ( ! class_exists( 'Astra_Ext_Spacing_Loader' ) ) {
 		 */
 		public function theme_defaults( $defaults ) {
 
-			$defaults['site-identity-spacing']        = array(
+			$defaults['header-account-menu-spacing']  = array(
 				'desktop'      => array(
 					'top'    => '',
+					'right'  => '',
 					'bottom' => '',
+					'left'   => '',
 				),
 				'tablet'       => array(
 					'top'    => '',
+					'right'  => '',
 					'bottom' => '',
+					'left'   => '',
 				),
 				'mobile'       => array(
 					'top'    => '',
+					'right'  => '',
 					'bottom' => '',
+					'left'   => '',
 				),
 				'desktop-unit' => 'px',
 				'tablet-unit'  => 'px',
@@ -571,17 +577,18 @@ if ( ! class_exists( 'Astra_Ext_Spacing_Loader' ) ) {
 			/**
 			 * Sections
 			 */
-			require_once ASTRA_EXT_SPACING_DIR . 'classes/sections/class-astra-customizer-site-identity-spacing-configs.php';
 			require_once ASTRA_EXT_SPACING_DIR . 'classes/sections/class-astra-customizer-container-layout-spacing-configs.php';
 			if ( astra_addon_existing_header_footer_configs() ) {
 				require_once ASTRA_EXT_SPACING_DIR . 'classes/sections/class-astra-customizer-header-spacing-configs.php';
 				require_once ASTRA_EXT_SPACING_DIR . 'classes/sections/class-astra-customizer-above-header-spacing-configs.php';
 				require_once ASTRA_EXT_SPACING_DIR . 'classes/sections/class-astra-customizer-below-header-spacing-configs.php';
 				require_once ASTRA_EXT_SPACING_DIR . 'classes/sections/class-astra-customizer-footer-small-spacing-configs.php';
+				require_once ASTRA_EXT_SPACING_DIR . 'classes/sections/class-astra-customizer-site-identity-spacing-configs.php';
+			} else {
+				require_once ASTRA_EXT_SPACING_DIR . 'classes/sections/class-astra-customizer-header-builder-menu-configs.php';
 			}
 			require_once ASTRA_EXT_SPACING_DIR . 'classes/sections/class-astra-customizer-sidebar-spacing-configs.php';
 			require_once ASTRA_EXT_SPACING_DIR . 'classes/sections/class-astra-customizer-blog-spacing-configs.php';
-
 		}
 
 		/**
@@ -596,7 +603,13 @@ if ( ! class_exists( 'Astra_Ext_Spacing_Loader' ) ) {
 			}
 
 			$localize_array = array(
-				'blog_pro_enabled' => Astra_Ext_Extension::is_active( 'blog-pro' ),
+				'blog_pro_enabled'    => Astra_Ext_Extension::is_active( 'blog-pro' ),
+				'tablet_break_point'  => astra_addon_get_tablet_breakpoint(),
+				'mobile_break_point'  => astra_addon_get_mobile_breakpoint(),
+				'header_html_count'   => Astra_Addon_Builder_Helper::$num_of_header_html,
+				'header_menu_count'   => Astra_Addon_Builder_Helper::$num_of_header_menu,
+				'header_button_count' => Astra_Addon_Builder_Helper::$num_of_header_button,
+				'header_html_count'   => Astra_Addon_Builder_Helper::$num_of_footer_html,
 			);
 			wp_localize_script( 'astra-ext-spacing-customize-preview-js', 'ast_preview', $localize_array );
 

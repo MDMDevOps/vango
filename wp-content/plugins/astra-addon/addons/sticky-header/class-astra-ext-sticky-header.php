@@ -53,6 +53,30 @@ if ( ! class_exists( 'Astra_Ext_Sticky_Header' ) ) {
 				if ( Astra_Ext_Extension::is_active( 'site-layouts' ) ) {
 					require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/dynamic-css/site-layouts-dynamic.css.php';
 				}
+
+				if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+
+					// Sticky Header Button CSS.
+					require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/dynamic-css/button-dynamic.css.php';
+
+					// Sticky Header Social CSS.
+					require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/dynamic-css/social-dynamic.css.php';
+
+					// Sticky Header Search CSS.
+					require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/dynamic-css/search-dynamic.css.php';
+
+					// Sticky Header HTML CSS.
+					require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/dynamic-css/html-dynamic.css.php';
+
+					// Sticky Header Widget CSS.
+					require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/dynamic-css/widget-dynamic.css.php';
+
+					// Sticky Header divider CSS.
+					require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/dynamic-css/divider-dynamic.css.php';
+
+					// Sticky Account divider CSS.
+					require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/dynamic-css/account-dynamic.css.php';
+				}
 			}
 		}
 	}
