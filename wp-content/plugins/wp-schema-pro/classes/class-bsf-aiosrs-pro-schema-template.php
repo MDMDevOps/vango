@@ -148,6 +148,9 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Template' ) ) {
 
 				default:
 					$value = get_post_meta( $post['ID'], $schema_key, $single );
+					if ( is_array( $value ) ) {
+						$value = '';
+					}
 					break;
 			}
 

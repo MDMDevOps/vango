@@ -158,7 +158,7 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema' ) ) {
 
 			check_ajax_referer( 'schema_nonce', 'nonce' );
 
-			$item_type        = filter_input( INPUT_POST, 'item_type', FILTER_SANITIZE_STRING );
+			$item_type        = filter_input( INPUT_POST, 'itemType', FILTER_SANITIZE_STRING );
 			$post_id          = filter_input( INPUT_POST, 'post_id', FILTER_VALIDATE_INT );
 			$item_type_fields = self::$schema_item_types[ $item_type ]['subkeys'];
 
@@ -1038,6 +1038,20 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema' ) ) {
 								'type'    => 'text',
 								'default' => 'none',
 							),
+							'job-location-type'       => array(
+								'label'       => esc_html__( 'Job Location Type', 'wp-schema-pro' ),
+								'type'        => 'text',
+								'default'     => 'none',
+								'required'    => false,
+								'description' => esc_html__( 'Use value "TELECOMMUTE" for jobs in which the employee may or must work remotely 100% of the time.', 'wp-schema-pro' ),
+							),
+							'applicant-location'      => array(
+								'label'       => esc_html__( 'Applicant Location', 'wp-schema-pro' ),
+								'type'        => 'text',
+								'default'     => 'none',
+								'required'    => false,
+								'description' => esc_html__( 'The geographic location(s) in which employees may be located to be eligible for the Remote job.', 'wp-schema-pro' ),
+							),
 							'location-street'         => array(
 								'label'    => esc_html__( 'Street Address', 'wp-schema-pro' ),
 								'type'     => 'text',
@@ -1203,6 +1217,7 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema' ) ) {
 								'dropdown-type' => 'country',
 								'required'      => true,
 							),
+
 							'hours-specification' => array(
 								'label'  => esc_html__( 'Hours Specification', 'wp-schema-pro' ),
 								'type'   => 'repeater',
@@ -1228,6 +1243,26 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema' ) ) {
 										'required' => true,
 									),
 								),
+							),
+							'geo-latitude'        => array(
+								'label'       => esc_html__( ' Latitude', 'wp-schema-pro' ),
+								'type'        => 'number',
+								'default'     => 'create-field',
+								'required'    => false,
+								'attrs'       => array(
+									'step' => 'any',
+								),
+								'description' => esc_html__( 'The latitude of the business location. . e.g. "37.293058"', 'wp-schema-pro' ),
+							),
+							'geo-longitude'       => array(
+								'label'       => esc_html__( 'Longitude', 'wp-schema-pro' ),
+								'type'        => 'number',
+								'default'     => 'create-field',
+								'required'    => false,
+								'attrs'       => array(
+									'step' => 'any',
+								),
+								'description' => esc_html__( 'The longitude of the business location. e.g. "-121.988331"', 'wp-schema-pro' ),
 							),
 							'rating'              => array(
 								'label'   => esc_html__( 'Rating', 'wp-schema-pro' ),
@@ -1266,34 +1301,17 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema' ) ) {
 									'bsf-aiosrs-organization' => esc_html__( 'Organization', 'wp-schema-pro' ),
 								),
 							),
-							'item'           => array(
-								'label'    => esc_html__( 'Review Item', 'wp-schema-pro' ),
-								'type'     => 'text',
-								'default'  => 'none',
-								'required' => true,
-							),
-							'item-image'     => array(
-								'label'   => esc_html__( 'Review Item Image', 'wp-schema-pro' ),
-								'type'    => 'image',
-								'default' => 'none',
-							),
-							'description'    => array(
-								'label'    => esc_html__( 'Review Description', 'wp-schema-pro' ),
-								'type'     => 'textarea',
-								'default'  => 'post_content',
-								'required' => true,
-							),
 							'review-body'    => array(
 								'label'    => esc_html__( 'Review Body', 'wp-schema-pro' ),
 								'type'     => 'textarea',
 								'default'  => 'post_content',
-								'required' => true,
+								'required' => false,
 							),
 							'date'           => array(
 								'label'    => esc_html__( 'Review Date', 'wp-schema-pro' ),
 								'type'     => 'date',
 								'default'  => 'post_date',
-								'required' => true,
+								'required' => false,
 							),
 							'rating'         => array(
 								'label'   => esc_html__( 'Review Rating', 'wp-schema-pro' ),
@@ -1318,11 +1336,6 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema' ) ) {
 								'label'   => esc_html__( 'Publisher Name', 'wp-schema-pro' ),
 								'type'    => 'text',
 								'default' => 'author_name',
-							),
-							'url'            => array(
-								'label'   => esc_html__( 'URL', 'wp-schema-pro' ),
-								'type'    => 'text',
-								'default' => 'post_permalink',
 							),
 						),
 					),
@@ -1507,6 +1520,37 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema' ) ) {
 								'default'       => 'none',
 								'dropdown-type' => 'currency',
 							),
+							'product-review'    => array(
+								'label'  => esc_html__( 'Review', 'wp-schema-pro' ),
+								'type'   => 'repeater',
+								'fields' => array(
+									'reviewer-type'  => array(
+										'label'   => esc_html__( 'Reviewer Type', 'wp-schema-pro' ),
+										'type'    => 'text',
+										'default' => 'Person',
+										'choices' => array(
+											'Person'       => esc_html__( 'Person', 'wp-schema-pro' ),
+											'Organization' => esc_html__( 'Organization', 'wp-schema-pro' ),
+										),
+									),
+									'reviewer-name'  => array(
+										'label'    => esc_html__( 'Reviewer Name', 'wp-schema-pro' ),
+										'type'     => 'text',
+										'default'  => 'author_name',
+										'required' => true,
+									),
+									'product-rating' => array(
+										'label'   => esc_html__( 'Product Rating', 'wp-schema-pro' ),
+										'type'    => 'rating',
+										'default' => 'none',
+									),
+									'review-body'    => array(
+										'label'   => esc_html__( 'Review Body', 'wp-schema-pro' ),
+										'type'    => 'textarea',
+										'default' => 'post_content',
+									),
+								),
+							),
 							'rating'            => array(
 								'label'   => esc_html__( 'Rating', 'wp-schema-pro' ),
 								'type'    => 'rating',
@@ -1517,6 +1561,37 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema' ) ) {
 								'type'        => 'text',
 								'default'     => 'none',
 								'description' => esc_html__( 'The count of total number of reviews. e.g. "11"', 'wp-schema-pro' ),
+							),
+							'product-review'    => array(
+								'label'  => esc_html__( 'Review', 'wp-schema-pro' ),
+								'type'   => 'repeater',
+								'fields' => array(
+									'reviewer-type'  => array(
+										'label'   => esc_html__( 'Reviewer Type', 'wp-schema-pro' ),
+										'type'    => 'text',
+										'default' => 'Person',
+										'choices' => array(
+											'Person'       => esc_html__( 'Person', 'wp-schema-pro' ),
+											'Organization' => esc_html__( 'Organization', 'wp-schema-pro' ),
+										),
+									),
+									'reviewer-name'  => array(
+										'label'    => esc_html__( 'Reviewer Name', 'wp-schema-pro' ),
+										'type'     => 'text',
+										'default'  => 'author_name',
+										'required' => true,
+									),
+									'product-rating' => array(
+										'label'   => esc_html__( 'Product Rating', 'wp-schema-pro' ),
+										'type'    => 'rating',
+										'default' => 'none',
+									),
+									'review-body'    => array(
+										'label'   => esc_html__( 'Review Body', 'wp-schema-pro' ),
+										'type'    => 'textarea',
+										'default' => 'post_content',
+									),
+								),
 							),
 						),
 					),
@@ -2025,6 +2100,27 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema' ) ) {
 
 						),
 					),
+					'bsf-aiosrs-custom-markup'        => array(
+						'key'            => 'custom-markup',
+						'icon'           => 'dashicons dashicons-edit-page',
+						'label'          => __( 'Custom Markup', 'wp-schema-pro' ),
+						'guideline-link' => 'https://wpschema.com/docs/add-custom-schema-markup/',
+						'path'           => BSF_AIOSRS_PRO_DIR . 'classes/schema/',
+						'subkeys'        => array(
+							'custom-markup' => array(
+								'label'       => esc_html__( 'Custom Markup', 'wp-schema-pro' ),
+								'type'        => 'textarea',
+								'default'     => 'none',
+								'description' => esc_html__(
+									'Be sure to add custom schema markup in JSON-LD format.
+								As the custom schema markup in JSON-LD format, make sure to add it in script tag.
+								Validate schema markup with the Structured Data Testing Tool or Rich Results Test before adding to the website.',
+									'wp-schema-pro'
+								),
+								'required'    => false,
+							),
+						),
+					),
 				)
 			);
 
@@ -2037,6 +2133,12 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema' ) ) {
 								'label'    => esc_html__( 'Book Name', 'wp-schema-pro' ),
 								'type'     => 'text',
 								'default'  => 'post_title',
+								'required' => true,
+							),
+							'description'   => array(
+								'label'    => esc_html__( 'Book Description', 'wp-schema-pro' ),
+								'type'     => 'textarea',
+								'default'  => 'post_content',
 								'required' => true,
 							),
 							'serial-number' => array(
@@ -2083,72 +2185,126 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema' ) ) {
 					),
 					'bsf-aiosrs-event'                => array(
 						'subkeys' => array(
-							'name'              => array(
+							'name'                  => array(
 								'label'    => esc_html__( 'Event Name', 'wp-schema-pro' ),
 								'type'     => 'text',
 								'default'  => 'post_title',
 								'required' => true,
 							),
-							'image'             => array(
+							'image'                 => array(
 								'label'   => esc_html__( 'Event Image', 'wp-schema-pro' ),
 								'type'    => 'image',
 								'default' => 'featured_img',
 							),
+							'event-status'          => array(
+								'label'         => esc_html__( ' Status', 'wp-schema-pro' ),
+								'type'          => 'dropdown',
+								'default'       => 'custom-text',
+								'dropdown-type' => 'event-status',
+								'required'      => false,
+								'description'   => esc_html__( 'The status of the event. If you don\'t use this field, Google understands the eventStatus to be EventScheduled. ', 'wp-schema-pro' ),
 
-							'start-date'        => array(
+							),
+							'event-attendance-mode' => array(
+								'label'         => esc_html__( ' Attendance Mode', 'wp-schema-pro' ),
+								'type'          => 'dropdown',
+								'default'       => 'custom-text',
+								'dropdown-type' => 'event-attendance-mode',
+								'required'      => false,
+								'description'   => esc_html__( 'The location of the event. There are different requirements depending on if the event is happening online or at a physical location.', 'wp-schema-pro' ),
+
+							),
+							'start-date'            => array(
 								'label'    => esc_html__( 'Event Start Date', 'wp-schema-pro' ),
 								'type'     => 'datetime-local',
 								'default'  => 'create-field',
 								'required' => true,
 							),
-							'end-date'          => array(
+							'end-date'              => array(
 								'label'   => esc_html__( 'Event End Date', 'wp-schema-pro' ),
 								'type'    => 'datetime-local',
 								'default' => 'create-field',
 							),
-							'location'          => array(
+							'previous-date'         => array(
+								'label'   => esc_html__( 'Previous Start Date', 'wp-schema-pro' ),
+								'type'    => 'datetime-local',
+								'class'   => 'wpsp-event-status-rescheduled',
+								'default' => 'custom-text',
+							),
+							'online-location'       => array(
+								'label'   => esc_html__( 'Online Event URL', 'wp-schema-pro' ),
+								'type'    => 'text',
+								'default' => 'post_permalink',
+								'class'   => 'wpsp-event-status-online',
+
+							),
+							'event-status'          => array(
+								'label'         => esc_html__( ' Status', 'wp-schema-pro' ),
+								'type'          => 'dropdown',
+								'default'       => 'custom-text',
+								'dropdown-type' => 'event-status',
+								'required'      => false,
+								'description'   => esc_html__( 'The status of the event. If you don\'t use this field, Google understands the eventStatus to be EventScheduled. ', 'wp-schema-pro' ),
+
+							),
+							'event-attendance-mode' => array(
+								'label'         => esc_html__( ' Attendance Mode', 'wp-schema-pro' ),
+								'type'          => 'dropdown',
+								'default'       => 'custom-text',
+								'dropdown-type' => 'event-attendance-mode',
+								'required'      => false,
+								'description'   => esc_html__( 'The location of the event. There are different requirements depending on if the event is happening online or at a physical location.', 'wp-schema-pro' ),
+
+							),
+							'location'              => array(
 								'label'   => esc_html__( 'Event Location Name', 'wp-schema-pro' ),
 								'type'    => 'text',
 								'default' => 'create-field',
+								'class'   => 'wpsp-event-status-offline',
 							),
-							'location-street'   => array(
+							'location-street'       => array(
 								'label'    => esc_html__( 'Event Street Address', 'wp-schema-pro' ),
 								'type'     => 'text',
 								'default'  => 'create-field',
 								'required' => true,
+								'class'    => 'wpsp-event-status-offline',
 							),
-							'location-locality' => array(
+							'location-locality'     => array(
 								'label'    => esc_html__( 'Event Locality', 'wp-schema-pro' ),
 								'type'     => 'text',
 								'default'  => 'create-field',
 								'required' => true,
+								'class'    => 'wpsp-event-status-offline',
 							),
-							'location-postal'   => array(
+							'location-postal'       => array(
 								'label'    => esc_html__( 'Event Postal Code', 'wp-schema-pro' ),
 								'type'     => 'text',
 								'default'  => 'create-field',
 								'required' => true,
+								'class'    => 'wpsp-event-status-offline',
 							),
-							'location-region'   => array(
+							'location-region'       => array(
 								'label'    => esc_html__( 'Event Region', 'wp-schema-pro' ),
 								'type'     => 'text',
 								'default'  => 'create-field',
 								'required' => true,
+								'class'    => 'wpsp-event-status-offline',
 							),
-							'location-country'  => array(
+							'location-country'      => array(
 								'label'         => esc_html__( 'Event Country', 'wp-schema-pro' ),
 								'type'          => 'dropdown',
 								'default'       => 'create-field',
 								'required'      => true,
 								'dropdown-type' => 'country',
+								'class'         => 'wpsp-event-status-offline',
 							),
-							'avail'             => array(
+							'avail'                 => array(
 								'label'         => esc_html__( 'Event Offer Availability', 'wp-schema-pro' ),
 								'type'          => 'dropdown',
 								'default'       => 'create-field',
 								'dropdown-type' => 'availability',
 							),
-							'price'             => array(
+							'price'                 => array(
 								'label'   => esc_html__( 'Event Offer Price', 'wp-schema-pro' ),
 								'type'    => 'number',
 								'default' => 'create-field',
@@ -2157,31 +2313,47 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema' ) ) {
 									'step' => 'any',
 								),
 							),
-							'currency'          => array(
+							'currency'              => array(
 								'label'         => esc_html__( 'Event Currency', 'wp-schema-pro' ),
 								'type'          => 'dropdown',
 								'default'       => 'create-field',
 								'dropdown-type' => 'currency',
 							),
-							'valid-from'        => array(
+							'valid-from'            => array(
 								'label'   => esc_html__( 'Event Offer Valid From', 'wp-schema-pro' ),
 								'type'    => 'date',
 								'default' => 'create-field',
 							),
-							'ticket-buy-url'    => array(
+							'ticket-buy-url'        => array(
 								'label'   => esc_html__( 'Event Ticket Link', 'wp-schema-pro' ),
 								'type'    => 'text',
 								'default' => 'create-field',
 							),
-							'performer'         => array(
+							'performer'             => array(
 								'label'   => esc_html__( 'Event Performer', 'wp-schema-pro' ),
 								'type'    => 'text',
 								'default' => 'create-field',
 							),
-							'description'       => array(
+							'description'           => array(
 								'label'   => esc_html__( 'Event Description', 'wp-schema-pro' ),
 								'type'    => 'textarea',
 								'default' => 'post_content',
+							),
+							'event-organizer-name'  => array(
+								'label'         => esc_html__( 'Organizer Name', 'wp-schema-pro' ),
+								'type'          => 'text',
+								'default'       => 'none',
+								'dropdown-type' => 'event-attendance-mode',
+								'required'      => false,
+								'description'   => esc_html__( 'The person or organization that is hosting the event.', 'wp-schema-pro' ),
+
+							),
+							'event-organizer-url'   => array(
+								'label'         => esc_html__( 'Organizer URL', 'wp-schema-pro' ),
+								'type'          => 'text',
+								'default'       => 'none',
+								'dropdown-type' => 'event-attendance-mode',
+								'required'      => false,
 							),
 						),
 
@@ -2512,6 +2684,12 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema' ) ) {
 								'label'    => esc_html__( 'Movie Name', 'wp-schema-pro' ),
 								'type'     => 'text',
 								'default'  => 'post_title',
+								'required' => true,
+							),
+							'description'   => array(
+								'label'    => esc_html__( 'Movie Description', 'wp-schema-pro' ),
+								'type'     => 'textarea',
+								'default'  => 'post_content',
 								'required' => true,
 							),
 							'same-As'       => array(
@@ -3370,6 +3548,10 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema' ) ) {
 			switch ( $type ) {
 				case 'text':
 				case 'number':
+					?>
+					<input type="<?php echo esc_attr( $type ); ?>" id="<?php echo isset( $attrs['id'] ) ? esc_attr( $attrs['id'] ) : ''; ?>" class="<?php echo isset( $attrs['class'] ) ? esc_attr( $attrs['class'] ) : ''; ?>" name="<?php echo isset( $attrs['name'] ) ? esc_attr( $attrs['name'] ) : ''; ?>" value="<?php echo isset( $default_value ) ? esc_attr( $default_value ) : ''; ?>" step="any" <?php echo esc_attr( $field_attrs ); ?> >
+					<?php
+					break;
 				case 'tel':
 				case 'time':
 					?>

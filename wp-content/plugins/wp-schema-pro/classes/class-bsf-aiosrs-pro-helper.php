@@ -58,6 +58,7 @@ class BSF_AIOSRS_Pro_Helper {
 			'tumblr'      => '',
 			'wikipedia'   => '',
 			'myspace'     => '',
+			'other'       => array(),
 		),
 
 		// Global Schemas.

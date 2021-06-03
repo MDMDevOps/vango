@@ -376,7 +376,14 @@ if ( ! class_exists( 'BSF_SP_Helper' ) ) {
 					}
 					BSF_SP_Block_JS::blocks_faq_gfont( $blockattr );
 					break;
-
+				case 'wpsp/how-to':
+					$css += BSF_SP_Block_Helper::get_how_to_css( $blockattr, $block_id );
+					BSF_SP_Block_JS::blocks_how_to_gfont( $blockattr );
+					break;
+				case 'wpsp/how-to-child':
+					$css += BSF_SP_Block_Helper::get_how_to_child_css( $blockattr, $block_id );
+					BSF_SP_Block_JS::blocks_how_to_child_gfont( $blockattr );
+					break;
 				default:
 					// Nothing to do here.
 					break;

@@ -144,7 +144,7 @@ if ( ! class_exists( 'BSF_SP_Admin_Helper' ) ) {
 				}
 			}
 
-			$combined_path = plugin_dir_path( BSF_AIOSRS_PRO_FILE ) . 'dist/blocks.style.css';
+			$combined_path = plugin_dir_path( BSF_AIOSRS_PRO_FILE ) . 'dist/style-blocks.css';
 			wp_delete_file( $combined_path );
 
 			$style = '';

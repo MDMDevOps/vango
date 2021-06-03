@@ -107,9 +107,9 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Markup' ) ) {
 			$response = array(
 				'success' => false,
 			);
-			if ( isset( $_POST['post_id'] ) && isset( $_POST['rating'] ) && isset( $_POST['schema_id'] ) ) {
+			if ( isset( $_POST['post_id'] ) && isset( $_POST['rating'] ) && isset( $_POST['schemaId'] ) ) {
 				$post_id    = absint( $_POST['post_id'] );
-				$schema_id  = absint( $_POST['schema_id'] );
+				$schema_id  = absint( $_POST['schemaId'] );
 				$new_rating = absint( $_POST['rating'] );
 				$new_rating = ( $new_rating > 5 ) ? 5 : ( ( $new_rating <= 0 ) ? 1 : $new_rating );
 				$client_ip  = $this->get_client_ip();
@@ -379,21 +379,36 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Markup' ) ) {
 
 					$enabled         = apply_filters( 'wp_schema_pro_schema_enabled', true, $current_post_id, $schema_type );
 					$enabled_comment = apply_filters( 'wp_schema_pro_comment_before_markup_enabled', true );
-
+					if ( true === $enabled_comment ) {
+						$json_ld_markup .= '<!-- Schema optimized by Schema Pro -->';
+					}
 					if ( true === $enabled ) {
+						if ( 'custom-markup' === $schema_type ) {
+							$custom_markup = BSF_AIOSRS_Pro_Schema_Template::get_schema( $current_post_id, $post_id, $schema_type, $schema_meta );
+							if ( isset( $custom_markup[ $schema_type ] ) && ! empty( $custom_markup[ $schema_type ] ) ) {
+								$custom_markup[ $schema_type ] = trim( $custom_markup[ $schema_type ] );
+								$first_schema_character        = substr( $custom_markup[ $schema_type ], 0, 1 );
+								$last_schema_character         = substr( $custom_markup[ $schema_type ], -1, 1 );
+								if ( '{' === $first_schema_character && '}' === $last_schema_character ) {
+									$json_ld_markup .= '<script type="application/ld+json">';
+									$json_ld_markup .= $custom_markup[ $schema_type ];
+									$json_ld_markup .= '</script>';
+								} else {
+									$json_ld_markup .= $custom_markup[ $schema_type ];
 
-						if ( true === $enabled_comment ) {
-							$json_ld_markup .= '<!-- Schema optimized by Schema Pro -->';
-						}
-						// @codingStandardsIgnoreStart
-						$json_ld_markup .= '<script type="application/ld+json">';
-						if ( version_compare( PHP_VERSION, '5.3', '>' ) ) {
-						$json_ld_markup .= wp_json_encode( BSF_AIOSRS_Pro_Schema_Template::get_schema( $current_post_id, $post_id, $schema_type, $schema_meta ),JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+								}
+							}
 						} else {
-							$json_ld_markup .= wp_json_encode( BSF_AIOSRS_Pro_Schema_Template::get_schema( $current_post_id, $post_id, $schema_type, $schema_meta ));
+							// @codingStandardsIgnoreStart
+							$json_ld_markup .= '<script type="application/ld+json">';
+							if ( version_compare( PHP_VERSION, '5.3', '>' ) ) {
+							$json_ld_markup .= wp_json_encode( BSF_AIOSRS_Pro_Schema_Template::get_schema( $current_post_id, $post_id, $schema_type, $schema_meta ),JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+							} else {
+								$json_ld_markup .= wp_json_encode( BSF_AIOSRS_Pro_Schema_Template::get_schema( $current_post_id, $post_id, $schema_type, $schema_meta ));
+							}
+							// @codingStandardsIgnoreEnd
+							$json_ld_markup .= '</script>';
 						}
-						// @codingStandardsIgnoreEnd
-						$json_ld_markup .= '</script>';
 						if ( true === $enabled_comment ) {
 							$json_ld_markup .= '<!-- / Schema optimized by Schema Pro -->';
 						}

@@ -164,7 +164,8 @@ $current_section        = isset( $_GET['section'] ) ? $_GET['section'] : 'genera
 						break;
 
 					case 'social-profiles':
-						$settings = BSF_AIOSRS_Pro_Helper::$settings['wp-schema-pro-social-profiles'];
+						$settings        = BSF_AIOSRS_Pro_Helper::$settings['wp-schema-pro-social-profiles'];
+						$social_settings = BSF_AIOSRS_Pro_Helper::$settings['wp-schema-pro-social-profiles'];
 						?>
 						<!-- Social Profiles -->
 						<div class="postbox wp-schema-pro-social-profiles" >
@@ -184,8 +185,8 @@ $current_section        = isset( $_GET['section'] ) ? $_GET['section'] : 'genera
 
 								<form method="post" action="options.php">
 									<?php settings_fields( 'wp-schema-pro-social-profiles-group' ); ?>
-									<?php do_settings_sections( 'wp-schema-pro-social-profiles-group' ); ?>
-									<table class="form-table">
+									<?php do_settings_sections( 'wp-schema-pro-social-profiles-group' ); ?>	
+									<table id="repeatable-fieldset-one" class="form-table">
 										<tr>
 											<th><?php esc_html_e( 'Facebook', 'wp-schema-pro' ); ?></th>
 											<td><input type="url" name="wp-schema-pro-social-profiles[facebook]"  value="<?php echo esc_attr( $settings['facebook'] ); ?>" placeholder="<?php echo esc_attr( 'Enter URL' ); ?>" /></td>
@@ -229,13 +230,37 @@ $current_section        = isset( $_GET['section'] ) ? $_GET['section'] : 'genera
 										<tr style="display:none">
 											<th><?php esc_html_e( 'Google+', 'wp-schema-pro' ); ?></th>
 											<td><input type="url" name="wp-schema-pro-social-profiles[google-plus]"  value="<?php echo esc_attr( $settings['google-plus'] ); ?>" placeholder="<?php echo esc_attr( 'Enter URL' ); ?>" /></td>
+										</tr> 
+										<?php
+										if ( isset( $settings ) && ! empty( $settings ) ) {
+											if ( isset( $settings['other'] ) ) {
+
+												foreach ( $settings['other'] as $sub_social_profiles => $value ) {
+													if ( isset( $value ) && ! empty( $value ) ) {
+														?>
+										<tr>
+											<th class="wpsp-other-th"><?php esc_html_e( 'Other', 'wp-schema-pro' ); ?></th>
+											<td><input type="url" class="wpsp-other" name="wp-schema-pro-social-profiles[other][<?php echo esc_attr( $sub_social_profiles ); ?>]"  value="<?php echo esc_attr( $value ); ?>" placeholder="<?php echo esc_attr( 'Enter URL' ); ?>" /><span class ="wpsp-field-close remove-row dashicons dashicons-dismiss "><a href="#" class=""></a></span></td>
 										</tr>
+														<?php
+													}
+												}
+											}
+										}
+										?>
+										<tr  class="empty-row screen-reader-text"> <!-- empty hidden one for jQuery -->
+											<th class="wpsp-other-th"><?php esc_html_e( 'Other', 'wp-schema-pro' ); ?></th>
+											<td><input type="url" class="wpsp-other" name="wp-schema-pro-social-profiles[other][]"  value="" placeholder="<?php echo esc_attr( 'Enter URL' ); ?>" /><span class ="wpsp-field-close remove-row dashicons dashicons-dismiss "><a href="#" class="remove-row"></a></span></td>
+										</tr>
+										</table>
+										<p><a id="add-row" class="button" href="#">Add +</a></p>
+										<table class="form-table">
 										<tr>
 											<th colspan="2">
 												<input type="submit" class="button-primary" value="<?php esc_html_e( 'Save Changes', 'wp-schema-pro' ); ?>" />
 											</th>
 										</tr>
-									</table>
+										</table>	
 								</form>
 							</div>
 						</div>
@@ -530,7 +555,7 @@ $current_section        = isset( $_GET['section'] ) ? $_GET['section'] : 'genera
 									?>
 								<p>
 									<?php
-									esc_html_e( 'Not sure where to start? Check out our ', 'wp-schema-pro' );
+									esc_html_e( 'Not sure where to start? Check out our video on ', 'wp-schema-pro' );
 									echo sprintf(
 										wp_kses_post( '<a href="https://www.youtube.com/watch?v=xOiMA0am9QY" target="_blank">Initial Setup Wizard first.</a>', 'wp-schema-pro' )
 									);

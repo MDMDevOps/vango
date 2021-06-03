@@ -45,7 +45,7 @@ class BSF_SP_Init_Blocks {
 		add_action( 'enqueue_block_assets', array( $this, 'block_assets' ) );
 
 		// Hook: Editor assets.
-		add_action( 'enqueue_block_editor_assets', array( $this, 'editor_assets' ) );
+		add_action( 'enqueue_block_editor_assets', array( $this, 'editor_assets' ), 15 );
 
 		add_filter( 'block_categories', array( $this, 'register_block_category' ), 10, 2 );
 	}
@@ -95,7 +95,7 @@ class BSF_SP_Init_Blocks {
 
 		wp_enqueue_style(
 			'wpsp-block-css', // Handle.
-			BSF_AIOSRS_PRO_URI . 'dist/blocks.style.css', // Block style CSS.
+			BSF_AIOSRS_PRO_URI . 'dist/style-blocks.css', // Block style CSS.
 			array(),
 			BSF_AIOSRS_PRO_VER
 		);
@@ -151,19 +151,27 @@ class BSF_SP_Init_Blocks {
 	public function editor_assets() {
 
 		$wpsp_ajax_nonce = wp_create_nonce( 'wpsp_ajax_nonce' );
+		$script_dep_path = BSF_AIOSRS_PRO_DIR . 'dist/blocks.asset.php';
+		$script_info     = file_exists( $script_dep_path )
+			? include $script_dep_path
+			: array(
+				'dependencies' => array(),
+				'version'      => BSF_AIOSRS_PRO_VER,
+			);
+		$script_dep      = array_merge( $script_info['dependencies'], array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components', 'wp-editor', 'wp-api-fetch' ) );
 		// Scripts.
 		wp_enqueue_script(
 			'wpsp-block-editor-js', // Handle.
-			BSF_AIOSRS_PRO_URI . 'dist/blocks.build.js',
-			array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components', 'wp-editor', 'wp-api-fetch' ), // Dependencies, defined above.
-			BSF_AIOSRS_PRO_VER,
+			BSF_AIOSRS_PRO_URI . 'dist/blocks.js',
+			$script_dep, // Dependencies, defined above.
+			$script_info['version'], // BSF_AIOSRS_PRO_VER.
 			true // Enqueue the script in the footer.
 		);
 
 		// Styles.
 		wp_enqueue_style(
 			'wpsp-block-editor-css', // Handle.
-			BSF_AIOSRS_PRO_URI . 'dist//blocks.editor.build.css', // Block editor CSS.
+			BSF_AIOSRS_PRO_URI . 'dist/blocks.css', // Block editor CSS.
 			array( 'wp-edit-blocks' ), // Dependency to include the CSS after it.
 			BSF_AIOSRS_PRO_VER
 		);
@@ -171,10 +179,11 @@ class BSF_SP_Init_Blocks {
 		// Common Editor style.
 		wp_enqueue_style(
 			'wpsp-block-common-editor-css', // Handle.
-			BSF_AIOSRS_PRO_URI . 'dist/blocks.commoneditorstyle.build.css', // Block editor CSS.
+			BSF_AIOSRS_PRO_URI . 'wpsp-blocks/assets/css/blocks.commoneditorstyle.build.css', // Block editor CSS.
 			array( 'wp-edit-blocks' ), // Dependency to include the CSS after it.
 			BSF_AIOSRS_PRO_VER
 		);
+
 		$blocks       = array();
 		$saved_blocks = BSF_SP_Admin_Helper::get_admin_settings_option( '_wpsp_blocks' );
 
@@ -199,13 +208,6 @@ class BSF_SP_Init_Blocks {
 			}
 		}
 		wp_localize_script(
-			'wpsp-deactivate-block-js',
-			'wpsp_deactivate_blocks',
-			array(
-				'deactivated_blocks' => $blocks,
-			)
-		);
-		wp_localize_script(
 			'wpsp-block-editor-js',
 			'wpsp_blocks_info',
 			array(
@@ -216,9 +218,20 @@ class BSF_SP_Init_Blocks {
 				'mobile_breakpoint' => WPSP_MOBILE_BREAKPOINT,
 				'wpsp_ajax_nonce'   => $wpsp_ajax_nonce,
 				'wpsp_home_url'     => home_url(),
+				'wpsp_base_url'     => BSF_AIOSRS_PRO_URI,
+				'wpsp_icons'        => $this->get_svg_icons(),
 			)
 		);
 	} // End function editor_assets().
+
+	/**
+	 * Get the SVG icons.
+	 */
+	private function get_svg_icons() {
+		ob_start();
+		include BSF_AIOSRS_PRO_DIR . 'wpsp-config/controls/WPSPIcon.json';
+		return json_decode( ob_get_clean(), true );
+	}
 }
 /**
  *  Prepare if class 'BSF_SP_Init_Blocks' exist.

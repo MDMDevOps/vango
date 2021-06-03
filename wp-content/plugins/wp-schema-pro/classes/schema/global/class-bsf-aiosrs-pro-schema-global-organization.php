@@ -91,8 +91,16 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Global_Organization' ) ) {
 				$schema['logo'] = BSF_AIOSRS_Pro_Schema_Template::get_image_schema( $logo_image, 'ImageObject' );
 			}
 
-			foreach ( $social_profiles as $social_link ) {
-				if ( ! empty( $social_link ) ) {
+			foreach ( $social_profiles as $type => $social_link ) {
+				if ( 'other' === $type ) {
+					foreach ( $social_link as $dynamic_social_link ) {
+						if ( ! empty( $dynamic_social_link ) ) {
+							$schema['sameAs'][] = $dynamic_social_link;
+						}
+					}
+				}
+				if ( ! empty( $social_link ) && ( ! is_array( $social_link ) ) ) {
+
 					$schema['sameAs'][] = $social_link;
 				}
 			}

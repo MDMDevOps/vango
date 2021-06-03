@@ -1,3 +1,44 @@
+v2.6.0
+# New: Added Dynamic fields option for Social profiles setting.
+# New: Implemented Lazy loading functionality for Schema blocks.
+# Improvements: Optimized blocks JS loading on the editor page.
+# Improvements: Refactor FAQ and how-to blocks code-based structure.
+# Improvements: Compatibility with the latest JavaScript standard rule.
+# Improvements: Compatibility with the latest CSS standard rule. 
+# Fix: Fixed UI icon issue on the post or page.
+# Fix Trim function console error issue in the FAQ schema.
+# Fix: The URL warning issue in the Product item review type in the review schema.
+
+v2.5.2
+# Improvement: Remote work fields in job posting schema as per google guidelines.
+# Fix:- UI is not working properly on posts/pages in the RTL mode.
+# Fix: The toggle button is not working properly for Enable/Disable schema type filter.
+# Fix:- Fixed half rating issue on the frontend.
+
+v2.5.1
+# Fix: Decimal value is not accepted into the Geolocation fields of Local Business Schema.
+# Fix: FAQ block schema accessibility issue.
+
+v2.5.0
+# New: Custom schema markup on post or page.
+# Improvement: Ajax-based schema type required field validation.
+# Improvement: Added Geolocation fields in the Local business schema.
+# Fix: Fixed tab index issue in the FAQ block schema.
+# Fix: Fixed undefined index notice issue in the review schema.
+# Fix: 'unstableOnSplit' property warning issue in the How-to schema.
+# Fix: 'onnRemove' Unknown event handler property warning issue in the how-to schema.
+# Fix: Fixed the border issue on the setup wizard.
+
+v2.4.0
+# New: How-to block schema.
+# Improvement: Added Review fields in the product schema.
+# Improvement: Added filter to automatically fetch schema markup for WooCommerce product reviews.
+# Fix: Fixed review count field visible issue in the Review Schema.
+# Fix: Added missing recommended field inside the Event type of Review Schema.
+# Fix: Removed deprecated Item name, Review image, and URL field in the Review Schema.
+# Fix: Fixed different language string translation issues in the plugin.
+# Fix: Fixed HTTPS not showing in test schema URL.
+
 v2.3.0
 # New: Dynamic repeater fields on the post or page.
 # Improvement: Added optimised Logo image size in the Organization schema.

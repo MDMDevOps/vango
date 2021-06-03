@@ -28,6 +28,7 @@ if ( ! class_exists( 'EIO_Page_Parser' ) ) {
 			'jpeg',
 			'jpe',
 			'png',
+			'svg',
 		);
 
 		/**
@@ -221,6 +222,36 @@ if ( ! class_exists( 'EIO_Page_Parser' ) ) {
 		}
 
 		/**
+		 * Get dimensions of a file from the URL.
+		 *
+		 * @param string $url The URL of the image.
+		 * @return array The width and height, in pixels.
+		 */
+		function get_image_dimensions_by_url( $url ) {
+			$this->debug_message( '<b>' . __METHOD__ . '()</b>' );
+			$this->debug_message( "getting dimensions for $url" );
+
+			list( $width, $height ) = $this->get_dimensions_from_filename( $url );
+			if ( empty( $width ) || empty( $height ) ) {
+				// Couldn't get it from the URL directly, see if we can get the actual filename.
+				$file = false;
+				if ( $this->allowed_urls && $this->allowed_domains ) {
+					$file = $this->cdn_to_local( $url );
+				}
+				if ( ! $file ) {
+					$file = $this->url_to_path_exists( $url );
+				}
+				if ( $file && $this->is_file( $file ) ) {
+					list( $width, $height ) = wp_getimagesize( $file );
+				}
+			}
+			$width  = $width && is_numeric( $width ) ? (int) $width : false;
+			$height = $height && is_numeric( $height ) ? (int) $height : false;
+
+			return array( $width, $height );
+		}
+
+		/**
 		 * Get the width from an image element.
 		 *
 		 * @param string $img The full image element.
@@ -325,7 +356,7 @@ if ( ! class_exists( 'EIO_Page_Parser' ) ) {
 		 */
 		function set_attribute( &$element, $name, $value, $replace = false ) {
 			if ( 'class' === $name ) {
-				$element = preg_replace( "#\s$name\s+[^=]#", ' ', $element );
+				$element = preg_replace( "#\s$name\s+([^=])#", ' $1', $element );
 			}
 			$element = preg_replace( "#\s$name=\"\"#", ' ', $element );
 			$value   = trim( $value );

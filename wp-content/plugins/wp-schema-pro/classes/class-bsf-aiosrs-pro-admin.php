@@ -138,7 +138,7 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Admin' ) ) {
 			}
 
 			add_action( 'init', array( $this, 'init' ) );
-
+			add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 			add_action( 'admin_bar_menu', array( $this, 'admin_bar' ), 100 );
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_script' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
@@ -442,6 +442,7 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Admin' ) ) {
 
 			register_setting( 'wp-schema-pro-general-settings-group', 'wp-schema-pro-general-settings' );
 			register_setting( 'wp-schema-pro-social-profiles-group', 'wp-schema-pro-social-profiles' );
+			register_setting( 'wp-schema-pro-social-profiles-repeater-group', 'wp-schema-pro-social-profiles-repeater' );
 			register_setting( 'wp-schema-pro-global-schemas-group', 'wp-schema-pro-global-schemas' );
 			register_setting( 'wp-schema-pro-breadcrumb-setting-group', 'wp-schema-pro-breadcrumb-setting' );
 			register_setting( 'aiosrs-pro-settings-group', 'aiosrs-pro-settings' );
@@ -1004,7 +1005,7 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Admin' ) ) {
 
 				global $wp_admin_bar;
 				$http        = ( ! empty( $_SERVER['HTTPS'] ) && 'on' === $_SERVER['HTTPS'] ) ? 'https' : 'http';
-				$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+				$actual_link = $http . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
 				if ( ! is_super_admin() || ! is_admin_bar_showing() ) {
 					return;
@@ -1058,6 +1059,42 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Admin' ) ) {
 		 */
 		public function load_breadcrumb_setting_page() {
 			require_once BSF_AIOSRS_PRO_DIR . 'template/breadcrumb-settings.php';
+		}
+
+		/**
+		 * Load plugin text domain.
+		 *
+		 * @since 2.4.0
+		 */
+		public function load_textdomain() {
+
+			// Traditional WordPress plugin locale filter.
+			$locale = apply_filters( 'plugin_locale', get_locale(), 'wp-schema-pro' );
+
+			$mofile_locale = sprintf( '%1$s-%2$s.mo', 'wp-schema-pro', $locale );
+
+			// Setup paths to current locale file.
+			$mofile_global = trailingslashit( WP_LANG_DIR ) . 'plugins/wp-schema-pro/' . $locale;
+			$mofile_local  = trailingslashit( BSF_AIOSRS_PRO_DIR ) . 'languages/' . $locale;
+			// Setup new names to current locale file.
+			$new_mofile_global = trailingslashit( WP_LANG_DIR ) . 'plugins/wp-schema-pro/' . $mofile_locale;
+			$new_mofile_local  = trailingslashit( BSF_AIOSRS_PRO_DIR ) . 'languages/' . $mofile_locale;
+			if ( file_exists( $new_mofile_global ) ) {
+				// Look in global /wp-content/languages/plugins/wp-schema-pro/ folder.
+				return load_textdomain( 'wp-schema-pro', $new_mofile_global );
+			} elseif ( file_exists( $mofile_global ) ) {
+				// Look in global /wp-content/languages/plugins/wp-schema-pro/ folder.
+				return load_textdomain( 'wp-schema-pro', $mofile_global );
+			} elseif ( file_exists( $new_mofile_local ) ) {
+				// Look in local /wp-content/plugins/wp-schema-pro/languages/ folder.
+				return load_textdomain( 'wp-schema-pro', $new_mofile_local );
+			} elseif ( file_exists( $mofile_local ) ) {
+				// Look in local /wp-content/plugins/wp-schema-pro/languages/ folder.
+				return load_textdomain( 'wp-schema-pro', $mofile_local );
+			}
+
+			// Nothing found.
+			return false;
 		}
 	}
 }

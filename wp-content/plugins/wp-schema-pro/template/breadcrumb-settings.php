@@ -156,7 +156,7 @@ $setting_url = self::get_page_url( 'breadcrumb-settings' );
 									?>
 								<p>
 									<?php
-									esc_html_e( 'Not sure where to start? Check out our ', 'wp-schema-pro' );
+									esc_html_e( 'Not sure where to start? Check out our video on ', 'wp-schema-pro' );
 									echo sprintf(
 										wp_kses_post( '<a href="https://www.youtube.com/watch?v=xOiMA0am9QY" target="_blank">Initial Setup Wizard first.</a>', 'wp-schema-pro' )
 									);

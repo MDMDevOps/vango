@@ -464,6 +464,27 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Setup_Wizard' ) ) :
 						<th><?php esc_html_e( 'Google+', 'wp-schema-pro' ); ?></th>
 						<td><input type="url" name="wp-schema-pro-social-profiles[google-plus]"  value="<?php echo esc_attr( $settings['google-plus'] ); ?>" placeholder="<?php echo esc_attr( 'Enter URL' ); ?>" /></td>
 					</tr>
+					<?php
+					if ( isset( $settings ) && ! empty( $settings ) ) {
+						if ( isset( $settings['other'] ) ) {
+
+							foreach ( $settings['other'] as $sub_social_profiles => $value ) {
+								if ( isset( $value ) && ! empty( $value ) ) {
+									?>
+										<tr style="display:none">
+											<th class="wpsp-other-th"><?php esc_html_e( 'Other', 'wp-schema-pro' ); ?></th>
+											<td><input type="url" class="wpsp-other" name="wp-schema-pro-social-profiles[other][<?php echo esc_attr( $sub_social_profiles ); ?>]"  value="<?php echo esc_attr( $value ); ?>" placeholder="<?php echo esc_attr( 'Enter URL' ); ?>" /><span class ="wpsp-field-close remove-row dashicons dashicons-dismiss "><a href="#" class=""></a></span></td>
+										</tr>
+														<?php
+								}
+							}
+						}
+					}
+					?>
+					<tr style="display:none" class="empty-row screen-reader-text"> <!-- empty hidden one for jQuery -->
+											<th class="wpsp-other-th"><?php esc_html_e( 'Other', 'wp-schema-pro' ); ?></th>
+											<td><input type="url" class="wpsp-other" name="wp-schema-pro-social-profiles[other][]"  value="" placeholder="<?php echo esc_attr( 'Enter URL' ); ?>" /><span class ="wpsp-field-close remove-row dashicons dashicons-dismiss "><a href="#" class="remove-row"></a></span></td>
+										</tr>
 				</table>
 				<p class="aiosrs-pro-setup-wizard-actions step">
 					<?php wp_nonce_field( 'aiosrs-pro-setup-wizard' ); ?>

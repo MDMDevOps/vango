@@ -101,6 +101,12 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Local_Business' ) ) {
 					$schema['openingHoursSpecification'][ $key ]['closes']    = $value['closes'];
 				}
 			}
+			if ( isset( $data['geo-latitude'] ) && isset( $data['geo-longitude'] ) ) {
+				$schema['geo']['@type']     = 'GeoCoordinates';
+				$schema['geo']['latitude']  = wp_strip_all_tags( $data['geo-latitude'] );
+				$schema['geo']['longitude'] = wp_strip_all_tags( $data['geo-longitude'] );
+
+			}
 			$contact_type       = BSF_AIOSRS_Pro_Helper::$settings['wp-schema-pro-corporate-contact'];
 			$contact_hear       = isset( $contact_type['contact-hear'] ) ? $contact_type['contact-hear'] : '';
 			$contact_toll       = isset( $contact_type['contact-toll'] ) ? $contact_type['contact-toll'] : '';

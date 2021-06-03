@@ -205,7 +205,6 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Custom_Fields_Markup' ) ) {
 
 			$schema_post_result = BSF_Target_Rule_Fields::get_instance()->get_posts_by_conditions( 'aiosrs-schema', $option, $current_post_id );
 			if ( is_array( $schema_post_result ) && ! empty( $schema_post_result ) ) {
-
 				$current_post_id = get_the_id();
 				foreach ( $schema_post_result as $post_id => $post_data ) {
 
@@ -292,6 +291,7 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Custom_Fields_Markup' ) ) {
 											'global_fieldtype' => $selected_field,
 											'global_default' => $selected_value,
 											'class'       => isset( $field['class'] ) ? $field['class'] : '',
+											'subkey_data' => $field,
 
 										);
 									}
@@ -356,9 +356,14 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Custom_Fields_Markup' ) ) {
 									'global_default'   => '',
 								);
 							} else {
-
+								if ( ! isset( $schema_meta['bsf-aiosrs-software-application-rating'] ) ) {
+									$schema_meta['bsf-aiosrs-software-application-rating'] = '';
+								}
+								if ( ! isset( $schema_meta['bsf-aiosrs-product-rating'] ) ) {
+									$schema_meta['bsf-aiosrs-product-rating'] = '';
+								}
 								// Skip review count in case of Accept user rating.
-								if ( 'review-count' === $schema_key && 'accept-user-rating' === $schema_meta['rating'] ) {
+								if ( ( 'bsf-aiosrs-product-review-count' === $schema_key || 'bsf-aiosrs-software-application-review-count' === $schema_key || 'review-count' === $schema_key ) && ( 'accept-user-rating' === $schema_meta['rating'] || 'accept-user-rating' === $schema_meta['bsf-aiosrs-software-application-rating'] || 'accept-user-rating' === $schema_meta['bsf-aiosrs-product-rating'] ) ) {
 									continue;
 								}
 
@@ -622,7 +627,6 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Custom_Fields_Markup' ) ) {
 										<?php self::get_field_markup( $option, $meta_box['ID'], $meta_box['schema_type'], $stored ); ?>
 									<?php else : ?>
 									<div class="wpsp-local-fields" style="<?php echo ( $set_col_span ) ? 'width: 38.5%' : ''; ?> ">
-
 										<input class="wpsp-default-hidden-value" type="hidden" name="<?php echo esc_attr( $option['name'] ); ?>" value="<?php echo esc_attr( $default ); ?>">
 										<input class="wpsp-default-hidden-fieldtype" type="hidden" name="<?php echo esc_attr( $fieldtype ); ?>" value="<?php echo esc_attr( $selected_field ); ?>">
 
@@ -812,8 +816,13 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Custom_Fields_Markup' ) ) {
 					<?php
 					break;
 				case 'textarea':
-					?>
-					<textarea name="<?php echo esc_attr( $option['name'] ); ?>"><?php echo esc_attr( $option_default ); ?></textarea>
+					$textarea_row_size = '';
+					if ( 'custom-markup' === $schema_type ) {
+						$textarea_row_size = 10;
+						?>
+						<input type="hidden" id ="custom-schema-schema-field" class="custom-schema-schema-field" name="custom-schema-schema-field" value="<?php echo esc_attr( $schema_id ); ?>">
+					<?php } ?>
+					<textarea name="<?php echo esc_attr( $option['name'] ); ?> " rows="<?php echo esc_attr( $textarea_row_size ); ?>" placeholder = "<?php echo ( 'custom-markup' === $schema_type ) ? esc_html_e( 'Add your snippet here...', 'wp-schema-pro' ) : ''; ?>"><?php echo esc_attr( $option_default ); ?></textarea>
 					<?php
 					break;
 				case 'multi-select':
