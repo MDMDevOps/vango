@@ -40,6 +40,7 @@
 		margin: 0 0 $spacing;
 		background: #fff;
 	    border: 1px solid $border-color;
+	    height: auto;
 	}
 	.gform_wrapper {
 		.gfield {
@@ -51,6 +52,9 @@
 		.ginput_complex {
 			label {
 				font-size: 14px;
+			}
+			.ginput_container_time {
+				flex: 1;
 			}
 		}
 	}
