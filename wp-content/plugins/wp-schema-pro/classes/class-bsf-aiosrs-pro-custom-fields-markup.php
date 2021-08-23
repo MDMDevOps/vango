@@ -227,7 +227,6 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Custom_Fields_Markup' ) ) {
 							}
 						}
 					}
-
 					$custom_fields = array();
 					foreach ( $schema_meta as $schema_key => $schema_value ) {
 
@@ -241,12 +240,49 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Custom_Fields_Markup' ) ) {
 							$item_schema_key    = isset( $item_schema_key ) ? $item_schema_key : '';
 							$schema_field_value = isset( $schema_meta_item_fields[ $item_schema_key ] ) ? $schema_meta_item_fields[ $item_schema_key ] : null;
 						}
-
+						if ( 'applicant-location' === $schema_key ) {
+							$schema_field_value = array(
+								'label'       => esc_html__( 'Applicant Location', 'wp-schema-pro' ),
+								'type'        => 'text',
+								'default'     => 'none',
+								'required'    => false,
+								'description' => esc_html__( 'The geographic location(s) in which employees may be located to be eligible for the Remote job.', 'wp-schema-pro' ),
+							);
+						}
+						$repeater_values = array();
 						if ( $schema_field_value ) {
 
 							if ( 'repeater' === $schema_field_value['type'] ) {
 
 								$repeater_values = get_post_meta( $current_post_id, $schema_type . '-' . $post_id . '-' . $schema_key, true );
+								// Added backward applicant location field dependancy.
+								if ( 'remote-location' === $schema_key ) {
+									$applicant_location_string = get_post_meta( $current_post_id, 'job-posting-' . $post_id . '-applicant-location', true );
+									$dep_count                 = get_option( 'wp_backward_field' . $current_post_id . '' . $post_id );
+									$dep_count                 = ! empty( $dep_count ) ? $dep_count : '';
+									if ( $applicant_location_string !== $dep_count && '' === $dep_count ) {
+
+										$deprecated_application_location = array(
+											array(
+												'applicant-location' => ! empty( $applicant_location_string ) ? $applicant_location_string : '',
+												'applicant-location-fieldtype' => 'custom-field',
+												'applicant-location-connected' => 'none',
+												'applicant-location-custom' => ! empty( $applicant_location_string ) ? $applicant_location_string : '',
+												'applicant-location-specific' => 'none',
+											),
+										);
+										if ( isset( $deprecated_application_location ) && ! empty( $deprecated_application_location ) ) {
+											if ( ! empty( $repeater_values ) ) {
+												$repeater_values = array_merge( $deprecated_application_location, $repeater_values );
+												update_option( 'wp_backward_field' . $current_post_id . '' . $post_id, $applicant_location_string );
+											} else {
+												$repeater_values = $deprecated_application_location;
+												update_option( 'wp_backward_field' . $current_post_id . '' . $post_id, $applicant_location_string );
+											}
+										}
+										update_post_meta( $current_post_id, $schema_type . '-' . $post_id . '-' . $schema_key, $repeater_values );
+									}
+								}
 
 								if ( ! is_array( $repeater_values ) || empty( $repeater_values ) ) {
 
@@ -810,7 +846,7 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Custom_Fields_Markup' ) ) {
 						<a href="#" class="aiosrs-image-select"><?php esc_html_e( 'Select Image', 'wp-schema-pro' ); ?></a>
 						<a href="#" class="aiosrs-image-remove dashicons dashicons-no-alt wp-ui-text-highlight"></a>
 						<?php if ( isset( $image_url ) && ! empty( $image_url ) ) : ?>
-							<a href="#" class="aiosrs-image-select img"><img src="<?php echo esc_url( $image_url ); ?>" /></a>
+							<a href="#" class="aiosrs-image-select img" ><img src="<?php echo esc_url( $image_url ); ?>" alt ="" /></a>
 						<?php endif; ?>
 					</div>
 					<?php
@@ -1057,6 +1093,8 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Custom_Fields_Markup' ) ) {
 						<button type="button" class="bsf-repeater-add-new-btn button">+ Add</button>
 					</div>
 					<?php
+					break;
+				default:
 					break;
 			}
 			?>

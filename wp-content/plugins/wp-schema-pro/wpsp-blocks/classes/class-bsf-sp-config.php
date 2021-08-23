@@ -229,7 +229,6 @@ if ( ! class_exists( 'BSF_SP_Config' ) ) {
 						'default'     => true,
 						'attributes'  => array(
 							'classMigrate'            => false,
-							'inheritFromTheme'        => false,
 							'headingAlign'            => 'left',
 							'headingColor'            => '',
 							'subHeadingColor'         => '',
@@ -319,11 +318,8 @@ if ( ! class_exists( 'BSF_SP_Config' ) ) {
 		 */
 		public static function get_block_assets() {
 
-			if ( true === ( defined( 'WP_DEBUG' ) && WP_DEBUG ) ) {
-				$faq_js = BSF_AIOSRS_PRO_URI . 'wpsp-blocks/assets/js/faq.js';
-			} else {
-				$faq_js = BSF_AIOSRS_PRO_URI . 'wpsp-blocks/assets/min-js/faq.min.js';
-			}
+			$minify = BSF_AIOSRS_Pro_Helper::bsf_schema_pro_is_wp_debug_enable() ? 'js/faq.js' : 'min-js/faq.min.js';
+			$faq_js = BSF_AIOSRS_PRO_URI . 'wpsp-blocks/assets/' . $minify;
 
 			if ( null === self::$block_assets ) {
 				self::$block_assets = array(

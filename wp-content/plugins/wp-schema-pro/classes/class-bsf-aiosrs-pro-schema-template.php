@@ -256,11 +256,10 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Template' ) ) {
 		 *
 		 * @since 1.0.2
 		 * @param array $sizes Sizes.
-		 * @param array $metadata attachment data.
 		 *
 		 * @return array
 		 */
-		public static function logo_image_sizes( $sizes, $metadata ) {
+		public static function logo_image_sizes( $sizes ) {
 
 			if ( is_array( $sizes ) ) {
 
@@ -408,11 +407,11 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Template' ) ) {
 						$image_object = getimagesize( $images[0] );
 						if ( $image_object ) {
 
-							$result['@type']                      = 'ImageObject';
-							$result['url']                        = esc_url( $images[0] );
-							list( $width, $height, $type, $attr ) = $image_object;
-							$result['width']                      = (int) esc_html( $width );
-							$result['height']                     = (int) esc_html( $height );
+							$result['@type']               = 'ImageObject';
+							$result['url']                 = esc_url( $images[0] );
+							list( $width, $height, $type ) = $image_object;
+							$result['width']               = (int) esc_html( $width );
+							$result['height']              = (int) esc_html( $height );
 						}
 					}
 					break;
@@ -584,21 +583,17 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Template' ) ) {
 								if ( is_array( $field_val ) ) {
 									foreach ( $field_val as $key => $rep_fields ) {
 										foreach ( $rep_fields as $rep_field_name => $rep_field_val ) {
-											if ( isset( $fields[ $field_name ]['fields'][ $rep_field_name ]['required'] ) && $fields[ $field_name ]['fields'][ $rep_field_name ]['required'] ) {
-												if ( empty( $rep_field_val ) ) {
+											if ( isset( $fields[ $field_name ]['fields'][ $rep_field_name ]['required'] ) && $fields[ $field_name ]['fields'][ $rep_field_name ]['required'] && $rep_field_val ) {
 													$is_validated = false;
 													break;
-												}
 											}
 										}
 									}
 								}
 							} else {
-								if ( isset( $fields[ $field_name ]['required'] ) && $fields[ $field_name ]['required'] ) {
-									if ( empty( $field_val ) ) {
+								if ( isset( $fields[ $field_name ]['required'] ) && $fields[ $field_name ]['required'] && empty( $field_val ) ) {
 										$is_validated = false;
 										break;
-									}
 								}
 							}
 						}
@@ -633,9 +628,8 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Template' ) ) {
 		public static function get_breadcrumb_list() {
 
 			global $wp_query;
-			$item            = array();
-			$breadcrumb_list = array();
-			$args            = apply_filters(
+			$item = array();
+			$args = apply_filters(
 				'wp_schema_pro_breadcrumb_defaults',
 				array(
 					'home'           => __( 'Home', 'wp-schema-pro' ),
@@ -647,14 +641,12 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Template' ) ) {
 			);
 
 			/* Link to front page. */
-			if ( apply_filters( 'wp_schema_pro_link_to_frontpage', true ) ) {
-				if ( ! is_front_page() ) {
+			if ( apply_filters( 'wp_schema_pro_link_to_frontpage', true ) && ! is_front_page() ) {
 					$home_url = home_url( '/' );
 					$item[]   = array(
 						'url'   => $home_url,
 						'title' => $args['home'],
 					);
-				}
 			}
 
 			/* Front page. */
@@ -679,43 +671,41 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Template' ) ) {
 
 				if ( 'post' === $post_type ) {
 					$settings = BSF_AIOSRS_Pro_Helper::$settings['wp-schema-pro-breadcrumb-setting'];
-					if ( isset( $settings['post'] ) ) {
-						if ( '1' !== $settings['post'] ) {
-							if ( 'post_tag' === $settings['post'] ) {
-								/**
-								* Get tags name and link
-								*/
-								$all_tag_info = get_the_tags( $post_id );
-								if ( is_array( $all_tag_info ) || is_object( $all_tag_info ) ) {
-									foreach ( $all_tag_info as $keys ) {
-										$tag_url  = get_tag_link( $keys->term_id );
-										$tag_name = $keys->name;
-									}
-									$item[] = array(
-										'url'   => $tag_url,
-										'title' => $tag_name,
-									);
+					if ( isset( $settings['post'] ) && '1' !== $settings['post'] ) {
+						if ( 'post_tag' === $settings['post'] ) {
+							/**
+							* Get tags name and link
+							*/
+							$all_tag_info = get_the_tags( $post_id );
+							if ( is_array( $all_tag_info ) || is_object( $all_tag_info ) ) {
+								foreach ( $all_tag_info as $keys ) {
+									$tag_url  = get_tag_link( $keys->term_id );
+									$tag_name = $keys->name;
 								}
-							} elseif ( 'category' === $settings['post'] ) {
-								if ( has_category( $post_category, $post_id ) ) {
-									$post_category  = get_the_category();
-									$first_category = $post_category[0];
-									$cat_link       = get_category_link( $first_category );
-									$cat_name       = $first_category->name;
+								$item[] = array(
+									'url'   => $tag_url,
+									'title' => $tag_name,
+								);
+							}
+						} elseif ( 'category' === $settings['post'] ) {
+							if ( has_category( $post_category, $post_id ) ) {
+								$post_category  = get_the_category();
+								$first_category = $post_category[0];
+								$cat_link       = get_category_link( $first_category );
+								$cat_name       = $first_category->name;
 
-									$item[] = array(
-										'url'   => $cat_link,
-										'title' => $cat_name,
-									);
-								}
-							} elseif ( 'post_format' === $settings['post'] ) {
-								$format = get_post_format( $post_id );
-								if ( false !== get_post_format() ) {
-									$item[] = array(
-										'url'   => get_post_format_link( $format ),
-										'title' => $format,
-									);
-								}
+								$item[] = array(
+									'url'   => $cat_link,
+									'title' => $cat_name,
+								);
+							}
+						} elseif ( 'post_format' === $settings['post'] ) {
+							$format = get_post_format( $post_id );
+							if ( false !== get_post_format() ) {
+								$item[] = array(
+									'url'   => get_post_format_link( $format ),
+									'title' => $format,
+								);
 							}
 						}
 					}
@@ -757,8 +747,7 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Template' ) ) {
 							}
 						} elseif ( 'product_cat' === $settings['product'] ) {
 
-							$_product = wc_get_product();
-							$terms    = get_the_terms( $post->ID, 'product_cat' );
+							$terms = get_the_terms( $post->ID, 'product_cat' );
 							if ( is_array( $terms ) || is_object( $terms ) ) {
 								foreach ( $terms as $term ) {
 									$product_cat_id = $term->term_id;
@@ -812,16 +801,12 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Template' ) ) {
 
 				/* If viewing any type of archive. */
 				if ( is_category() || is_tag() || is_tax() ) {
-					$term     = $wp_query->get_queried_object();
-					$taxonomy = get_taxonomy( $term->taxonomy );
-					$parents  = self::get_term_parents( $term->parent, $term->taxonomy );
+					$term    = $wp_query->get_queried_object();
+					$parents = self::get_term_parents( $term->parent, $term->taxonomy );
 					if ( ( is_taxonomy_hierarchical( $term->taxonomy ) && $term->parent ) && $parents ) {
 						$item = array_merge( $item, $parents );
 					}
 					if ( 'product' === $settings['product_cat'] ) {
-
-						$_product          = wc_get_product();
-						$terms             = get_the_terms( $post->ID, 'product_cat' );
 						$archive_page_link = get_post_type_archive_link( $settings['product_cat'] );
 						$item[]            = array(
 							'url'   => $archive_page_link,
@@ -829,7 +814,6 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Template' ) ) {
 						);
 					} elseif ( 'product' === $settings['product_tag'] ) {
 
-						$current_tags      = get_the_terms( get_the_ID(), 'product_tag' );
 						$archive_page_link = get_post_type_archive_link( $settings['product_cat'] );
 
 						$item[] = array(
@@ -923,7 +907,6 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Template' ) ) {
 		 * @return array
 		 */
 		public static function get_term_parents( $parent_id = '', $taxonomy = '' ) {
-			$html    = array();
 			$parents = array();
 			if ( empty( $parent_id ) || empty( $taxonomy ) ) {
 				return $parents;

@@ -144,6 +144,15 @@ $basic = breeze_get_option( 'basic_settings', true );
 
 	?>
 
+    <?php
+    if ( ! isset( $basic['breeze-desktop-cache'] ) ) {
+	    $basic['breeze-desktop-cache'] = '1';
+    }
+
+    if ( ! isset( $basic['breeze-mobile-cache'] ) ) {
+	    $basic['breeze-mobile-cache'] = '1';
+    }
+    ?>
 	<tr style="display: none;">
 		<td style="vertical-align: middle">
 			<label for="desktop-cache" class="breeze_tool_tip"> <?php _e( 'Desktop Cache', 'breeze' ); ?></label>
@@ -178,7 +187,7 @@ $basic = breeze_get_option( 'basic_settings', true );
 					<input type="checkbox" name="breeze-admin-cache" id="breeze-admin-cache"
 						   value="0" <?php ( isset( $basic['breeze-disable-admin'] ) ) ? checked( $basic['breeze-disable-admin'], '0' ) : ''; ?> />
 					<label class="breeze_tool_tip" for="breeze-admin-cache">
-						<?php _e( 'Enable cache for WP standard user roles: Administrator, Editor, Author, Contributor.', 'breeze' ); ?>
+						<?php _e( 'Enable/Disable cache for authenticated users.', 'breeze' ); ?>
 
 					</label>
 					<br/>

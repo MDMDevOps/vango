@@ -53,7 +53,7 @@ $setting_url = self::get_page_url( 'breadcrumb-settings' );
 							?>
 							<table class="form-table">
 								<tr>
-									<th class="tooltip-with-image-wrapper">
+									<th class="tooltip-with-image-wrapper" scope="row">
 										<?php esc_html_e( 'Enable Breadcrumbs', 'wp-schema-pro' ); ?>
 										<?php
 											$message = '<img class="tooltip-image" src="' . esc_url( BSF_AIOSRS_PRO_URI . '/admin/assets/images/breadcrumbs.jpg' ) . '" />';
@@ -123,7 +123,7 @@ $setting_url = self::get_page_url( 'breadcrumb-settings' );
 								?>
 
 							<tr>
-							<th colspan="2">
+							<th colspan="2" scope="row">
 							<input type="submit" class="button-primary" value="<?php esc_html_e( 'Save Changes', 'wp-schema-pro' ); ?>" />
 							</th>
 							</tr>
@@ -139,6 +139,7 @@ $setting_url = self::get_page_url( 'breadcrumb-settings' );
 				} else {
 					$settings = BSF_AIOSRS_Pro_Helper::$settings['wp-schema-pro-branding-settings'];
 				}
+				$sp_hide_label = isset( $settings['sp_hide_label'] ) ? $settings['sp_hide_label'] : 'disabled';
 				?>
 				<div id="side-sortables" style="min-height: 0px;">
 					<div class="postbox">
@@ -146,9 +147,10 @@ $setting_url = self::get_page_url( 'breadcrumb-settings' );
 						<div class="inside">
 							<div>
 								<?php
-								if ( '' !== $settings['sp_plugin_name'] ) {
+								$sp_name = isset( $settings['sp_plugin_name'] ) ? $settings['sp_plugin_name'] : '';
+								if ( '' !== $sp_name ) {
 									/* translators: %s: search term */
-									$brand_name = sprintf( __( 'Need help configure %s step by step?', 'wp-schema-pro' ), $settings['sp_plugin_name'] );
+									$brand_name = sprintf( __( 'Need help configure %s step by step?', 'wp-schema-pro' ), $sp_name );
 									?>
 										<p><?php echo esc_html( $brand_name ); ?></p>
 													<?php
@@ -174,7 +176,7 @@ $setting_url = self::get_page_url( 'breadcrumb-settings' );
 						<div class="inside">
 							<p>
 							<?php
-							if ( ( '1' === $settings['sp_hide_label'] ) || true === ( defined( 'WP_SP_WL' ) && WP_SP_WL ) ) {
+							if ( ( '1' === $sp_hide_label ) || true === ( defined( 'WP_SP_WL' ) && WP_SP_WL ) ) {
 								esc_html_e(
 									'Having issues with your schema? Try regenerating the code on all your posts/pages.',
 									'wp-schema-pro'
@@ -202,7 +204,7 @@ $setting_url = self::get_page_url( 'breadcrumb-settings' );
 						</div>
 					</div>
 				</div>
-				<?php if ( 'disabled' === $settings['sp_hide_label'] ) { ?>
+				<?php if ( 'disabled' === $sp_hide_label ) { ?>
 					<div id="side-sortables" style="">
 						<div class="postbox">
 							<h2 class="hndle"><span><?php esc_html_e( 'Knowledge Base', 'wp-schema-pro' ); ?></span></h2>

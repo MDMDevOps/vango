@@ -83,10 +83,8 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Course' ) ) {
 							$schema['hasCourseInstance'][ $key ]['endDate'] = wp_strip_all_tags( $value['end-date'] );
 						}
 
-						if ( isset( $value['previous-date'] ) && ! empty( $value['previous-date'] ) ) {
-							if ( 'EventRescheduled' === $value['event-status'] ) {
+						if ( isset( $value['previous-date'] ) && ! empty( $value['previous-date'] ) && 'EventRescheduled' === $value['event-status'] ) {
 								$schema['hasCourseInstance'][ $key ]['previousStartDate'] = wp_strip_all_tags( $value['previous-date'] );
-							}
 						}
 
 						if ( isset( $value['online-location'] ) && ! empty( $value['online-location'] ) && 'OfflineEventAttendanceMode' !== $value['event-attendance-mode'] || 'MixedEventAttendanceMode' === $value['event-attendance-mode'] ) {

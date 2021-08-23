@@ -152,11 +152,7 @@ class BSF_AIOSRS_Pro_Helper {
 	 */
 	public static function bsf_schema_pro_enqueue_admin_script() {
 		global $pagenow;
-		if ( 'post-new.php' === $pagenow || 'post.php' === $pagenow ) {
-			return true;
-		} else {
-			return false;
-		}
+			return 'post-new.php' === $pagenow || 'post.php' === $pagenow;
 	}
 
 	/**
@@ -181,6 +177,13 @@ class BSF_AIOSRS_Pro_Helper {
 
 		// Delete decrypted cached structured option data.
 		delete_option( BSF_AIOSRS_PRO_CACHE_KEY );
+	}
+
+	/**
+	 *  Return the WP_debug.
+	 */
+	public static function bsf_schema_pro_is_wp_debug_enable() {
+		return true === ( defined( 'WP_DEBUG' ) && WP_DEBUG );
 	}
 }
 

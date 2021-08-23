@@ -138,10 +138,8 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema' ) ) {
 
 		/**
 		 *  Delete the store cache of HTML Markup.
-		 *
-		 *  @param int $post_id Post id.
 		 */
-		public function bsf_delete_cached_json_ld( $post_id ) {
+		public function bsf_delete_cached_json_ld() {
 
 			global  $wpdb;
 			$wpdb->delete( $wpdb->postmeta, array( 'meta_key' => BSF_AIOSRS_PRO_CACHE_KEY ) );
@@ -218,6 +216,8 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema' ) ) {
 
 				case 'rating':
 					$label = __( 'Fixed Rating', 'wp-schema-pro' );
+					break;
+				default:
 					break;
 			}
 			return $label;
@@ -1045,12 +1045,18 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema' ) ) {
 								'required'    => false,
 								'description' => esc_html__( 'Use value "TELECOMMUTE" for jobs in which the employee may or must work remotely 100% of the time.', 'wp-schema-pro' ),
 							),
-							'applicant-location'      => array(
-								'label'       => esc_html__( 'Applicant Location', 'wp-schema-pro' ),
-								'type'        => 'text',
-								'default'     => 'none',
-								'required'    => false,
-								'description' => esc_html__( 'The geographic location(s) in which employees may be located to be eligible for the Remote job.', 'wp-schema-pro' ),
+							'remote-location'         => array(
+								'label'  => esc_html__( 'Remote Location', 'wp-schema-pro' ),
+								'type'   => 'repeater',
+								'fields' => array(
+									'applicant-location' => array(
+										'label'       => esc_html__( 'Applicant Location', 'wp-schema-pro' ),
+										'type'        => 'text',
+										'default'     => 'create-field',
+										'required'    => false,
+										'description' => esc_html__( 'The geographic location(s) in which employees may be located to be eligible for the Remote job.', 'wp-schema-pro' ),
+									),
+								),
 							),
 							'location-street'         => array(
 								'label'    => esc_html__( 'Street Address', 'wp-schema-pro' ),
@@ -1151,7 +1157,6 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema' ) ) {
 									'Locksmith'            => esc_html__( 'Locksmith', 'wp-schema-pro' ),
 									'LodgingBusiness'      => esc_html__( 'Lodging', 'wp-schema-pro' ),
 									'MedicalBusiness'      => esc_html__( 'Medical Business', 'wp-schema-pro' ),
-									'ProfessionalService'  => esc_html__( 'Professional Service', 'wp-schema-pro' ),
 									'RadioStation'         => esc_html__( 'Radio Station', 'wp-schema-pro' ),
 									'RealEstateAgent'      => esc_html__( 'Real Estate Agent', 'wp-schema-pro' ),
 									'RecyclingCenter'      => esc_html__( 'Recycling Center', 'wp-schema-pro' ),
@@ -3023,6 +3028,7 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema' ) ) {
 				if ( ! empty( $type ) ) {
 					$meta_values          = get_post_meta( $post->ID, 'bsf-aiosrs-' . $type, true );
 					$schema_meta_repeater = '';
+					$meta_repeater_value  = '';
 					$required_fields      = array();
 					$schema_meta          = self::$schema_meta_fields[ 'bsf-aiosrs-' . $type ]['subkeys'];
 					$schema_meta_keys     = array_keys( $schema_meta );
@@ -3050,12 +3056,10 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema' ) ) {
 							}
 						}
 					}
-					if ( ! empty( $schema_meta_repeater ) ) {
-						if ( is_array( $schema_meta_repeater_keys ) && is_array( $meta_repeater_value ) && ! empty( $meta_repeater_value ) ) {
-							foreach ( $schema_meta_repeater_keys as $repeater_key ) {
-								if ( ( isset( $schema_meta_repeater[ $repeater_key ]['required'] ) && true === $schema_meta_repeater[ $repeater_key ]['required'] ) && ( ! isset( $meta_repeater_value[ $repeater_key ] ) || 'none' === $meta_repeater_value[ $repeater_key ] ) ) {
-									$required_fields[] = $schema_meta_repeater[ $repeater_key ]['label'];
-								}
+					if ( ! empty( $schema_meta_repeater ) && is_array( $schema_meta_repeater_keys ) && is_array( $meta_repeater_value ) && ! empty( $meta_repeater_value ) ) {
+						foreach ( $schema_meta_repeater_keys as $repeater_key ) {
+							if ( ( isset( $schema_meta_repeater[ $repeater_key ]['required'] ) && true === $schema_meta_repeater[ $repeater_key ]['required'] ) && ( ! isset( $meta_repeater_value[ $repeater_key ] ) || 'none' === $meta_repeater_value[ $repeater_key ] ) ) {
+								$required_fields[] = $schema_meta_repeater[ $repeater_key ]['label'];
 							}
 						}
 					}
@@ -3619,7 +3623,7 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema' ) ) {
 							<a href="#" class="aiosrs-image-select button"><span class="dashicons dashicons-format-image"></span><?php esc_html_e( 'Select Image', 'wp-schema-pro' ); ?></a>
 							<a href="#" class="aiosrs-image-remove dashicons dashicons-no-alt wp-ui-text-highlight"></a>
 							<?php if ( isset( $image_url ) && ! empty( $image_url ) ) : ?>
-								<a href="#" class="aiosrs-image-select img"><img src="<?php echo esc_url( $image_url ); ?>" /></a>
+								<a href="#" class="aiosrs-image-select img"><img src="<?php echo esc_url( $image_url ); ?>" alt = ""; /></a>
 							<?php endif; ?>
 						</div>
 					</div>
@@ -4408,7 +4412,11 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema' ) ) {
 								$i++;
 							}
 						} else {
-							$meta_value[ $meta_key ] = esc_attr( $value );
+							if ( 'custom-markup-custom-text' === $meta_key ) {
+								$meta_value[ $meta_key ] = $value;
+							} else {
+								$meta_value[ $meta_key ] = esc_attr( $value );
+							}
 						}
 					}
 				} elseif ( in_array( $key, array( 'bsf-aiosrs-schema-location', 'bsf-aiosrs-schema-exclusion' ), true ) ) {
@@ -4558,7 +4566,7 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema' ) ) {
 		 */
 		public function custom_post_type_post_update_messages( $messages ) {
 			if ( isset( $_REQUEST['wp_schema_pro_admin_page_nonce'] ) && ! wp_verify_nonce( $_REQUEST['wp_schema_pro_admin_page_nonce'], 'wp_schema_pro_admin_page' ) ) {
-				return;
+				return false;
 			}
 			$custom_post_type = get_post_type( get_the_ID() );
 

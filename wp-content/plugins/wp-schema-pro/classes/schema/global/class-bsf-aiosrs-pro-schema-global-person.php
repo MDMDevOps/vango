@@ -57,10 +57,10 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Global_Person' ) ) {
 							$schema['sameAs'][] = $dynamic_social_link;
 						}
 					}
-					return;
-				}
-				if ( ! empty( $social_link ) && ( ! is_array( $social_link ) ) ) {
-					$schema['sameAs'][] = $social_link;
+				} else {
+					if ( ! empty( $social_link ) && ( ! is_array( $social_link ) ) ) {
+						$schema['sameAs'][] = $social_link;
+					}
 				}
 			}
 

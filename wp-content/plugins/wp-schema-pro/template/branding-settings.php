@@ -18,6 +18,12 @@ $setting_url = self::get_page_url( 'branding-settings' );
 				} else {
 					$settings = BSF_AIOSRS_Pro_Helper::$settings['wp-schema-pro-branding-settings'];
 				}
+				$sp_names       = isset( $settings['sp_plugin_name'] ) ? $settings['sp_plugin_name'] : '';
+				$sp_snames      = isset( $settings['sp_plugin_sname'] ) ? $settings['sp_plugin_sname'] : '';
+				$sp_desc        = isset( $settings['sp_plugin_desc'] ) ? $settings['sp_plugin_desc'] : '';
+				$sp_author_name = isset( $settings['sp_plugin_author_name'] ) ? $settings['sp_plugin_author_name'] : '';
+				$sp_author_url  = isset( $settings['sp_plugin_author_url'] ) ? $settings['sp_plugin_author_url'] : '';
+				$sp_hide_label  = isset( $settings['sp_hide_label'] ) ? $settings['sp_hide_label'] : 'disabled';
 				?>
 				<!-- White Label -->
 				<div class="postbox wp-schema-pro-branding-settings" >
@@ -39,26 +45,26 @@ $setting_url = self::get_page_url( 'branding-settings' );
 							<table class="form-table schema-branding">
 								<tr>
 									<th><?php esc_html_e( 'Plugin Name', 'wp-schema-pro' ); ?></th>
-									<td><input type="text" name="wp-schema-pro-branding-settings[sp_plugin_name]" placeholder="Schema Pro" value="<?php echo esc_attr( $settings['sp_plugin_name'] ); ?>" class="regular-text sp_plugin_name" /></td>
+									<td><input type="text" name="wp-schema-pro-branding-settings[sp_plugin_name]" placeholder="Schema Pro" value="<?php echo esc_attr( $sp_names ); ?>" class="regular-text sp_plugin_name" /></td>
 								</tr>
 								<tr>
 									<th><?php esc_html_e( 'Plugin Short Name', 'wp-schema-pro' ); ?></th>
-									<td><input type="text" name="wp-schema-pro-branding-settings[sp_plugin_sname]" placeholder="Schema Pro" value="<?php echo esc_attr( $settings['sp_plugin_sname'] ); ?>" class="regular-text sp_plugin_sname" /></td>
+									<td><input type="text" name="wp-schema-pro-branding-settings[sp_plugin_sname]" placeholder="Schema Pro" value="<?php echo esc_attr( $sp_snames ); ?>" class="regular-text sp_plugin_sname" /></td>
 								</tr>
 								<tr>
 									<th><?php esc_html_e( 'Plugin Description', 'wp-schema-pro' ); ?></th>
-									<td><input type="text" name="wp-schema-pro-branding-settings[sp_plugin_desc]" placeholder="Integrate Schema.org JSON-LD code in your website." value="<?php echo esc_attr( $settings['sp_plugin_desc'] ); ?>" class="regular-text sp_plugin_desc" /></td>
+									<td><input type="text" name="wp-schema-pro-branding-settings[sp_plugin_desc]" placeholder="Integrate Schema.org JSON-LD code in your website." value="<?php echo esc_attr( $sp_desc ); ?>" class="regular-text sp_plugin_desc" /></td>
 								</tr>
 								<tr>
 									<th><?php esc_html_e( 'Author / Agency Name', 'wp-schema-pro' ); ?></th>
-									<td><input type="text" name="wp-schema-pro-branding-settings[sp_plugin_author_name]" placeholder="Brainstorm Force" value="<?php echo esc_attr( $settings['sp_plugin_author_name'] ); ?>" class="regular-text sp_plugin_author_name" /></td>
+									<td><input type="text" name="wp-schema-pro-branding-settings[sp_plugin_author_name]" placeholder="Brainstorm Force" value="<?php echo esc_attr( $sp_author_name ); ?>" class="regular-text sp_plugin_author_name" /></td>
 								</tr>
 								<tr>
 									<th><?php esc_html_e( 'Author / Agency URL', 'wp-schema-pro' ); ?></th>
-									<td><input type="text" name="wp-schema-pro-branding-settings[sp_plugin_author_url]" placeholder="http://www.brainstormforce.com" value="<?php echo esc_attr( $settings['sp_plugin_author_url'] ); ?>" class="regular-text sp_plugin_author_url" /></td>
+									<td><input type="text" name="wp-schema-pro-branding-settings[sp_plugin_author_url]" placeholder="http://www.brainstormforce.com" value="<?php echo esc_attr( $sp_author_url ); ?>" class="regular-text sp_plugin_author_url" /></td>
 								</tr>
 								<tr>
-									<th class="tooltip-with-image-wrapper">
+									<th scope="row" class="tooltip-with-image-wrapper">
 										<?php esc_html_e( 'Hide White Label Settings', 'wp-schema-pro' ); ?>
 										<?php
 											$message  = __( 'Checking this box will enable the White Label features of this plugin and will remove the white label settings.', 'wp-schema-pro' );
@@ -69,12 +75,12 @@ $setting_url = self::get_page_url( 'branding-settings' );
 									<td>
 										<label>
 											<input type="hidden" name="wp-schema-pro-branding-settings[sp_hide_label]" value="disabled" />
-											<input type="checkbox" name="wp-schema-pro-branding-settings[sp_hide_label]" <?php checked( '1', $settings['sp_hide_label'] ); ?> value="1" /> <?php esc_html_e( 'Hide White Label Settings', 'wp-schema-pro' ); ?>
+											<input type="checkbox" name="wp-schema-pro-branding-settings[sp_hide_label]" <?php checked( '1', $sp_hide_label ); ?> value="1" /> <?php esc_html_e( 'Hide White Label Settings', 'wp-schema-pro' ); ?>
 										</label>
 									</td>
 								</tr>
 								<tr>
-									<th colspan="2">
+									<th scope="row" colspan="2">
 										<input type="submit" class="button-primary" value="<?php esc_html_e( 'Save Changes', 'wp-schema-pro' ); ?>" />
 									</th>
 								</tr>
@@ -94,14 +100,15 @@ $setting_url = self::get_page_url( 'branding-settings' );
 						<div class="inside">
 							<div>
 								<?php
+								$sp_name = isset( $settings['sp_plugin_name'] ) ? $settings['sp_plugin_name'] : '';
 								if ( is_multisite() ) {
 									$settings = get_site_option( 'wp-schema-pro-branding-settings' );
 								} else {
 									$settings = BSF_AIOSRS_Pro_Helper::$settings['wp-schema-pro-branding-settings'];
 								}
-								if ( '' !== $settings['sp_plugin_name'] ) {
+								if ( '' !== $sp_name ) {
 									/* translators: %s: search term */
-									$brand_name = sprintf( __( 'Need help configure %s step by step?', 'wp-schema-pro' ), $settings['sp_plugin_name'] );
+									$brand_name = sprintf( __( 'Need help configure %s step by step?', 'wp-schema-pro' ), $sp_name );
 									?>
 										<p><?php echo esc_html( $brand_name ); ?></p>
 													<?php

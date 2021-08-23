@@ -47,7 +47,7 @@ $current_section        = isset( $_GET['section'] ) ? $_GET['section'] : 'genera
 									<?php do_settings_sections( 'wp-schema-pro-general-settings-group' ); ?>
 									<table class="form-table">
 										<tr>
-											<th>
+											<th scope="row">
 												<?php esc_html_e( 'This Website Represents', 'wp-schema-pro' ); ?>
 											</th>
 											<td>
@@ -71,7 +71,7 @@ $current_section        = isset( $_GET['section'] ) ? $_GET['section'] : 'genera
 										}
 										?>
 										<tr class="wp-schema-pro-site-logo-wrap">
-											<th><?php esc_html_e( 'Website Logo', 'wp-schema-pro' ); ?></th>
+											<th id =""><?php esc_html_e( 'Website Logo', 'wp-schema-pro' ); ?></th>
 											<td>
 											<select style='display:none' name="wp-schema-pro-general-settings[site-logo]" class="wp-schema-pro-custom-option-select">
 													<option  <?php selected( $settings['site-logo'], 'custom' ); ?> value="custom"><?php esc_html_e( 'Add Custom Logo', 'wp-schema-pro' ); ?></option>
@@ -83,10 +83,8 @@ $current_section        = isset( $_GET['section'] ) ? $_GET['section'] : 'genera
 														$image_url = wp_get_attachment_url( $settings['site-logo-custom'] );
 													} else {
 														$logo_id = '';
-														if ( function_exists( 'the_custom_logo' ) ) {
-															if ( has_custom_logo() ) {
+														if ( function_exists( 'the_custom_logo' ) && has_custom_logo() ) {
 																$logo_id = get_theme_mod( 'custom_logo' );
-															}
 														}
 														$image_url = wp_get_attachment_url( $logo_id );
 													}
@@ -232,18 +230,15 @@ $current_section        = isset( $_GET['section'] ) ? $_GET['section'] : 'genera
 											<td><input type="url" name="wp-schema-pro-social-profiles[google-plus]"  value="<?php echo esc_attr( $settings['google-plus'] ); ?>" placeholder="<?php echo esc_attr( 'Enter URL' ); ?>" /></td>
 										</tr> 
 										<?php
-										if ( isset( $settings ) && ! empty( $settings ) ) {
-											if ( isset( $settings['other'] ) ) {
-
-												foreach ( $settings['other'] as $sub_social_profiles => $value ) {
-													if ( isset( $value ) && ! empty( $value ) ) {
-														?>
+										if ( isset( $settings ) && ! empty( $settings ) && isset( $settings['other'] ) ) {
+											foreach ( $settings['other'] as $sub_social_profiles => $value ) {
+												if ( isset( $value ) && ! empty( $value ) ) {
+													?>
 										<tr>
 											<th class="wpsp-other-th"><?php esc_html_e( 'Other', 'wp-schema-pro' ); ?></th>
 											<td><input type="url" class="wpsp-other" name="wp-schema-pro-social-profiles[other][<?php echo esc_attr( $sub_social_profiles ); ?>]"  value="<?php echo esc_attr( $value ); ?>" placeholder="<?php echo esc_attr( 'Enter URL' ); ?>" /><span class ="wpsp-field-close remove-row dashicons dashicons-dismiss "><a href="#" class=""></a></span></td>
 										</tr>
 														<?php
-													}
 												}
 											}
 										}
@@ -485,7 +480,7 @@ $current_section        = isset( $_GET['section'] ) ? $_GET['section'] : 'genera
 											</td>
 										</tr>
 										<tr>
-											<th class="tooltip-with-image-wrapper">
+											<th class="tooltip-with-image-wrapper" id ="" >
 												<?php esc_html_e( 'Enable SiteLinks Search Box', 'wp-schema-pro' ); ?>
 												<?php
 													$message = '<img class="tooltip-image" src="' . esc_url( BSF_AIOSRS_PRO_URI . '/admin/assets/images/sitelink-search.jpg' ) . '" />';
@@ -501,7 +496,7 @@ $current_section        = isset( $_GET['section'] ) ? $_GET['section'] : 'genera
 											</td>
 										</tr>
 										<tr style="display: none;">
-											<th class="tooltip-with-image-wrapper">
+											<th class="tooltip-with-image-wrapper" id ="">
 												<?php esc_html_e( 'Enable Breadcrumbs', 'wp-schema-pro' ); ?>
 												<?php
 													$message  = __( 'If enabled, Google can add breadcrumbs to your website’s and pages search results.', 'wp-schema-pro' );
@@ -518,7 +513,7 @@ $current_section        = isset( $_GET['section'] ) ? $_GET['section'] : 'genera
 											</td>
 										</tr>
 										<tr>
-											<th colspan="2">
+											<th colspan="2" id ="">
 												<input type="submit" class="button-primary" value="<?php esc_html_e( 'Save Changes', 'wp-schema-pro' ); ?>" />
 											</th>
 										</tr>
@@ -528,6 +523,9 @@ $current_section        = isset( $_GET['section'] ) ? $_GET['section'] : 'genera
 						</div>
 						<?php
 						break;
+					default:
+						break;
+
 				}
 				?>
 			</div>
@@ -538,6 +536,7 @@ $current_section        = isset( $_GET['section'] ) ? $_GET['section'] : 'genera
 				} else {
 					$settings = BSF_AIOSRS_Pro_Helper::$settings['wp-schema-pro-branding-settings'];
 				}
+				$sp_hide_label = isset( $settings['sp_hide_label'] ) ? $settings['sp_hide_label'] : 'disabled';
 				?>
 				<div id="side-sortables" style="min-height: 0px;">
 					<div class="postbox">
@@ -545,9 +544,10 @@ $current_section        = isset( $_GET['section'] ) ? $_GET['section'] : 'genera
 						<div class="inside">
 							<div>
 								<?php
-								if ( '' !== $settings['sp_plugin_name'] ) {
+								$sp_name = isset( $settings['sp_plugin_name'] ) ? $settings['sp_plugin_name'] : '';
+								if ( '' !== $sp_name ) {
 									/* translators: %s: search term */
-									$brand_name = sprintf( __( 'Need help configure %s step by step?', 'wp-schema-pro' ), $settings['sp_plugin_name'] );
+									$brand_name = sprintf( __( 'Need help configure %s step by step?', 'wp-schema-pro' ), $sp_name );
 									?>
 										<p><?php echo esc_html( $brand_name ); ?></p>
 													<?php
@@ -575,7 +575,7 @@ $current_section        = isset( $_GET['section'] ) ? $_GET['section'] : 'genera
 						<div class="inside">
 							<p>
 							<?php
-							if ( ( '1' === $settings['sp_hide_label'] ) || true === ( defined( 'WP_SP_WL' ) && WP_SP_WL ) ) {
+							if ( ( '1' === $sp_hide_label ) || true === ( defined( 'WP_SP_WL' ) && WP_SP_WL ) ) {
 								esc_html_e( 'Having issues with your schema? Try regenerating the code on all your posts/pages.', 'wp-schema-pro' );
 							} else {
 								esc_html_e( 'Having issues with your schema? Try regenerating the code on all your posts/pages. ', 'wp-schema-pro' );
@@ -600,7 +600,7 @@ $current_section        = isset( $_GET['section'] ) ? $_GET['section'] : 'genera
 						</div>
 					</div>
 				</div>
-				<?php if ( 'disabled' === $settings['sp_hide_label'] ) { ?>
+				<?php if ( 'disabled' === $sp_hide_label ) { ?>
 					<div id="side-sortables" style="">
 						<div class="postbox">
 							<h2 class="hndle"><span><?php esc_html_e( 'Knowledge Base', 'wp-schema-pro' ); ?></span></h2>

@@ -81,6 +81,7 @@ class BSF_Custom_Post_List_Table extends WP_List_Table {
 		switch ( $column_name ) {
 			case 'post_title':
 			case 'date':
+			default:
 		}
 
 		do_action( 'manage_' . $this->custom_post_type . '_posts_custom_column', $column_name, $item['ID'] );
@@ -230,9 +231,7 @@ class BSF_Custom_Post_List_Table extends WP_List_Table {
 			return;
 		}
 
-		$edit_post_link         = get_edit_post_link( $item['ID'] );
-		$delete_post_link       = get_delete_post_link( $item['ID'] );
-		$force_delete_post_link = get_delete_post_link( $item['ID'], '', true );
+		$edit_post_link = get_edit_post_link( $item['ID'] );
 
 		$post_type_object = get_post_type_object( $this->custom_post_type );
 		$can_edit_post    = current_user_can( 'edit_post', $item['ID'] );

@@ -111,7 +111,10 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Markup' ) ) {
 				$post_id    = absint( $_POST['post_id'] );
 				$schema_id  = absint( $_POST['schemaId'] );
 				$new_rating = absint( $_POST['rating'] );
-				$new_rating = ( $new_rating > 5 ) ? 5 : ( ( $new_rating <= 0 ) ? 1 : $new_rating );
+				if ( $new_rating > 5 ) {
+					$new_rating = 5;
+				}
+				$new_rating = $new_rating <= 0 ? 1 : $new_rating;
 				$client_ip  = $this->get_client_ip();
 
 				$all_ratings = get_post_meta( $post_id, 'bsf-schema-pro-reviews-' . $schema_id, true );
@@ -192,11 +195,12 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Markup' ) ) {
 		public function enqueue_scripts() {
 
 			if ( is_singular() ) {
-				$post_id = get_the_ID();
+				$post_id   = get_the_ID();
+				$minfy_css = BSF_AIOSRS_Pro_Helper::bsf_schema_pro_is_wp_debug_enable() ? 'css/frontend.css' : 'min-css/frontend.min.css';
+				$minfy_js  = BSF_AIOSRS_Pro_Helper::bsf_schema_pro_is_wp_debug_enable() ? 'js/frontend.js' : 'min-js/frontend.min.js';
 				wp_enqueue_style( 'dashicons' );
-				wp_register_script( 'wp-schema-pro-fontend-script', BSF_AIOSRS_PRO_URI . 'admin/assets/js/frontend.js', array( 'jquery' ), BSF_AIOSRS_PRO_VER, true );
-				wp_register_style( 'wp-schema-pro-fontend-style', BSF_AIOSRS_PRO_URI . 'admin/assets/css/frontend.css', array(), BSF_AIOSRS_PRO_VER );
-
+				wp_register_script( 'wp-schema-pro-fontend-script', BSF_AIOSRS_PRO_URI . 'admin/assets/' . $minfy_js, array( 'jquery' ), BSF_AIOSRS_PRO_VER, true );
+				wp_register_style( 'wp-schema-pro-fontend-style', BSF_AIOSRS_PRO_URI . 'admin/assets/' . $minfy_css, array(), BSF_AIOSRS_PRO_VER );
 				wp_localize_script(
 					'wp-schema-pro-fontend-script',
 					'AIOSRS_Frontend',

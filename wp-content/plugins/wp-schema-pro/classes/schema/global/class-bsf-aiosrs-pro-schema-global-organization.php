@@ -79,10 +79,8 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Global_Organization' ) ) {
 			if ( isset( $general_settings['site-logo-custom'] ) ) {
 				$logo_id = isset( $general_settings['site-logo-custom'] ) ? $general_settings['site-logo-custom'] : '';
 			} elseif ( isset( $general_settings['site-logo'] ) && 'customizer-logo' === $general_settings['site-logo'] ) {
-				if ( function_exists( 'the_custom_logo' ) ) {
-					if ( has_custom_logo() ) {
+				if ( function_exists( 'the_custom_logo' ) && has_custom_logo() ) {
 						$logo_id = get_theme_mod( 'custom_logo' );
-					}
 				}
 			}
 			if ( $logo_id ) {

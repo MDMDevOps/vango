@@ -115,10 +115,9 @@ if ( ! class_exists( 'BSF_SP_Admin_Helper' ) ) {
 		 */
 		public static function create_specific_stylesheet() {
 
-			$saved_blocks    = self::get_admin_settings_option( '_wpsp_blocks' );
-			$combined        = array();
-			$is_already_post = false;
-			$is_already_faq  = false;
+			$saved_blocks   = self::get_admin_settings_option( '_wpsp_blocks' );
+			$combined       = array();
+			$is_already_faq = false;
 
 			foreach ( BSF_SP_Config::$block_attributes as $key => $block ) {
 

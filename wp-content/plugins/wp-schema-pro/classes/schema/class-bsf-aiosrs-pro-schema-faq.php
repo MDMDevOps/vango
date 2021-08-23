@@ -24,8 +24,7 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_FAQ' ) ) {
 		 */
 		public static function render( $data, $post ) {
 			global $post;
-			$schema  = array();
-			$post_id = get_the_ID();
+			$schema = array();
 			if ( isset( $data['question-answer'][0]['question'] ) && ! empty( $data['question-answer'][0]['question'] ) ) {
 
 				$schema['@context'] = 'https://schema.org';

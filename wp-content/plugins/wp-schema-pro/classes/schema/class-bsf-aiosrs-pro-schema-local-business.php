@@ -27,7 +27,7 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Local_Business' ) ) {
 
 			$schema['@context'] = 'https://schema.org';
 
-			if ( isset( $data['schema-type'] ) && ! empty( $data['schema-type'] ) ) {
+			if ( isset( $data['schema-type'] ) && ! empty( $data['schema-type'] ) && 'ProfessionalService' !== $data['schema-type'] ) {
 				$schema['@type'] = $data['schema-type'];
 			} else {
 				$schema['@type'] = 'LocalBusiness';
@@ -112,34 +112,32 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Local_Business' ) ) {
 			$contact_toll       = isset( $contact_type['contact-toll'] ) ? $contact_type['contact-toll'] : '';
 			$contact_point_type = $contact_hear . ' ' . $contact_toll;
 			$contact_point_type = explode( ' ', $contact_point_type );
-			if ( '1' === $contact_type['cp-schema-type'] && true === apply_filters( 'wp_schema_pro_contactpoint_local_business_schema_enabled', true ) ) {
-				if ( isset( $contact_type['contact-type'] ) && ! empty( $contact_type['contact-type'] ) ) {
+			if ( '1' === $contact_type['cp-schema-type'] && true === apply_filters( 'wp_schema_pro_contactpoint_local_business_schema_enabled', true ) && isset( $contact_type['contact-type'] ) && ! empty( $contact_type['contact-type'] ) ) {
 						$schema['ContactPoint']['@type'] = 'ContactPoint';
 
-					if ( isset( $contact_type['contact-type'] ) && ! empty( $contact_type['contact-type'] ) ) {
-						$schema ['ContactPoint']['contactType'] = wp_strip_all_tags( $contact_type['contact-type'] );
+				if ( isset( $contact_type['contact-type'] ) && ! empty( $contact_type['contact-type'] ) ) {
+					$schema ['ContactPoint']['contactType'] = wp_strip_all_tags( $contact_type['contact-type'] );
+				}
+				if ( isset( $contact_type['telephone'] ) && ! empty( $contact_type['telephone'] ) ) {
+					$schema ['ContactPoint']['telephone'] = wp_strip_all_tags( $contact_type['telephone'] );
+				}
+				if ( isset( $contact_type['url'] ) && ! empty( $contact_type['url'] ) ) {
+					$schema ['ContactPoint']['url'] = esc_url( $contact_type['url'] );
+				}
+				if ( isset( $contact_type['email'] ) && ! empty( $contact_type['email'] ) ) {
+					$schema ['ContactPoint']['email'] = wp_strip_all_tags( $contact_type['email'] );
+				}
+				if ( isset( $contact_type['areaServed'] ) && ! empty( $contact_type['areaServed'] ) ) {
+					$language = explode( ',', $contact_type['areaServed'] );
+					foreach ( $language as $key => $value ) {
+						$schema ['ContactPoint']['areaServed'][ $key ] = wp_strip_all_tags( $value );
 					}
-					if ( isset( $contact_type['telephone'] ) && ! empty( $contact_type['telephone'] ) ) {
-						$schema ['ContactPoint']['telephone'] = wp_strip_all_tags( $contact_type['telephone'] );
-					}
-					if ( isset( $contact_type['url'] ) && ! empty( $contact_type['url'] ) ) {
-						$schema ['ContactPoint']['url'] = esc_url( $contact_type['url'] );
-					}
-					if ( isset( $contact_type['email'] ) && ! empty( $contact_type['email'] ) ) {
-						$schema ['ContactPoint']['email'] = wp_strip_all_tags( $contact_type['email'] );
-					}
-					if ( isset( $contact_type['areaServed'] ) && ! empty( $contact_type['areaServed'] ) ) {
-						$language = explode( ',', $contact_type['areaServed'] );
-						foreach ( $language as $key => $value ) {
-							$schema ['ContactPoint']['areaServed'][ $key ] = wp_strip_all_tags( $value );
-						}
-					}
-					foreach ( $contact_point_type  as $key => $value ) {
-						$schema ['ContactPoint']['contactOption'][ $key ] = wp_strip_all_tags( $value );
-					}
-					if ( isset( $contact_type['availableLanguage'] ) && ! empty( $contact_type['availableLanguage'] ) ) {
-						$schema ['ContactPoint']['availableLanguage'] = wp_strip_all_tags( $contact_type['availableLanguage'] );
-					}
+				}
+				foreach ( $contact_point_type  as $key => $value ) {
+					$schema ['ContactPoint']['contactOption'][ $key ] = wp_strip_all_tags( $value );
+				}
+				if ( isset( $contact_type['availableLanguage'] ) && ! empty( $contact_type['availableLanguage'] ) ) {
+					$schema ['ContactPoint']['availableLanguage'] = wp_strip_all_tags( $contact_type['availableLanguage'] );
 				}
 			}
 

@@ -23,9 +23,7 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Custom_Markup' ) ) {
 		 * @return array
 		 */
 		public static function render( $data, $post ) {
-			$schema           = array();
-			$general_settings = BSF_AIOSRS_Pro_Helper::$settings['wp-schema-pro-general-settings'];
-
+			$schema = array();
 			if ( isset( $data['custom-markup'] ) && ! empty( $data['custom-markup'] ) ) {
 				$schema['custom-markup'] = $data['custom-markup'];
 			}

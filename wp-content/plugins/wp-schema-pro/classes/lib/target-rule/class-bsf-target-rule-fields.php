@@ -401,10 +401,8 @@ if ( ! class_exists( 'BSF_Target_Rule_Fields' ) ) {
 		/**
 		 * Function Name: admin_styles.
 		 * Function Description: admin_styles.
-		 *
-		 * @param string $hook string parameter.
 		 */
-		public function admin_styles( $hook ) {
+		public function admin_styles() {
 
 			if ( ! is_object( get_current_screen() ) ) {
 				return;
@@ -457,8 +455,6 @@ if ( ! class_exists( 'BSF_Target_Rule_Fields' ) ) {
 		 */
 		public static function target_rule_settings_field( $name, $settings, $value ) {
 			$input_name     = $name;
-			$type           = isset( $settings['type'] ) ? $settings['type'] : 'target_rule';
-			$class          = isset( $settings['class'] ) ? $settings['class'] : '';
 			$rule_type      = isset( $settings['rule_type'] ) ? $settings['rule_type'] : 'target_rule';
 			$add_rule_label = isset( $settings['add_rule_label'] ) ? $settings['add_rule_label'] : __( 'Add Rule', 'wp-schema-pro' );
 			$saved_values   = $value;
@@ -501,7 +497,6 @@ if ( ! class_exists( 'BSF_Target_Rule_Fields' ) ) {
 
 			/* Wrapper Start */
 			$output .= '<div class="bsf-target-rule-wrapper bsf-target-rule-' . $rule_type . '-on-wrap" data-type="' . $rule_type . '">';
-			// $output .= '<input type="hidden" class="form-control bsf-input bsf-target_rule-input" name="' . esc_attr( $input_name ) . '" value=' . $value . ' />';
 			$output .= '<div class="bsf-target-rule-selector-wrapper bsf-target-rule-' . $rule_type . '-on">';
 			$output .= self::generate_target_rule_selector( $rule_type, $selection_options, $input_name, $saved_values, $add_rule_label );
 			$output .= '</div>';
@@ -901,9 +896,6 @@ if ( ! class_exists( 'BSF_Target_Rule_Fields' ) ) {
 		 */
 		public static function target_user_role_settings_field( $name, $settings, $value ) {
 			$input_name     = $name;
-			$type           = isset( $settings['type'] ) ? $settings['type'] : 'target_rule';
-			$class          = isset( $settings['class'] ) ? $settings['class'] : '';
-			$rule_type      = isset( $settings['rule_type'] ) ? $settings['rule_type'] : 'target_rule';
 			$add_rule_label = isset( $settings['add_rule_label'] ) ? $settings['add_rule_label'] : __( 'Add Rule', 'wp-schema-pro' );
 			$saved_values   = $value;
 			$output         = '';
@@ -982,12 +974,11 @@ if ( ! class_exists( 'BSF_Target_Rule_Fields' ) ) {
 		 * Parse user role condition.
 		 *
 		 * @since  1.0.0
-		 * @param  int   $post_id Post ID.
 		 * @param  Array $rules   Current user rules.
 		 *
 		 * @return boolean  True = user condition passes. False = User condition does not pass.
 		 */
-		public function parse_user_role_condition( $post_id, $rules ) {
+		public function parse_user_role_condition( $rules ) {
 
 			$show_popup = true;
 
@@ -1217,6 +1208,8 @@ if ( ! class_exists( 'BSF_Target_Rule_Fields' ) ) {
 						break;
 					case '':
 						$current_post_id = get_the_id();
+						break;
+					default:
 						break;
 				}
 

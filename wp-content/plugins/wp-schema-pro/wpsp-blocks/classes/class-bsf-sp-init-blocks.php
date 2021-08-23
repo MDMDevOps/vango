@@ -47,17 +47,16 @@ class BSF_SP_Init_Blocks {
 		// Hook: Editor assets.
 		add_action( 'enqueue_block_editor_assets', array( $this, 'editor_assets' ), 15 );
 
-		add_filter( 'block_categories', array( $this, 'register_block_category' ), 10, 2 );
+		add_filter( 'block_categories_all', array( $this, 'register_block_category' ), 10, 2 );
 	}
 
 	/**
 	 * Gutenberg block category for Schema Pro.
 	 *
-	 * @param array  $categories Block categories.
-	 * @param object $post Post object.
+	 * @param array $categories Block categories.
 	 * @since 2.2.0
 	 */
-	public function register_block_category( $categories, $post ) {
+	public function register_block_category( $categories ) {
 		return array_merge(
 			$categories,
 			array(
@@ -103,7 +102,6 @@ class BSF_SP_Init_Blocks {
 		$block_assets = BSF_SP_Config::get_block_assets();
 
 		foreach ( $blocks as $slug => $value ) {
-			$_slug = str_replace( 'wpsp/', '', $slug );
 
 				$js_assets = ( isset( $blocks[ $slug ]['js_assets'] ) ) ? $blocks[ $slug ]['js_assets'] : array();
 
@@ -168,14 +166,6 @@ class BSF_SP_Init_Blocks {
 			true // Enqueue the script in the footer.
 		);
 
-		// Styles.
-		wp_enqueue_style(
-			'wpsp-block-editor-css', // Handle.
-			BSF_AIOSRS_PRO_URI . 'dist/blocks.css', // Block editor CSS.
-			array( 'wp-edit-blocks' ), // Dependency to include the CSS after it.
-			BSF_AIOSRS_PRO_VER
-		);
-
 		// Common Editor style.
 		wp_enqueue_style(
 			'wpsp-block-common-editor-css', // Handle.
@@ -200,10 +190,8 @@ class BSF_SP_Init_Blocks {
 					continue;
 				}
 
-				if ( isset( $saved_blocks[ $slug ] ) ) {
-					if ( 'disabled' === $saved_blocks[ $slug ] ) {
+				if ( isset( $saved_blocks[ $slug ] ) && ( 'disabled' === $saved_blocks[ $slug ] ) ) {
 						array_push( $blocks, $_slug );
-					}
 				}
 			}
 		}

@@ -72,14 +72,16 @@ $current_section = isset( $_GET['section'] ) ? $_GET['section'] : 'general';
 											<?php
 											echo esc_html( $brand_name );
 										} else {
-											esc_html_e( 'Display Schema Pro Menu Under', 'wp-schema-pro' ); }
+											esc_html_e( 'Display Schema Pro Menu Under', 'wp-schema-pro' );
+										}
 										?>
 										<?php
 										if ( ( '1' === $brand_adv['sp_hide_label'] ) || true === ( defined( 'WP_SP_WL' ) && WP_SP_WL ) ) {
 											$message = __( 'Decide where you wish to see the Schema Pro menu on your WordPress dashboard.', 'wp-schema-pro' );
 										} else {
 											$message  = __( 'Decide where you wish to see the Schema Pro menu on your WordPress dashboard.', 'wp-schema-pro' );
-											$message .= ' <a href="https://wpschema.com/docs/advanced-settings-schema-pro/?utm_source=wp-dashboard&utm_medium=schema-pro-tooltips#admin-menu" target="_blank" rel="noopener">' . __( 'Learn more.', 'wp-schema-pro' ) . '</a>'; }
+											$message .= ' <a href="https://wpschema.com/docs/advanced-settings-schema-pro/?utm_source=wp-dashboard&utm_medium=schema-pro-tooltips#admin-menu" target="_blank" rel="noopener">' . __( 'Learn more.', 'wp-schema-pro' ) . '</a>';
+										}
 											self::get_tooltip( $message );
 										?>
 									</th>
@@ -93,7 +95,8 @@ $current_section = isset( $_GET['section'] ) ? $_GET['section'] : 'general';
 											$message = __( 'Select where you wish to add the schema code.', 'wp-schema-pro' );
 										} else {
 											$message  = __( 'Select where you wish to add the schema code.', 'wp-schema-pro' );
-											$message .= ' <a href="https://wpschema.com/docs/advanced-settings-schema-pro/?utm_source=wp-dashboard&utm_medium=schema-pro-tooltips#schema-location" target="_blank" rel="noopener">' . __( 'Learn more.', 'wp-schema-pro' ) . '</a>'; }
+											$message .= ' <a href="https://wpschema.com/docs/advanced-settings-schema-pro/?utm_source=wp-dashboard&utm_medium=schema-pro-tooltips#schema-location" target="_blank" rel="noopener">' . __( 'Learn more.', 'wp-schema-pro' ) . '</a>';
+										}
 											self::get_tooltip( $message );
 										?>
 									</th>
@@ -139,7 +142,8 @@ $current_section = isset( $_GET['section'] ) ? $_GET['section'] : 'general';
 								$message = __( 'If schema on posts/pages have empty required(*) fields, it may render invalid schema. Enable this option to skip rendering these ‘invalid’ schema.', 'wp-schema-pro' );
 							} else {
 								$message  = __( 'If schema on posts/pages have empty required(*) fields, it may render invalid schema. Enable this option to skip rendering these ‘invalid’ schema.', 'wp-schema-pro' );
-								$message .= ' <a href="https://wpschema.com/docs/skip-rendering-invalid-schema/" target="_blank" rel="noopener">' . __( 'Learn more.', 'wp-schema-pro' ) . '</a>'; }
+								$message .= ' <a href="https://wpschema.com/docs/skip-rendering-invalid-schema/" target="_blank" rel="noopener">' . __( 'Learn more.', 'wp-schema-pro' ) . '</a>';
+							}
 							self::get_tooltip( $message );
 							?>
 						</th>
@@ -162,7 +166,8 @@ $current_section = isset( $_GET['section'] ) ? $_GET['section'] : 'general';
 													$message = __( 'Check this box if you would like Schema to completely remove all of its data when uninstalling via Plugins > Deactivate > Delete.', 'wp-schema-pro' );
 												} else {
 													$message  = __( 'Check this box if you would like Schema to completely remove all of its data when uninstalling via Plugins > Deactivate > Delete.', 'wp-schema-pro' );
-													$message .= ' <a href="https://wpschema.com/docs/delete-schema-data/" target="_blank" rel="noopener">' . __( 'Learn more.', 'wp-schema-pro' ) . '</a>';}
+													$message .= ' <a href="https://wpschema.com/docs/delete-schema-data/" target="_blank" rel="noopener">' . __( 'Learn more.', 'wp-schema-pro' ) . '</a>';
+												}
 													BSF_AIOSRS_Pro_Admin::get_tooltip( $message );
 												?>
 											</th>
@@ -216,6 +221,7 @@ $current_section = isset( $_GET['section'] ) ? $_GET['section'] : 'general';
 				} else {
 					$settings = BSF_AIOSRS_Pro_Helper::$settings['wp-schema-pro-branding-settings'];
 				}
+				$sp_hide_label = isset( $settings['sp_hide_label'] ) ? $settings['sp_hide_label'] : 'disabled';
 				?>
 				<div id="side-sortables" style="min-height: 0px;">
 					<div class="postbox">
@@ -223,9 +229,10 @@ $current_section = isset( $_GET['section'] ) ? $_GET['section'] : 'general';
 						<div class="inside">
 							<div>
 								<?php
-								if ( '' !== $settings['sp_plugin_name'] ) {
+								$sp_name = isset( $settings['sp_plugin_name'] ) ? $settings['sp_plugin_name'] : '';
+								if ( '' !== $sp_name ) {
 									/* translators: %s: search term */
-									$brand_name = sprintf( __( 'Need help configure %s step by step?', 'wp-schema-pro' ), $settings['sp_plugin_name'] );
+									$brand_name = sprintf( __( 'Need help configure %s step by step?', 'wp-schema-pro' ), $sp_name );
 									?>
 										<p><?php echo esc_html( $brand_name ); ?></p>
 													<?php
@@ -250,7 +257,7 @@ $current_section = isset( $_GET['section'] ) ? $_GET['section'] : 'general';
 						<div class="inside">
 							<p>
 							<?php
-							if ( ( '1' === $settings['sp_hide_label'] ) || true === ( defined( 'WP_SP_WL' ) && WP_SP_WL ) ) {
+							if ( ( '1' === $sp_hide_label ) || true === ( defined( 'WP_SP_WL' ) && WP_SP_WL ) ) {
 								esc_html_e( 'Having issues with your schema? Try regenerating the code on all your posts/pages. ', 'wp-schema-pro' );
 							} else {
 								esc_html_e( 'Having issues with your schema? Try regenerating the code on all your posts/pages. ', 'wp-schema-pro' );
@@ -275,7 +282,7 @@ $current_section = isset( $_GET['section'] ) ? $_GET['section'] : 'general';
 						</div>
 					</div>
 				</div>
-				<?php if ( 'disabled' === $settings['sp_hide_label'] ) { ?>
+				<?php if ( 'disabled' === $sp_hide_label ) { ?>
 					<div id="side-sortables" style="">
 						<div class="postbox">
 							<h2 class="hndle"><span><?php esc_html_e( 'Knowledge Base', 'wp-schema-pro' ); ?></span></h2>

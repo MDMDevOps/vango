@@ -63,18 +63,18 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Wizard' ) ) :
 
 			$this->step = isset( $_GET['step'] ) ? sanitize_key( $_GET['step'] ) : current( array_keys( $this->steps ) );
 
-			wp_enqueue_style( 'aiosrs-pro-setup', BSF_AIOSRS_PRO_URI . 'admin/assets/css/setup-wizard.css', array( 'dashicons', 'install' ), BSF_AIOSRS_PRO_VER );
+			wp_enqueue_style( 'aiosrs-pro-setup', BSF_AIOSRS_PRO_URI . 'admin/assets/' . BSF_AIOSRS_Pro_Admin::$minfy_css . 'setup-wizard.' . BSF_AIOSRS_Pro_Admin::$minfy_css_ext, array( 'dashicons', 'install' ), BSF_AIOSRS_PRO_VER );
+			wp_enqueue_style( 'aiosrs-pro-admin-edit-style', BSF_AIOSRS_PRO_URI . 'admin/assets/' . BSF_AIOSRS_Pro_Admin::$minfy_css . 'style.' . BSF_AIOSRS_Pro_Admin::$minfy_css_ext, BSF_AIOSRS_PRO_VER, 'false' );
+			wp_register_script( 'aiosrs-pro-admin-edit-script', BSF_AIOSRS_PRO_URI . 'admin/assets/' . BSF_AIOSRS_Pro_Admin::$minfy_js . 'script.' . BSF_AIOSRS_Pro_Admin::$minfy_js_ext, array( 'jquery', 'jquery-ui-tooltip' ), BSF_AIOSRS_PRO_VER, true );
+			wp_register_script( 'aiosrs-pro-setup', BSF_AIOSRS_PRO_URI . 'admin/assets/' . BSF_AIOSRS_Pro_Admin::$minfy_js . 'setup-wizard.' . BSF_AIOSRS_Pro_Admin::$minfy_js_ext, array( 'jquery' ), BSF_AIOSRS_PRO_VER, true );
+
 			wp_enqueue_style( 'bsf-target-rule-select2', BSF_AIOSRS_PRO_URI . 'classes/lib/target-rule/select2.css', '', BSF_AIOSRS_PRO_VER, false );
 			wp_enqueue_style( 'bsf-target-rule', BSF_AIOSRS_PRO_URI . 'classes/lib/target-rule/target-rule.css', '', BSF_AIOSRS_PRO_VER, false );
-			wp_enqueue_style( 'aiosrs-pro-admin-edit-style', BSF_AIOSRS_PRO_URI . 'admin/assets/css/style.css', BSF_AIOSRS_PRO_VER, 'false' );
-
 			wp_register_script( 'bsf-target-rule-select2', BSF_AIOSRS_PRO_URI . 'classes/lib/target-rule/select2.js', array( 'jquery', 'backbone', 'wp-util' ), BSF_AIOSRS_PRO_VER, true );
 			wp_register_script( 'bsf-target-rule', BSF_AIOSRS_PRO_URI . 'classes/lib/target-rule/target-rule.js', array( 'jquery', 'bsf-target-rule-select2' ), BSF_AIOSRS_PRO_VER, true );
 			wp_register_script( 'bsf-user-role', BSF_AIOSRS_PRO_URI . 'classes/lib/target-rule/user-role.js', array( 'jquery' ), BSF_AIOSRS_PRO_VER, true );
 
 			wp_enqueue_media();
-			wp_register_script( 'aiosrs-pro-admin-edit-script', BSF_AIOSRS_PRO_URI . 'admin/assets/js/script.js', array( 'jquery', 'jquery-ui-tooltip' ), BSF_AIOSRS_PRO_VER, true );
-			wp_register_script( 'aiosrs-pro-setup', BSF_AIOSRS_PRO_URI . 'admin/assets/js/setup-wizard.js', array( 'jquery' ), BSF_AIOSRS_PRO_VER, true );
 			wp_localize_script(
 				'bsf-target-rule',
 				'Targetrule',
@@ -83,11 +83,8 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Wizard' ) ) :
 					'security' => wp_create_nonce( 'schema_nonce' ),
 				)
 			);
-
-			if ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( $_POST['_wpnonce'], 'aiosrs-pro-setup' ) ) {
-				if ( ! empty( $_POST['save_step'] ) && isset( $this->steps[ $this->step ]['handler'] ) ) {
-					call_user_func( $this->steps[ $this->step ]['handler'] );
-				}
+			if ( ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( $_POST['_wpnonce'], 'aiosrs-pro-setup' ) ) && ! empty( $_POST['save_step'] ) && isset( $this->steps[ $this->step ]['handler'] ) ) {
+				call_user_func( $this->steps[ $this->step ]['handler'] );
 			}
 
 			ob_start();
@@ -112,7 +109,7 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Wizard' ) ) :
 		public function setup_wizard_header() {
 			?>
 			<!DOCTYPE html>
-			<html>
+			<html lang="en">
 			<head>
 				<meta name="viewport" content="width=device-width" />
 				<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -123,7 +120,6 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Wizard' ) ) :
 				</script>
 				<?php wp_print_scripts( array( 'bsf-target-rule-select2', 'bsf-target-rule', 'bsf-user-role', 'aiosrs-pro-admin-edit-script', 'aiosrs-pro-setup' ) ); ?>
 				<?php do_action( 'admin_print_styles' ); ?>
-				<?php do_action( 'admin_head' ); ?>
 			</head>
 			<body class="aiosrs-pro-setup wp-core-ui">
 				<div id="aiosrs-pro-logo">
@@ -164,14 +160,11 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Wizard' ) ) :
 			<ol class="aiosrs-pro-setup-steps">
 				<?php
 				foreach ( $ouput_steps as $step_key => $step ) :
-					$classes   = '';
-					$activated = false;
+					$classes = '';
 					if ( $step_key === $this->step ) {
-						$classes   = 'active';
-						$activated = true;
+						$classes = 'active';
 					} elseif ( array_search( $this->step, array_keys( $this->steps ), true ) > array_search( $step_key, array_keys( $this->steps ), true ) ) {
-						$classes   = 'done';
-						$activated = true;
+						$classes = 'done';
 					}
 					?>
 					<li class="<?php echo esc_attr( $classes ); ?>">
@@ -439,9 +432,8 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Wizard' ) ) :
 			$title     = '';
 
 			if ( isset( $_GET['schema-id'] ) && ! empty( $_GET['schema-id'] ) ) {
-				$schema_id   = intval( $_GET['schema-id'] );
-				$schema_type = get_post_meta( $schema_id, 'bsf-aiosrs-schema-type', true );
-				$title       = get_the_title( $schema_id );
+				$schema_id = intval( $_GET['schema-id'] );
+				$title     = get_the_title( $schema_id );
 			}
 
 			?>
@@ -460,7 +452,7 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Wizard' ) ) :
 						?>
 					</p>
 					<p class="success">
-						<b><?php esc_html_e( 'Here’s what to do next:', 'wp-schema-pro' ); ?></b><br>
+						<strong><?php esc_html_e( 'Here’s what to do next:', 'wp-schema-pro' ); ?></strong><br>
 						<?php esc_html_e( 'Step 1: Complete the setup and proceed to fill the required properties of this schema.', 'wp-schema-pro' ); ?><br>
 							<?php esc_html_e( 'Step 2: Add necessary Schema information on individual pages and posts.', 'wp-schema-pro' ); ?><br>
 							<?php esc_html_e( 'Step 3: Test if Schema is integrated correctly.', 'wp-schema-pro' ); ?>
@@ -468,7 +460,7 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Schema_Wizard' ) ) :
 
 					<table class="form-table aiosrs-pro-schema-ready">
 						<tr>
-							<td scope="row" >
+							<td>
 							<a href="<?php echo ( $schema_id ) ? esc_attr( get_edit_post_link( $schema_id ) ) : '#'; ?>" type="button" class="button button-primary button-hero" ><?php esc_html_e( 'Complete Setup', 'wp-schema-pro' ); ?></a>
 							</td>
 						</tr>

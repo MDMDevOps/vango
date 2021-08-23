@@ -430,56 +430,54 @@ if ( ! class_exists( 'BSF_SP_Block_Helper' ) ) {
 				),
 			);
 
-			if ( ! ( $attr['inheritFromTheme'] && 'button' === $attr['ctaType'] ) ) {
-				$selectors[' .wpsp-howto-child-cta-link']                          = array(
-					'color' => $attr['ctaLinkColor'],
-				);
-				$selectors[' .wpsp-ifb-cta .wpsp-howto-child-cta-link:hover']      = array(
-					'color' => $attr['ctaLinkHoverColor'],
-				);
-				$selectors[' .wpsp-howto-child-cta-link .wpsp-ifb-button-icon']    = array(
-					'font-size'   => $cta_icon_size,
-					'height'      => $cta_icon_size,
-					'width'       => $cta_icon_size,
-					'line-height' => $cta_icon_size,
-				);
-				$selectors[' .wpsp-howto-child-cta-link .wpsp-ifb-text-icon']      = array(
-					'font-size'   => $cta_icon_size,
-					'height'      => $cta_icon_size,
-					'width'       => $cta_icon_size,
-					'line-height' => $cta_icon_size,
-				);
-				$selectors[' .wpsp-howto-child-cta-link svg']                      = array(
-					'fill' => $attr['ctaLinkColor'],
-				);
-				$selectors[' .wpsp-howto-child-cta-link:hover svg']                = array(
-					'fill' => $attr['ctaLinkHoverColor'],
-				);
-				$selectors[' .wpsp-ifb-button-wrapper .wpsp-howto-child-cta-link'] = array(
-					'color'            => $attr['ctaBtnLinkColor'],
-					'background-color' => $attr['ctaBgColor'],
-					'border-style'     => $attr['ctaBorderStyle'],
-					'border-color'     => $attr['ctaBorderColor'],
-					'border-radius'    => BSF_SP_Helper::get_css_value( $attr['ctaBorderRadius'], 'px' ),
-					'border-width'     => BSF_SP_Helper::get_css_value( $attr['ctaBorderWidth'], 'px' ),
-					'padding-top'      => BSF_SP_Helper::get_css_value( $attr['ctaBtnVertPadding'], 'px' ),
-					'padding-bottom'   => BSF_SP_Helper::get_css_value( $attr['ctaBtnVertPadding'], 'px' ),
-					'padding-left'     => BSF_SP_Helper::get_css_value( $attr['ctaBtnHrPadding'], 'px' ),
-					'padding-right'    => BSF_SP_Helper::get_css_value( $attr['ctaBtnHrPadding'], 'px' ),
+			$selectors[' .wpsp-howto-child-cta-link']                          = array(
+				'color' => $attr['ctaLinkColor'],
+			);
+			$selectors[' .wpsp-ifb-cta .wpsp-howto-child-cta-link:hover']      = array(
+				'color' => $attr['ctaLinkHoverColor'],
+			);
+			$selectors[' .wpsp-howto-child-cta-link .wpsp-ifb-button-icon']    = array(
+				'font-size'   => $cta_icon_size,
+				'height'      => $cta_icon_size,
+				'width'       => $cta_icon_size,
+				'line-height' => $cta_icon_size,
+			);
+			$selectors[' .wpsp-howto-child-cta-link .wpsp-ifb-text-icon']      = array(
+				'font-size'   => $cta_icon_size,
+				'height'      => $cta_icon_size,
+				'width'       => $cta_icon_size,
+				'line-height' => $cta_icon_size,
+			);
+			$selectors[' .wpsp-howto-child-cta-link svg']                      = array(
+				'fill' => $attr['ctaLinkColor'],
+			);
+			$selectors[' .wpsp-howto-child-cta-link:hover svg']                = array(
+				'fill' => $attr['ctaLinkHoverColor'],
+			);
+			$selectors[' .wpsp-ifb-button-wrapper .wpsp-howto-child-cta-link'] = array(
+				'color'            => $attr['ctaBtnLinkColor'],
+				'background-color' => $attr['ctaBgColor'],
+				'border-style'     => $attr['ctaBorderStyle'],
+				'border-color'     => $attr['ctaBorderColor'],
+				'border-radius'    => BSF_SP_Helper::get_css_value( $attr['ctaBorderRadius'], 'px' ),
+				'border-width'     => BSF_SP_Helper::get_css_value( $attr['ctaBorderWidth'], 'px' ),
+				'padding-top'      => BSF_SP_Helper::get_css_value( $attr['ctaBtnVertPadding'], 'px' ),
+				'padding-bottom'   => BSF_SP_Helper::get_css_value( $attr['ctaBtnVertPadding'], 'px' ),
+				'padding-left'     => BSF_SP_Helper::get_css_value( $attr['ctaBtnHrPadding'], 'px' ),
+				'padding-right'    => BSF_SP_Helper::get_css_value( $attr['ctaBtnHrPadding'], 'px' ),
 
-				);
-				$selectors[' .wpsp-ifb-button-wrapper .wpsp-howto-child-cta-link svg']       = array(
-					'fill' => $attr['ctaBtnLinkColor'],
-				);
-				$selectors[' .wpsp-ifb-button-wrapper .wpsp-howto-child-cta-link:hover']     = array(
-					'color'            => $attr['ctaLinkHoverColor'],
-					'background-color' => $attr['ctaBgHoverColor'],
-					'border-color'     => $attr['ctaBorderhoverColor'],
-				);
-				$selectors[' .wpsp-ifb-button-wrapper .wpsp-howto-child-cta-link:hover svg'] = array(
-					'fill' => $attr['ctaLinkHoverColor'],
-				);
-			}
+			);
+			$selectors[' .wpsp-ifb-button-wrapper .wpsp-howto-child-cta-link svg']       = array(
+				'fill' => $attr['ctaBtnLinkColor'],
+			);
+			$selectors[' .wpsp-ifb-button-wrapper .wpsp-howto-child-cta-link:hover']     = array(
+				'color'            => $attr['ctaLinkHoverColor'],
+				'background-color' => $attr['ctaBgHoverColor'],
+				'border-color'     => $attr['ctaBorderhoverColor'],
+			);
+			$selectors[' .wpsp-ifb-button-wrapper .wpsp-howto-child-cta-link:hover svg'] = array(
+				'fill' => $attr['ctaLinkHoverColor'],
+			);
 
 			if ( $attr['imageWidthType'] ) {
 				// Image.

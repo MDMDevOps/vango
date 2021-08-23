@@ -1,3 +1,28 @@
+v2.6.4
+Improvements: Compatibility with the latest Sonarlint PHP code standard.
+Improvements: Added multiple fields option for job applicant Location Requirement.
+Fix: Other custom field image map issue in the Review Schema.
+Fix: Removed deprecated Professional Service business type from Local Business Schema.
+Fix: Duplicate Breadcrumb schema visible with Yoast SEO pluign.
+Fix: Woocommerce plugin conflict on the setup wizard.
+Fix: Fixed array offset error on multisite websites.
+Fix: Updated deprecated block category hook in schema blocks.
+
+v2.6.3
+# Improvements: Compatible with WordPress v5.8
+# Fix: Fixed Custom schema markup showing issue on the frontend.
+
+v2.6.2
+# Fix: Fixed Person schema markup null error issue.
+
+v2.6.1
+# New: Implemented Lazy loading for the SCSS.
+# Improvements: Loading the minified JS and CSS in the back-end and front-end.
+# Fix: PHP notice due to undefined index issue in the Sitelink schema.
+# Fix: Typography is not working on the editor for How-to steps.
+# Fix: Removed unnecessary Inherit from theme option for How-to steps link.
+# Fix: Markup issue into the FAQ Block schema.
+
 v2.6.0
 # New: Added Dynamic fields option for Social profiles setting.
 # New: Implemented Lazy loading functionality for Schema blocks.

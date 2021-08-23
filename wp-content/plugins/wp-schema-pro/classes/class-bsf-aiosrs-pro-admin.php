@@ -71,6 +71,35 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Admin' ) ) {
 		public static $branding = array();
 
 		/**
+		 * Minify CSS var
+		 *
+		 * @since 2.6.1
+		 * @var $minfy_css
+		 */
+		public static $minfy_css = '';
+		/**
+		 * Minify JS var
+		 *
+		 * @since 2.6.1
+		 * @var $minfy_js
+		 */
+		public static $minfy_js = '';
+		/**
+		 * Minify CSS ext
+		 *
+		 * @since 2.6.1
+		 * @var $minfy_css_ext
+		 */
+		public static $minfy_css_ext = '';
+		/**
+		 * Minify JS ext
+		 *
+		 * @since 2.6.1
+		 * @var $minfy_js_ext
+		 */
+		public static $minfy_js_ext = '';
+
+		/**
 		 * Parent Page Slug
 		 *
 		 * @since 1.0
@@ -124,6 +153,11 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Admin' ) ) {
 		 * Constructor function.
 		 */
 		public function __construct() {
+
+			self::$minfy_css     = BSF_AIOSRS_Pro_Helper::bsf_schema_pro_is_wp_debug_enable() ? 'css/' : 'min-css/';
+			self::$minfy_js      = BSF_AIOSRS_Pro_Helper::bsf_schema_pro_is_wp_debug_enable() ? 'js/' : 'min-js/';
+			self::$minfy_css_ext = BSF_AIOSRS_Pro_Helper::bsf_schema_pro_is_wp_debug_enable() ? 'css' : 'min.css';
+			self::$minfy_js_ext  = BSF_AIOSRS_Pro_Helper::bsf_schema_pro_is_wp_debug_enable() ? 'js' : 'min.js';
 
 			$setting_options = BSF_AIOSRS_Pro_Helper::$settings['aiosrs-pro-settings'];
 			if ( is_multisite() ) {
@@ -194,12 +228,10 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Admin' ) ) {
 		 * @param array $new_value new values.
 		 */
 		public function clear_cache_on_validation_enabled( $old_value, $new_value ) {
-			if ( isset( $old_value['schema-validation'] ) && isset( $new_value['schema-validation'] ) ) {
-				if ( ( $old_value['schema-validation'] !== $new_value['schema-validation'] ) ) {
-					// Clearing cache on enabling the schema validation.
-					global  $wpdb;
-					$wpdb->delete( $wpdb->postmeta, array( 'meta_key' => BSF_AIOSRS_PRO_CACHE_KEY ) );
-				}
+			if ( isset( $old_value['schema-validation'] ) && isset( $new_value['schema-validation'] ) && ( $old_value['schema-validation'] !== $new_value['schema-validation'] ) ) {
+				// Clearing cache on enabling the schema validation.
+				global  $wpdb;
+				$wpdb->delete( $wpdb->postmeta, array( 'meta_key' => BSF_AIOSRS_PRO_CACHE_KEY ) );
 			}
 		}
 
@@ -224,7 +256,6 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Admin' ) ) {
 			);
 			$search_string       = isset( $_POST['q'] ) ? sanitize_text_field( $_POST['q'] ) : '';
 			$data                = array();
-			$result              = array();
 
 			global $wpdb;
 			// WPCS: unprepared SQL OK.
@@ -406,8 +437,6 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Admin' ) ) {
 			}
 			global $parent_file, $submenu_file, $post_type;
 
-			$screen = get_current_screen();
-
 			$parent_page     = self::$default_menu_position;
 			$setting_options = BSF_AIOSRS_Pro_Helper::$settings['aiosrs-pro-settings'];
 			$menu_position   = isset( $setting_options['menu-position'] ) ? $setting_options['menu-position'] : $parent_page;
@@ -454,10 +483,9 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Admin' ) ) {
 		 * Redirect to menu position.
 		 *
 		 * @param string $location URL.
-		 * @param string $status URL status.
 		 * @return string
 		 */
-		public function redirect_menu_position( $location, $status ) {
+		public function redirect_menu_position( $location ) {
 
 			$value         = get_option( 'aiosrs-pro-settings' );
 			$current_parts = wp_parse_url( $location );
@@ -783,7 +811,6 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Admin' ) ) {
 			if ( isset( $_REQUEST['wp_schema_pro_admin_page_nonce'] ) && ! wp_verify_nonce( $_REQUEST['wp_schema_pro_admin_page_nonce'], 'wp_schema_pro_admin_page' ) ) {
 				return;
 			}
-			$brand_option    = BSF_AIOSRS_Pro_Helper::$settings['wp-schema-pro-branding-settings'];
 			$sp_plugin_sname = isset( self::$branding['sp_plugin_sname'] ) ? self::$branding['sp_plugin_sname'] : '';
 
 			?>
@@ -880,10 +907,9 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Admin' ) ) {
 		public function load_scripts( $hook = '' ) {
 
 			if ( 'plugins.php' === $hook ) {
-				wp_enqueue_style( 'aiosrs-pro-license-form', BSF_AIOSRS_PRO_URI . 'admin/assets/css/license-form-popup.css', array(), BSF_AIOSRS_PRO_VER, 'all' );
-				wp_enqueue_script( 'aiosrs-pro-license-form', BSF_AIOSRS_PRO_URI . 'admin/assets/js/license-form-popup.js', array( 'jquery' ), BSF_AIOSRS_PRO_VER, true );
+				wp_enqueue_style( 'aiosrs-pro-license-form', BSF_AIOSRS_PRO_URI . 'admin/assets/' . self::$minfy_css . 'license-form-popup.' . self::$minfy_css_ext, array(), BSF_AIOSRS_PRO_VER, 'all' );
+				wp_enqueue_script( 'aiosrs-pro-license-form', BSF_AIOSRS_PRO_URI . 'admin/assets/' . self::$minfy_js . 'license-form-popup.' . self::$minfy_js_ext, array( 'jquery' ), BSF_AIOSRS_PRO_VER, true );
 			}
-
 		}
 
 		/**
@@ -934,22 +960,22 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Admin' ) ) {
 
 			global $pagenow;
 			global $post;
-
-			$screen = get_current_screen();
 			if ( isset( $_REQUEST['wp_schema_pro_admin_page_nonce'] ) && ! wp_verify_nonce( $_REQUEST['wp_schema_pro_admin_page_nonce'], 'wp_schema_pro_admin_page' ) ) {
 				return;
 			}
 			if ( 'post-new.php' === $pagenow || 'post.php' === $pagenow ) {
-				wp_enqueue_script( 'aiosrs-pro-field-edit-script', BSF_AIOSRS_PRO_URI . 'admin/assets/js/fields-script.js', array( 'jquery', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'wp-i18n' ), BSF_AIOSRS_PRO_VER, true );
+
+					wp_enqueue_style( 'aiosrs-pro-field-edit-style', BSF_AIOSRS_PRO_URI . 'admin/assets/' . self::$minfy_css . 'fields-style.' . self::$minfy_css_ext, BSF_AIOSRS_PRO_VER, 'false' );
+					wp_enqueue_style( 'aiosrs-pro-admin-edit-style', BSF_AIOSRS_PRO_URI . 'admin/assets/' . self::$minfy_css . 'style.' . self::$minfy_css_ext, BSF_AIOSRS_PRO_VER, 'false' );
+					wp_enqueue_script( 'aiosrs-pro-field-edit-script', BSF_AIOSRS_PRO_URI . 'admin/assets/' . self::$minfy_js . 'fields-script.' . self::$minfy_js_ext, array( 'jquery', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'wp-i18n' ), BSF_AIOSRS_PRO_VER, true );
+					wp_enqueue_script( 'aiosrs-pro-admin-edit-script', BSF_AIOSRS_PRO_URI . 'admin/assets/' . self::$minfy_js . 'script.' . self::$minfy_js_ext, array( 'jquery', 'jquery-ui-tooltip' ), BSF_AIOSRS_PRO_VER, true );
+
 				if ( function_exists( 'wp_set_script_translations' ) ) {
 					wp_set_script_translations( 'aiosrs-pro-field-edit-script', 'wp-schema-pro' );
 				}
-				wp_enqueue_style( 'aiosrs-pro-field-edit-style', BSF_AIOSRS_PRO_URI . 'admin/assets/css/fields-style.css', BSF_AIOSRS_PRO_VER, 'false' );
 				wp_localize_script( 'aiosrs-pro-field-edit-script', 'AIOSRS_Rating', apply_filters( 'wp_schema_pro_field_edit_script_localize', array(), BSF_AIOSRS_PRO_VER, 'false' ) );
 				// ToDo: Removed enqueue check.
 				wp_enqueue_media();
-				wp_enqueue_script( 'aiosrs-pro-admin-edit-script', BSF_AIOSRS_PRO_URI . 'admin/assets/js/script.js', array( 'jquery', 'jquery-ui-tooltip' ), BSF_AIOSRS_PRO_VER, true );
-				wp_enqueue_style( 'aiosrs-pro-admin-edit-style', BSF_AIOSRS_PRO_URI . 'admin/assets/css/style.css', BSF_AIOSRS_PRO_VER, 'false' );
 				wp_localize_script(
 					'aiosrs-pro-admin-edit-script',
 					'AIOSRS_Rating',
@@ -961,15 +987,15 @@ if ( ! class_exists( 'BSF_AIOSRS_Pro_Admin' ) ) {
 						)
 					)
 				);
-
 			}
 
 			if ( isset( $_GET['page'] ) && 'aiosrs_pro_admin_menu_page' === $_GET['page'] ) {
-				wp_enqueue_style( 'aiosrs-pro-admin-style', BSF_AIOSRS_PRO_URI . 'admin/assets/css/settings-style.css', BSF_AIOSRS_PRO_VER, 'false' );
+
+				wp_enqueue_style( 'aiosrs-pro-admin-style', BSF_AIOSRS_PRO_URI . 'admin/assets/' . self::$minfy_css . 'settings-style.' . self::$minfy_css_ext, BSF_AIOSRS_PRO_VER, 'false' );
+				wp_enqueue_script( 'aiosrs-pro-settings-script', BSF_AIOSRS_PRO_URI . 'admin/assets/' . self::$minfy_js . 'settings-script.' . self::$minfy_js_ext, array( 'jquery', 'bsf-target-rule-select2', 'wp-i18n', 'wp-util' ), BSF_AIOSRS_PRO_VER, null, true );
 				wp_enqueue_media();
 				wp_enqueue_style( 'bsf-target-rule-select2', BSF_AIOSRS_PRO_URI . 'classes/lib/target-rule/select2.css', '', BSF_AIOSRS_PRO_VER, false );
 				wp_register_script( 'bsf-target-rule-select2', BSF_AIOSRS_PRO_URI . 'classes/lib/target-rule/select2.js', array( 'jquery', 'backbone', 'wp-util' ), BSF_AIOSRS_PRO_VER, true );
-				wp_enqueue_script( 'aiosrs-pro-settings-script', BSF_AIOSRS_PRO_URI . 'admin/assets/js/settings-script.js', array( 'jquery', 'bsf-target-rule-select2', 'wp-i18n', 'wp-util' ), BSF_AIOSRS_PRO_VER, null, true );
 				if ( function_exists( 'wp_set_script_translations' ) ) {
 					wp_set_script_translations( 'aiosrs-pro-settings-script', 'wp-schema-pro' );
 				}

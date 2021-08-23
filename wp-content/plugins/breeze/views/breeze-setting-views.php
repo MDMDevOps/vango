@@ -8,6 +8,7 @@ $tabs = array(
 	'database' => __( 'DATABASE', 'breeze' ),
 	'cdn'      => __( 'CDN', 'breeze' ),
 	'varnish'  => __( 'VARNISH', 'breeze' ),
+	'import_export' => __( 'IMPORT/EXPORT', 'breeze' ),
 	'faq'      => __( 'FAQs', 'breeze' ),
 );
 

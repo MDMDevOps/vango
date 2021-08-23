@@ -5,7 +5,7 @@
  * Author: Brainstorm Force
  * Author URI: https://www.brainstormforce.com
  * Description: Schema Pro is the go-to plugin to adding Schema Markup on your website with ease. Enables you to display rich snippets on search engines and improve your overall page SEO.
- * Version: 2.6.0
+ * Version: 2.6.4
  * Text Domain: wp-schema-pro
  * License: GPL2
  *
@@ -70,7 +70,7 @@ define( 'BSF_AIOSRS_PRO_FILE', __FILE__ );
 define( 'BSF_AIOSRS_PRO_BASE', plugin_basename( BSF_AIOSRS_PRO_FILE ) );
 define( 'BSF_AIOSRS_PRO_DIR', plugin_dir_path( BSF_AIOSRS_PRO_FILE ) );
 define( 'BSF_AIOSRS_PRO_URI', plugins_url( '/', BSF_AIOSRS_PRO_FILE ) );
-define( 'BSF_AIOSRS_PRO_VER', '2.6.0' );
+define( 'BSF_AIOSRS_PRO_VER', '2.6.4' );
 define( 'BSF_AIOSRS_PRO_CACHE_KEY', 'wp_schema_pro_optimized_structured_data' );
 define( 'BSF_AIOSRS_PRO_WEBSITE_URL', 'https://wpschema.com/' );
 
@@ -83,7 +83,7 @@ require_once BSF_AIOSRS_PRO_DIR . 'classes/class-bsf-aiosrs-pro.php';
 
 if ( is_admin() ) {
 	// Load Astra Notices library.
-	require_once BSF_AIOSRS_PRO_DIR . '/lib/notices/class-astra-notices.php';
+	require_once BSF_AIOSRS_PRO_DIR . '/lib/astra-notices/class-astra-notices.php';
 }
 
 /**

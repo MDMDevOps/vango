@@ -504,21 +504,18 @@ if ( ! class_exists( 'BSF_SP_Helper' ) ) {
 			if ( ! isset( $this_post->ID ) ) {
 				return;
 			}
-			if ( function_exists( 'has_blocks' ) ) {
-				if ( has_blocks( $this_post->ID ) && isset( $this_post->post_content ) ) {
-
+			if ( function_exists( 'has_blocks' ) && has_blocks( $this_post->ID ) && isset( $this_post->post_content ) ) {
 					$blocks            = $this->parse( $this_post->post_content );
 					self::$page_blocks = $blocks;
 
-					if ( ! is_array( $blocks ) || empty( $blocks ) ) {
-						return;
-					}
+				if ( ! is_array( $blocks ) || empty( $blocks ) ) {
+					return;
+				}
 
 					$assets = $this->get_assets( $blocks );
 
 					self::$stylesheet .= $assets['css'];
 					self::$script     .= $assets['js'];
-				}
 			}
 		}
 
