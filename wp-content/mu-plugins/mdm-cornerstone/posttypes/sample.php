@@ -76,6 +76,6 @@ class Sample extends Framework {
 			'rewrite'               => $rewrite,
 		);
 
-		register_post_type( self::NAME, $args );
+		// register_post_type( self::NAME, $args );
 	}
 }

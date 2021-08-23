@@ -77,7 +77,7 @@ if( !class_exists( 'MDMCornerStone' ) ) {
 		 * @since 1.0.0
 		 */
 		public function addActions() {
-			include_once $this->path( 'vendor/advanced-custom-fields/advanced-custom-fields-pro/acf.php' );
+
 			$this->subscriber->addAction( 'init', [$this, 'registerPostTypes'] );
 			$this->subscriber->addAction( 'init', [$this, 'registerTaxonomies'] );
 			$this->subscriber->addAction( 'widgets_init', [$this, 'registerWidgets'] );
